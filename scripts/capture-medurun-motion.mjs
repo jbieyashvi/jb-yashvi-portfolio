@@ -2,7 +2,7 @@
 import { chromium } from 'playwright-core'
 import { renameSync, readdirSync, mkdirSync, rmSync } from 'node:fs'
 const browser = await chromium.launch({ channel: 'chrome' })
-const URL = 'https://yashviheizen.github.io/medurun-landing-page/'
+const URL = 'https://jbieyashvi.github.io/medurun-landing-page/'
 
 // warm-up for stills
 {

@@ -6,7 +6,7 @@ import ProjectHeader from '../components/ProjectHeader'
 import useTitle from '../components/useTitle'
 import { getProject } from '../data/projects'
 
-const LINK = 'https://yashviheizen.github.io/iica-mobile-app-prototype/#/home'
+const LINK = 'https://jbieyashvi.github.io/iica-mobile-app-prototype/#/home'
 
 export default function Iica() {
   useTitle('IICA, creator collaboration mobile app | Jb Yashvi')

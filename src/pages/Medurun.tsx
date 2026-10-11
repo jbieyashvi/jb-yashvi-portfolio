@@ -6,7 +6,7 @@ import ProjectHeader from '../components/ProjectHeader'
 import useTitle from '../components/useTitle'
 import { getProject } from '../data/projects'
 
-const LIVE = 'https://yashviheizen.github.io/medurun-landing-page/'
+const LIVE = 'https://jbieyashvi.github.io/medurun-landing-page/'
 
 const highlights = [
   {

@@ -17,7 +17,7 @@ async function scrollThrough(page) {
 if (which === 'all' || which === 'medurun') {
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 })
   const page = await ctx.newPage()
-  await page.goto('https://yashviheizen.github.io/medurun-landing-page/', { waitUntil: 'networkidle' })
+  await page.goto('https://jbieyashvi.github.io/medurun-landing-page/', { waitUntil: 'networkidle' })
   await settle(page, 2500)
   await page.screenshot({ path: `${OUT}/medurun-hero.png` })
   await scrollThrough(page)
@@ -32,7 +32,7 @@ if (which === 'all' || which === 'medurun') {
   await ctx.close()
   const m = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true })
   const mp = await m.newPage()
-  await mp.goto('https://yashviheizen.github.io/medurun-landing-page/', { waitUntil: 'networkidle' })
+  await mp.goto('https://jbieyashvi.github.io/medurun-landing-page/', { waitUntil: 'networkidle' })
   await settle(mp, 2500)
   await mp.screenshot({ path: `${OUT}/medurun-mobile-hero.png` })
   await m.close()
@@ -41,7 +41,7 @@ if (which === 'all' || which === 'medurun') {
 if (which === 'all' || which === 'iica') {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true })
   const page = await ctx.newPage()
-  const base = 'https://yashviheizen.github.io/iica-mobile-app-prototype/#'
+  const base = 'https://jbieyashvi.github.io/iica-mobile-app-prototype/#'
   const routes = ['/home', '/search', '/explore', '/catalogue', '/artist/ananya-rao', '/collaborate', '/collaborate/discover', '/collaborate/recommendations', '/events', '/explore/events', '/explore/content', '/shop', '/explore/shop', '/library', '/orders', '/profile', '/portfolio', '/whats-new']
   for (const r of routes) {
     await page.goto(base + r, { waitUntil: 'networkidle' })
