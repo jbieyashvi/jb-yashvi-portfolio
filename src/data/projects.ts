@@ -7,6 +7,8 @@ export interface Project {
   type: string
   summary: string
   contribution: string
+  /** Base path; files exist as `${cover}-640` and `${cover}-1200` in .avif and .webp
+   *  (made by scripts/optimize-images.mjs from the master `${cover}.png`) */
   cover: string
   coverAlt: string
   /** Intrinsic cover size, used to reserve space before the image loads */
@@ -31,7 +33,7 @@ export const projects: Project[] = [
     summary:
       'A workspace where Compass Group India teams review AI-suggested ingredient-to-article matches, deciding each with Confirm, Reject or Link APL. I created its design system and built it using AI.',
     contribution: 'Created the design system and built the platform using AI.',
-    cover: '/work/covers/home/compass.png',
+    cover: '/work/covers/home/compass',
     coverAlt:
       'The CMP Autobot dashboard in a browser window, beside a card of design tokens: the amber brand colour, Inter, four queue status pills and Confirm and Reject buttons.',
     coverSize: [1600, 1000],
@@ -55,7 +57,7 @@ export const projects: Project[] = [
     summary:
       'A healthy-food ordering and subscription product: customer app, delivery partner app, kitchen panel and admin dashboard.',
     contribution: 'User research and end-to-end UX/UI design. No AI used.',
-    cover: '/work/covers/home/nutrio.png',
+    cover: '/work/covers/home/nutrio',
     coverAlt: 'A phone on concrete steps showing the Nutrio welcome screen with a yellow Get Started button, beside the NutriO logo.',
     coverSize: [1160, 773],
   },
@@ -67,7 +69,7 @@ export const projects: Project[] = [
     summary:
       'A cold-chain logistics platform, from orders and inventory to delivery. I designed its four portals: admin, warehouse, delivery and customer.',
     contribution: 'Product design across all four portals, from order management to POD approval.',
-    cover: '/work/covers/home/tan90.png',
+    cover: '/work/covers/home/tan90',
     coverAlt: 'A tablet with a keyboard showing the Tan90 admin dashboard.',
     coverSize: [1279, 853],
   },
@@ -78,7 +80,7 @@ export const projects: Project[] = [
     type: 'Ambulance-booking platform landing page',
     summary: 'The public landing page for an ambulance-booking and emergency healthcare-mobility platform.',
     contribution: 'Built the landing page fully with AI. Live on the web.',
-    cover: '/work/covers/home/medurun.png',
+    cover: '/work/covers/home/medurun',
     coverAlt: 'A laptop showing the Medurun landing page with an ambulance on a city street.',
     coverSize: [1121, 1403],
     mockup: {
@@ -100,7 +102,7 @@ export const projects: Project[] = [
     type: 'Creator collaboration mobile app',
     summary: 'A mobile app for creators, artists and influencers: discovery, profiles, collaboration, events, classes and shopping.',
     contribution: 'Built the app’s interactive prototype fully with AI.',
-    cover: '/work/covers/home/iica.png',
+    cover: '/work/covers/home/iica',
     coverAlt: 'A phone held in a hand showing the IICA home screen.',
     coverSize: [1449, 1085],
     mockup: {
@@ -119,7 +121,7 @@ export const projects: Project[] = [
     type: 'Store staff mobile app',
     summary: 'A store staff app for finding assigned articles, scanning barcodes and capturing product images.',
     contribution: 'Built the interactive prototype of this store staff app, one app within the larger Retina.ai project, fully with AI.',
-    cover: '/work/covers/home/retina.png',
+    cover: '/work/covers/home/retina',
     coverAlt: 'An upright phone showing the Retina.ai My Articles screen.',
     coverSize: [1457, 1080],
     mockup: {
@@ -138,7 +140,7 @@ export const projects: Project[] = [
     summary:
       'An RFQ-to-PO platform that takes a deal from inquiry and quotation to PO verification and sales order. I designed its interface fully using AI.',
     contribution: 'Designed the platform’s interface fully using AI, shown here as a frontend prototype.',
-    cover: '/work/covers/home/flowtech.png',
+    cover: '/work/covers/home/flowtech',
     coverAlt: 'A laptop showing the Flowtech RFQ and PO inbox.',
     coverSize: [1254, 1254],
     mockup: {

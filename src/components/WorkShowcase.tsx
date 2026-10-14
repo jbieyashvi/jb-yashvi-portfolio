@@ -146,23 +146,34 @@ export default function WorkShowcase() {
   )
 }
 
+/** cards are full width on phones and at most 35rem (--card-w) wide otherwise */
+const COVER_SIZES = '(max-width: 760px) 100vw, 35rem'
+
 function Card({ project: p, n }: { project: Project; n: number }) {
   const to = `/work/${p.slug}`
+  const [w, h] = p.coverSize ?? [1600, 1000]
+  // the large file is 1200px wide, or the master's own width if that is smaller
+  const set = (ext: string) => `${p.cover}-640.${ext} 640w, ${p.cover}-1200.${ext} ${Math.min(w, 1200)}w`
   return (
     <li className={`hs-card hs-card--${p.slug}`}>
       <article className="hs-card__inner">
         {/* the visible text link is the keyboard target; the preview is a larger mouse/touch target */}
         <Link to={to} className="hs-card__media" tabIndex={-1} aria-hidden="true" draggable={false}>
-          <img
-            className="hs-card__cover"
-            src={p.cover}
-            alt=""
-            width={p.coverSize?.[0] ?? 1600}
-            height={p.coverSize?.[1] ?? 1000}
-            loading={n <= 2 ? 'eager' : 'lazy'}
-            decoding="async"
-            draggable={false}
-          />
+          <picture>
+            <source type="image/avif" srcSet={set('avif')} sizes={COVER_SIZES} />
+            <img
+              className="hs-card__cover"
+              src={`${p.cover}-1200.webp`}
+              srcSet={set('webp')}
+              sizes={COVER_SIZES}
+              alt=""
+              width={w}
+              height={h}
+              loading={n <= 2 ? 'eager' : 'lazy'}
+              decoding="async"
+              draggable={false}
+            />
+          </picture>
         </Link>
         <div className="hs-card__body">
           <p className="hs-card__meta">

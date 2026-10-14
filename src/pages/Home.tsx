@@ -76,6 +76,8 @@ export default function Home() {
             <figure className="mod__cell mod__photo about__portrait">
               <img
                 src="/about/portrait-purple-sari.webp"
+                srcSet="/about/portrait-purple-sari-700.webp 700w, /about/portrait-purple-sari.webp 1000w"
+                sizes="(max-width: 760px) 92vw, (max-width: 1100px) 46vw, 22vw"
                 width={1000}
                 height={1250}
                 alt="Jb Yashvi in a purple sari, smiling in a sunlit room"
@@ -88,6 +90,8 @@ export default function Home() {
             <figure className="mod__cell mod__photo about__model">
               <img
                 src="/about/assembling-a-model.webp"
+                srcSet="/about/assembling-a-model-700.webp 700w, /about/assembling-a-model.webp 1200w"
+                sizes="(max-width: 1100px) 46vw, 36vw"
                 width={1200}
                 height={900}
                 alt="Jb Yashvi at a table, assembling a building-block model from an instruction booklet"
