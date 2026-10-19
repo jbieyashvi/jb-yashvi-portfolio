@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { clientProjects, contact, personalProjects, type PersonalProject, type Project } from '../data/projects'
+import loadAhead from './loadAhead'
 
 const pad = (v: number) => String(v).padStart(2, '0')
 const TAG = { designed: 'Designed by me', ai: 'Made with AI', system: 'Design system + AI build' } as const
@@ -53,7 +54,7 @@ function PersonalRow({ project: p }: { project: PersonalProject }) {
         <span className="wrow__thumb" aria-hidden="true">
           <picture>
             <source type="image/avif" srcSet={`${thumb}.avif`} />
-            <img src={`${thumb}.webp`} alt="" width={400} height={300} loading="lazy" decoding="async" />
+            <img src={`${thumb}.webp`} alt="" width={400} height={300} loading="lazy" ref={loadAhead} decoding="async" />
           </picture>
         </span>
         <span className="wrow__text">
@@ -74,7 +75,7 @@ function ClientRow({ project: p }: { project: Project }) {
         <span className="wrow__thumb" aria-hidden="true">
           <picture>
             <source type="image/avif" srcSet={`${p.cover}-640.avif`} />
-            <img src={`${p.cover}-640.webp`} alt="" width={w} height={h} loading="lazy" decoding="async" />
+            <img src={`${p.cover}-640.webp`} alt="" width={w} height={h} loading="lazy" ref={loadAhead} decoding="async" />
           </picture>
         </span>
         <span className="wrow__text">

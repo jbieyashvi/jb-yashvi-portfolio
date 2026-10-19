@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import slices from '../data/caseSlices.json'
 import { personalProjects } from '../data/projects'
+import loadAhead from '../components/loadAhead'
 import NextProject from '../components/NextProject'
 import useTitle from '../components/useTitle'
 
@@ -36,6 +37,8 @@ export default function PersonalProject({ slug }: { slug: Slug }) {
               height={p.h}
               alt=""
               loading={i === 0 ? 'eager' : 'lazy'}
+              fetchPriority={i === 0 ? 'high' : undefined}
+              ref={i === 0 ? undefined : loadAhead}
               decoding="async"
             />
           </div>

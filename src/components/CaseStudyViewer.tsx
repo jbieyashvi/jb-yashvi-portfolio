@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import slices from '../data/caseSlices.json'
+import loadAhead from './loadAhead'
 
 interface Props {
   id: 'nutrio' | 'tan90'
   name: string
   pdf: string
   pdfSize: string
+  /** the study is the page's first image (TAN90): its first slice loads at once, at high priority */
+  lead?: boolean
 }
 
 /**
@@ -13,7 +16,7 @@ interface Props {
  * width (1280px), so the layout and wording stay untouched. Any slice opens a zoomed
  * reader that keeps the whole study in one scroll.
  */
-export default function CaseStudyViewer({ id, name, pdf, pdfSize }: Props) {
+export default function CaseStudyViewer({ id, name, pdf, pdfSize, lead = false }: Props) {
   const parts = slices[id]
   const dialogRef = useRef<HTMLDialogElement>(null)
   const [open, setOpen] = useState<number | null>(null)
@@ -34,7 +37,7 @@ export default function CaseStudyViewer({ id, name, pdf, pdfSize }: Props) {
     return () => document.documentElement.classList.remove('no-scroll')
   }, [open])
 
-  const img = (p: (typeof parts)[number], sizes: string, eager = false) => (
+  const img = (p: (typeof parts)[number], sizes: string, eager = false, high = false) => (
     <img
       src={`${p.src}-1000.webp`}
       srcSet={`${p.src}-1000.webp 1000w, ${p.src}-2000.webp 2000w`}
@@ -43,6 +46,8 @@ export default function CaseStudyViewer({ id, name, pdf, pdfSize }: Props) {
       height={p.h}
       alt=""
       loading={eager ? 'eager' : 'lazy'}
+      fetchPriority={high ? 'high' : undefined}
+      ref={eager ? undefined : loadAhead}
       decoding="async"
     />
   )
@@ -78,7 +83,7 @@ export default function CaseStudyViewer({ id, name, pdf, pdfSize }: Props) {
             aria-label={`Read part ${i + 1} of ${parts.length} larger`}
             style={{ aspectRatio: `${p.w} / ${p.h}` }}
           >
-            {img(p, '(min-width: 1328px) 1280px, 100vw', i === 0)}
+            {img(p, '(min-width: 1328px) 1280px, 100vw', lead && i === 0, lead && i === 0)}
           </button>
         ))}
         <figcaption className="sr-only">

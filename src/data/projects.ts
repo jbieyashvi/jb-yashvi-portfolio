@@ -58,7 +58,7 @@ export const projects: Project[] = [
     type: 'End-to-end product design',
     summary:
       'A healthy-food ordering and subscription product: customer app, delivery partner app, kitchen panel and admin dashboard.',
-    contribution: 'User research and end-to-end UX/UI design. No AI used.',
+    contribution: 'User research and end-to-end UX/UI design, through design handoff. No AI used.',
     cover: '/work/covers/home/nutrio',
     coverAlt: 'A phone on concrete steps showing the Nutrio welcome screen with a yellow Get Started button, beside the NutriO logo.',
     coverSize: [1160, 773],
@@ -70,7 +70,7 @@ export const projects: Project[] = [
     type: 'Multi-portal product design',
     summary:
       'A cold-chain logistics platform, from orders and inventory to delivery. I designed its four portals: admin, warehouse, delivery and customer.',
-    contribution: 'Product design across all four portals, from order management to POD approval.',
+    contribution: 'Product design across all four portals, from order management to POD approval, through design handoff.',
     cover: '/work/covers/home/tan90',
     coverAlt: 'A tablet with a keyboard showing the Tan90 admin dashboard.',
     coverSize: [1279, 853],

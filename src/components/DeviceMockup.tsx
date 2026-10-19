@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react'
 import type { Mockup } from '../data/projects'
+import loadAhead from './loadAhead'
 
 const BEZEL = 0.032
 
@@ -19,7 +20,7 @@ interface Props {
  * use container units, so the whole composition always fits inside its stage.
  */
 export default function DeviceMockup({ mockup, tone, decorative, eager, className = '' }: Props) {
-  const imgs = mockup.screens.map((s) => (
+  const imgs = mockup.screens.map((s, i) => (
     <img
       key={s.src}
       src={s.src}
@@ -27,6 +28,8 @@ export default function DeviceMockup({ mockup, tone, decorative, eager, classNam
       width={s.w}
       height={s.h}
       loading={eager ? 'eager' : 'lazy'}
+      fetchPriority={eager && i === 0 ? 'high' : undefined}
+      ref={eager ? undefined : loadAhead}
       decoding="async"
       draggable={false}
       style={{ aspectRatio: `${s.w} / ${s.h}` }}

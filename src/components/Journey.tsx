@@ -127,7 +127,7 @@ export default function Journey() {
                     <p className="jdetail__summary">{r.summary}</p>
                     {r.details.length > 0 && (
                       <ul className="jdetail__points">
-                        {r.details.slice(0, 2).map((d) => (
+                        {r.details.map((d) => (
                           <li key={d}>{withProjectLinks(d)}</li>
                         ))}
                       </ul>

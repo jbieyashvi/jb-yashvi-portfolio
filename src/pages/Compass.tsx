@@ -7,6 +7,7 @@ import { useLightbox } from '../components/Lightbox'
 import useTitle from '../components/useTitle'
 import type { ImageItem } from '../data/images'
 import { getProject } from '../data/projects'
+import loadAhead from '../components/loadAhead'
 
 const LIVE = 'https://compass-mapperv2.vercel.app/'
 const PDF = `${import.meta.env.BASE_URL}work/compass/cmp-autobot-design-system.pdf`
@@ -241,7 +242,7 @@ function ExcerptList({ list, open }: { list: Excerpt[]; open: (i: number) => voi
               width={e.w}
               height={e.h}
               alt={e.alt}
-              loading="lazy"
+              loading="lazy" ref={loadAhead}
               decoding="async"
             />
           </button>
@@ -383,7 +384,7 @@ export default function Compass() {
           {details.map((d) => (
             <figure key={d.src} className="detail">
               <div className="detail__frame">
-                <img src={d.src} alt={d.alt} width={d.w} height={d.h} loading="lazy" decoding="async" />
+                <img src={d.src} alt={d.alt} width={d.w} height={d.h} loading="lazy" ref={loadAhead} decoding="async" />
               </div>
               <figcaption>
                 <h3>{d.title}</h3>
@@ -474,7 +475,7 @@ export default function Compass() {
                   alt={s.alt}
                   width={2016}
                   height={1200}
-                  loading="lazy"
+                  loading="lazy" ref={loadAhead}
                   decoding="async"
                 />
               </button>

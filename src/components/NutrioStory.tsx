@@ -1,9 +1,10 @@
 import { useLightbox } from './Lightbox'
 import type { ImageItem } from '../data/images'
+import loadAhead from './loadAhead'
 
 const FROM_PDF = 'From the NUTRIO case study PDF'
 
-/** Every statement here comes from the NUTRIO case study PDF or the published app. */
+/** Every statement here comes from the NUTRIO case study PDF. */
 const plans = [
   { name: 'Schedule once', tag: 'Try out', body: 'Plan a meal for a specific time.', who: 'Perfect for first-time users' },
   { name: '7 days plan', tag: 'Short term', body: 'Build consistency without long commitment.', who: 'Ideal for trying a routine' },
@@ -70,8 +71,8 @@ export default function NutrioStory() {
             <dd>User research and end-to-end UX/UI design across four connected products. No AI used.</dd>
           </div>
           <div>
-            <dt>Shipped</dt>
-            <dd>The customer app is published on Google Play.</dd>
+            <dt>Delivered</dt>
+            <dd>Designs for all four products, through design handoff.</dd>
           </div>
         </dl>
       </section>
@@ -181,7 +182,7 @@ export default function NutrioStory() {
                   width={s.w}
                   height={s.h}
                   alt={s.alt}
-                  loading="lazy"
+                  loading="lazy" ref={loadAhead}
                   decoding="async"
                 />
               </button>
@@ -201,7 +202,7 @@ export default function NutrioStory() {
         </div>
         <div className="split__media">
           <ul className="ticks ticks--lg">
-            <li>User research and end-to-end UX/UI design.</li>
+            <li>User research and end-to-end UX/UI design, through design handoff.</li>
             <li>All four products: customer app, delivery partner app, kitchen panel and admin dashboard.</li>
             <li>Process: user research, requirement analysis, UX planning, then UI design and testing.</li>
             <li>The visual identity: logo, type and colour.</li>
@@ -215,8 +216,8 @@ export default function NutrioStory() {
         </div>
         <div className="split__media">
           <ul className="ticks ticks--lg">
-            <li>The NUTRIO customer app is published on Google Play.</li>
             <li>Four connected products designed to one system, from the customer’s order to the kitchen, the rider and the admin.</li>
+            <li>Designed through design handoff.</li>
           </ul>
         </div>
       </section>

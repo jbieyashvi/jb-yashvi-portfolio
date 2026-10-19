@@ -5,6 +5,7 @@ import NextProject from '../components/NextProject'
 import ProjectHeader from '../components/ProjectHeader'
 import useTitle from '../components/useTitle'
 import { getProject } from '../data/projects'
+import loadAhead from '../components/loadAhead'
 
 const LIVE = 'https://jbieyashvi.github.io/medurun-landing-page/'
 
@@ -100,7 +101,7 @@ export default function Medurun() {
         <div className="highlights__list">
           {highlights.map((h) => (
             <figure key={h.title} className="highlight">
-              <img src={h.img} alt={h.alt} width={1600} height={1000} loading="lazy" decoding="async" />
+              <img src={h.img} alt={h.alt} width={1600} height={1000} loading="lazy" ref={loadAhead} decoding="async" />
               <figcaption>
                 <h3>{h.title}</h3>
                 <p>{h.body}</p>
@@ -108,7 +109,7 @@ export default function Medurun() {
             </figure>
           ))}
           <figure className="highlight highlight--mobile">
-            <img className="shot" src="/work/medurun/mobile-hero.webp" alt="Medurun hero on a phone screen." width={780} height={1688} loading="lazy" decoding="async" />
+            <img className="shot" src="/work/medurun/mobile-hero.webp" alt="Medurun hero on a phone screen." width={780} height={1688} loading="lazy" ref={loadAhead} decoding="async" />
             <figcaption>
               <h3>Holds up on a phone</h3>
               <p>On mobile the hero keeps its headline, both actions and the night-street image within the first screen.</p>

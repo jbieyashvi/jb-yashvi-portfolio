@@ -1,9 +1,9 @@
 /*
- * My journey: the Experience section of Jb-Yashvi-Resume.pdf (project root and
- * public/resume, built by scripts/resume.py), in the résumé's own order. Company names, roles,
- * dates and bullet text are copied from it word for word; nothing here is added. The first
- * bullet is the entry's summary, the rest are its details. Some roles overlap, so My journey
- * lists every role with its own dates rather than as a strict sequence.
+ * My journey: the Experience section of the latest résumé (public/resume/Jb-Yashvi-Resume.pdf),
+ * in the résumé's own order. Company names, roles, dates and bullet text are copied from it word
+ * for word; nothing here is added. The first bullet is the entry's summary, the rest are its
+ * details. Some roles overlap, so My journey lists every role with its own dates rather than as
+ * a strict sequence.
  */
 
 export interface Role {
@@ -22,51 +22,50 @@ export const roles: Role[] = [
   {
     company: 'Heizen',
     role: 'Senior Product Designer',
-    from: '2025',
+    from: 'May 2025',
     to: 'Present',
     current: true,
     summary:
-      'Designed web and mobile experiences for supply chain and operational products across client projects, from user research and UX planning to high-fidelity interface design.',
+      'Designed web and mobile experiences across multiple client projects in supply chain, logistics, procurement and operations, translating complex workflows into user flows, interfaces and interactive prototypes.',
     details: [
-      'Designed TAN90, a cold-chain logistics platform, across four portals for admin, warehouse managers, delivery operations and customers, covering orders, inventory, freezing stations, delivery coordination and Proof of Delivery (POD) approval. The product includes an AI-powered POD verification feature.',
-      'Used AI tools to design the interface of Flowtech, an RFQ-to-PO platform connecting inquiries, quotations, purchase-order verification and sales orders, as an interactive frontend prototype.',
-      'Created the design system for CMP Autobot, an ingredient–article mapping workspace for Compass Group India, and built the platform using AI tools.',
-      'Designed NUTRIO across its customer app, delivery partner app, kitchen panel and admin dashboard.',
+      'TAN90: Designed a cold-chain logistics platform to bring Excel-based and manual workflows into a shared digital workspace, covering orders, inventory and delivery coordination across four role-based portals through design handoff.',
+      'CMP Autobot for Compass Group India: Created the design system for an ingredient-to-article mapping workspace and built its interface using AI tools, supporting human review of suggested matches.',
+      'NUTRIO: Designed a healthy-meal ordering and subscription product for gym-goers and mothers planning children’s lunches, covering the customer app, delivery partner app, kitchen panel and admin dashboard through design handoff.',
     ],
   },
   {
     company: 'Freelance',
-    role: 'Product Designer',
-    from: '2022',
-    to: '2024',
+    role: 'Graphic & Product Designer',
+    from: '2020',
+    to: '2025',
     summary:
-      'Designed web and mobile interfaces for early-stage companies, translating client requirements into user flows and UI designs.',
-    details: ['Developed brand identities and reusable design systems to support consistent digital experiences.'],
+      'Delivered graphic design work from 2020 and product design engagements from 2023, translating client requirements into brand identities, user flows, web and mobile interfaces, and reusable design systems.',
+    details: [],
+  },
+  {
+    company: 'Sneaco',
+    role: 'Product Designer · Part-time',
+    from: 'Oct 2023',
+    to: 'Oct 2024',
+    summary:
+      'Designed end-to-end product interfaces, using competitive research to inform features; built and maintained a design system to support consistency and developer handoff.',
+    details: [],
   },
   {
     company: 'Urban Culture',
     role: 'UI/UX Design Intern',
     from: 'May 2024',
-    to: 'July 2024',
-    summary:
-      'Designed an admin panel to support operational workflows and created social media content aligned with the brand identity.',
+    to: 'Jul 2024',
+    summary: 'Designed an admin panel for operational workflows and created social media content aligned with the brand identity.',
     details: [],
   },
   {
-    company: 'Scenco',
-    role: 'Product Designer',
-    from: '2022',
-    to: '2023',
-    summary: 'Designed end-to-end UI/UX and conducted competitive research to inform product features.',
-    details: ['Built and maintained a design system to support consistent interfaces and developer handoff.'],
-  },
-  {
     company: 'Polo',
-    role: 'Product Designer',
-    from: '2022',
-    to: '2023',
+    role: 'Design Intern',
+    from: 'Oct 2023',
+    to: 'Dec 2023',
     summary:
-      'Contributed to digital product design and created high-fidelity interactive prototypes aligned with business goals and user needs.',
+      'Contributed to digital product design and created high-fidelity interactive prototypes aligned with business requirements and user needs.',
     details: [],
   },
 ]

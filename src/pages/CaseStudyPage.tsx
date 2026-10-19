@@ -1,6 +1,5 @@
 import CaseNav from '../components/CaseNav'
 import CaseStudyViewer from '../components/CaseStudyViewer'
-import External from '../components/External'
 import NextProject from '../components/NextProject'
 import NutrioStory from '../components/NutrioStory'
 import ProjectHeader from '../components/ProjectHeader'
@@ -30,7 +29,7 @@ const content = {
         </p>
         <p>
           I handled the user research and the end-to-end UX/UI design across four connected products: the customer app,
-          the delivery partner app, the kitchen panel and the admin dashboard. AI was not used in this work.
+          the delivery partner app, the kitchen panel and the admin dashboard, through design handoff. AI was not used in this work.
         </p>
       </>
     ),
@@ -40,7 +39,7 @@ const content = {
       { label: 'Year', value: '2025' },
       { label: 'AI use', value: 'None' },
     ],
-    actions: <External href="https://play.google.com/store/apps/details?id=com.nutrio.customer">View on Google Play</External>,
+    actions: null,
   },
   tan90: {
     name: 'TAN90',
@@ -55,11 +54,11 @@ const content = {
         </p>
         <p>
           I designed the platform across its four portals, covering order management, inventory, freezing stations, delivery
-          coordination and POD approval.
+          coordination and POD approval, through design handoff.
         </p>
         <p className="aside-note">
-          The product includes an AI-powered POD verification feature. That is something the product does for its users; the
-          design itself is my own work, not generated with AI.
+          The design includes an AI-powered POD verification feature for the product’s users; the design itself is my own
+          work, not generated with AI.
         </p>
       </>
     ),
@@ -86,7 +85,7 @@ export default function CaseStudyPage({ slug }: { slug: 'nutrio' | 'tan90' }) {
         </>
       )}
       <div id="full" tabIndex={-1}>
-        <CaseStudyViewer id={slug} name={c.name} pdf={c.pdf} pdfSize={c.pdfSize} />
+        <CaseStudyViewer id={slug} name={c.name} pdf={c.pdf} pdfSize={c.pdfSize} lead={slug === 'tan90'} />
       </div>
       <NextProject slug={slug} />
     </article>
