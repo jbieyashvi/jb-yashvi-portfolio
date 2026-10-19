@@ -69,7 +69,7 @@ export default function Home() {
               <p className="about__intro">
                 I’m Jb Yashvi
                 <img className="about__avatar" src="/about/cafe-avatar.webp" width={240} height={240} alt="" loading="lazy" decoding="async" />,
-                a senior product designer at Heizen, focused on supply chain and operational products.
+                a senior product designer at Heizen, designing web and mobile experiences across SaaS, <span className="keep">e-commerce</span>, logistics and operations.
               </p>
             </div>
 
@@ -109,7 +109,7 @@ export default function Home() {
                 </div>
                 <div>
                   <dt>Experience in</dt>
-                  <dd>Logistics, procurement, inventory and <span className="keep">multi-role</span> operational workflows</dd>
+                  <dd>SaaS, <span className="keep">e-commerce</span>, logistics and <span className="keep">multi-role</span> operational workflows</dd>
                 </div>
                 <div>
                   <dt>Skills</dt>
