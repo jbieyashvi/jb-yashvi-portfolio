@@ -20,7 +20,7 @@ const content = {
     name: 'NUTRIO',
     type: 'End-to-end product design',
     pdf: '/case-studies/nutrio-case-study.pdf',
-    pdfSize: '17 MB',
+    pdfSize: '13 MB',
     intro: (
       <>
         <p className="lede">
@@ -45,7 +45,7 @@ const content = {
     name: 'TAN90',
     type: 'Multi-portal product design',
     pdf: '/case-studies/tan90-case-study.pdf',
-    pdfSize: '12 MB',
+    pdfSize: '8 MB',
     intro: (
       <>
         <p className="lede">
