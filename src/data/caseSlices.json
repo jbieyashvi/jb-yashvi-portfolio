@@ -172,5 +172,195 @@
       "w": 2000,
       "h": 654
     }
+  ],
+  "gema": [
+    {
+      "src": "/work/personal/gema/01",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/gema/02",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/gema/03",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/gema/04",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/gema/05",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/gema/06",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/gema/07",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/gema/08",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/gema/09",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/gema/10",
+      "w": 2000,
+      "h": 586
+    }
+  ],
+  "roam": [
+    {
+      "src": "/work/personal/roam/01",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/roam/02",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/roam/03",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/roam/04",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/roam/05",
+      "w": 2000,
+      "h": 845
+    }
+  ],
+  "zensenta": [
+    {
+      "src": "/work/personal/zensenta/01",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/zensenta/02",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/zensenta/03",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/zensenta/04",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/zensenta/05",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/zensenta/06",
+      "w": 2000,
+      "h": 527
+    }
+  ],
+  "influish": [
+    {
+      "src": "/work/personal/influish/01",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/influish/02",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/influish/03",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/influish/04",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/influish/05",
+      "w": 2000,
+      "h": 130
+    }
+  ],
+  "relay": [
+    {
+      "src": "/work/personal/relay/01",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/relay/02",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/relay/03",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/relay/04",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/relay/05",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/relay/06",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/relay/07",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/relay/08",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/relay/09",
+      "w": 2000,
+      "h": 1600
+    },
+    {
+      "src": "/work/personal/relay/10",
+      "w": 2000,
+      "h": 45
+    }
   ]
 }

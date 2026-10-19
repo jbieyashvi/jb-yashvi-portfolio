@@ -40,7 +40,7 @@
 
   --max: 1440px;
   --gutter: clamp(16px, 3.2vw, 48px);
-  --nav-h: 72px; /* sticky nav height: anchor offset and the work stage's sticky top */
+  --nav-h: 72px; /* sticky nav height and anchor offset */
   --col-gap: clamp(12px, 1.6vw, 24px);
 
   --font: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -246,11 +246,16 @@ body, .hero, .work, .about, .contact, .footer, .phead--dark {
   --g-plus: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cpath d='M120 114.5v11M114.5 120h11' stroke='%23fff' stroke-opacity='.12' stroke-width='1.25'/%3E%3C/svg%3E");
 }
 /* Selected Work: the faintest grid, so the projects lead */
+.work {
+  --g-minor: rgb(255 255 255 / 0.035);
+  --g-major: rgb(255 255 255 / 0.05);
+  --g-plus: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cpath d='M120 114.5v11M114.5 120h11' stroke='%23fff' stroke-opacity='.12' stroke-width='1.25'/%3E%3C/svg%3E");
+}
 [data-theme='dark'] .work {
   --grid-line: rgb(255 255 255 / 0.045);
-  --g-minor: rgb(255 255 255 / 0.016);
-  --g-major: rgb(255 255 255 / 0.026);
-  --g-plus: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cpath d='M120 114.5v11M114.5 120h11' stroke='%23fff' stroke-opacity='.08' stroke-width='1.25'/%3E%3C/svg%3E");
+  --g-minor: rgb(255 255 255 / 0.01);
+  --g-major: rgb(255 255 255 / 0.016);
+  --g-plus: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cpath d='M120 114.5v11M114.5 120h11' stroke='%23fff' stroke-opacity='.05' stroke-width='1.25'/%3E%3C/svg%3E");
 }
 /* Contact runs into the footer: it ends its grid on that edge where the footer starts its own */
 .contact { --gy: 100%; }
@@ -925,9 +930,8 @@ html.has-intro { --in: 0.8s; }
   letter-spacing: -0.01em;
 }
 
-/* ---------- Work: scroll-driven sideways showcase ---------- */
+/* ---------- Work: a compact two-column project index ---------- */
 
-/* Without .is-pinned (small screens, reduced motion, or no script) this is a plain list. */
 .work {
   --grid-line: var(--night-line);
   --focus: #fff;
@@ -935,206 +939,120 @@ html.has-intro { --in: 0.8s; }
   color: var(--on-night);
 }
 
-.hs { padding-block: clamp(4rem, 9vw, 8rem); }
+.windex { padding-block: clamp(4rem, 9vw, 7.5rem); }
 
-.hs__head {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  column-gap: var(--col-gap);
-  align-items: end;
-  margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
-}
-.hs__title {
-  grid-column: 1 / 9;
+.windex__title {
+  margin-bottom: clamp(2rem, 4.25vw, 3.5rem);
   font-size: clamp(2.75rem, 6.2vw, 6rem);
   font-weight: 400;
   line-height: 0.92;
   letter-spacing: -0.02em;
 }
-.hs__note { grid-column: 9 / 13; color: var(--night-text); max-width: 36ch; }
 
-.hs__track {
+/* two equal columns with a hairline between them; stacked, client first, on phones */
+.windex__cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+.windex__col:first-child { padding-right: clamp(1.25rem, 3vw, 3rem); }
+.windex__col + .windex__col {
+  padding-left: clamp(1.25rem, 3vw, 3rem);
+  border-left: 1px solid var(--night-rule);
+}
+
+.windex__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--night-rule);
+}
+.windex__label { font-size: clamp(1.1rem, 1.5vw, 1.3rem); font-weight: 500; }
+.windex__count { color: var(--night-text); font-size: 0.875rem; font-variant-numeric: tabular-nums; }
+
+.windex__list li { border-bottom: 1px solid var(--night-rule); }
+
+/* one row = one link: thumbnail, name (with a short label under it) and an arrow */
+.wrow {
   display: grid;
-  gap: clamp(3.5rem, 8vw, 6rem);
-  width: 100%;
-  max-width: var(--max);
-  margin-inline: auto;
-  padding-inline: var(--gutter);
+  grid-template-columns: clamp(4.5rem, 7vw, 6rem) minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: clamp(0.9rem, 1.6vw, 1.25rem);
+  padding: 0.8rem 0.5rem;
+  margin-inline: -0.5rem;
+  color: var(--on-night);
+  text-decoration: none;
+  transition: background-color 0.25s ease;
 }
-
-.hs-card__inner { display: grid; grid-template-rows: minmax(0, 1fr) auto; height: 100%; }
-/* the unpinned list on wider screens (reduced motion, short windows): compact cards side by side */
-@media (min-width: 761px) {
-  .hs:not(.is-pinned) .hs__track {
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 26rem), 1fr));
-    column-gap: 1.5rem;
-  }
+@media (hover: hover) {
+  .wrow:hover { background-color: rgb(255 255 255 / 0.06); }
 }
+.wrow:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
 
-.hs-card__media {
+/* each image is shown whole (contain) on a plain mat taken from its border colour */
+.wrow__thumb {
   position: relative;
   display: block;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
-  background: var(--pale);
   border: 1px solid var(--night-rule);
+  background: var(--cover-mat, var(--pale));
 }
-/* Each cover is shown whole (object-fit: contain), never cropped or stretched, whatever the
-   frame's shape. Where its proportions differ from the frame, it sits on a plain neutral mat
-   taken from the image itself (the median colour of its border). The mat is the img's own
-   background, so it turns grey and back with the image. */
-.hs-card__cover {
+.wrow__thumb img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: contain;
-  background: var(--cover-mat, var(--pale));
+  transition: transform 0.45s var(--ease);
 }
-.hs-card--nutrio { --cover-mat: #b1b0ac; }
-.hs-card--tan90 { --cover-mat: #f9fbff; }
-.hs-card--medurun { --cover-mat: #cfbdb3; }
-.hs-card--iica { --cover-mat: #c2c1c1; }
-.hs-card--retina { --cover-mat: #b5afa8; }
-.hs-card--flowtech { --cover-mat: #554f43; }
-.hs-card--compass { --cover-mat: #e9e6df; }
+/* hover and keyboard focus: the cover zooms a little inside its frame and the arrow nudges
+   along; both are transforms, so nothing around them moves. Reduced motion keeps them still. */
+@media (hover: hover) {
+  .wrow:hover .wrow__thumb img { transform: scale(1.05); }
+}
+.wrow:focus-visible .wrow__thumb img { transform: scale(1.05); }
+.wrow:focus-visible .wrow__arrow--page { transform: translateX(4px); }
+@media (prefers-reduced-motion: reduce) {
+  .wrow .wrow__thumb img,
+  .wrow .wrow__arrow { transform: none !important; }
+}
+.wrow--nutrio { --cover-mat: #b1b0ac; }
+.wrow--tan90 { --cover-mat: #f9fbff; }
+.wrow--medurun { --cover-mat: #cfbdb3; }
+.wrow--iica { --cover-mat: #c2c1c1; }
+.wrow--retina { --cover-mat: #b5afa8; }
+.wrow--flowtech { --cover-mat: #554f43; }
+.wrow--compass { --cover-mat: #e9e6df; }
 
-.hs-card__body {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  column-gap: 1.5rem;
-  align-items: end;
-  padding-top: 1.1rem;
+.wrow__text { display: grid; gap: 0.2rem; }
+.wrow__name {
+  font-size: clamp(1.2rem, 1.7vw, 1.5rem);
+  letter-spacing: -0.01em;
+  line-height: 1.15;
 }
-.hs-card__body > * { grid-column: 1; }
-.hs-card__meta { display: flex; align-items: center; gap: 0.75rem; }
-.hs-card__num { color: var(--night-text); font-size: 0.875rem; font-variant-numeric: tabular-nums; }
-.hs-card__tag {
-  padding: 0.1rem 0.55rem;
-  border: 1px solid var(--night-rule);
-  color: var(--night-text);
-  font-size: 0.875rem;
-  line-height: 1.5;
-}
-.hs-card__tag--designed,
-.hs-card__tag--system { border-color: var(--on-night); color: var(--on-night); }
-.hs-card__title {
-  margin-top: 0.55rem;
-  font-size: clamp(1.8rem, 3vw, 2.75rem);
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  line-height: 1.02;
-}
-.hs-card__type { margin-top: 0.3rem; font-weight: 500; }
-.hs-card__summary { margin-top: 0.5rem; color: var(--night-text); max-width: 52ch; }
-.hs-card__link {
-  grid-column: 2;
-  grid-row: 1 / span 4;
-  align-self: end;
-  display: inline-flex;
-  gap: 0.4rem;
-  padding-bottom: 0.15rem;
-  border-bottom: 1px solid var(--on-night);
-  color: var(--on-night);
-  font-weight: 500;
-  text-decoration: none;
-  white-space: nowrap;
-}
-.hs-card__link span[aria-hidden] { transition: transform 0.3s var(--ease); }
-.hs-card__link:hover span[aria-hidden] { transform: translate(3px, -3px); }
-.hs-card__link:focus-visible { outline: 2px solid var(--on-night); outline-offset: 4px; }
+.wrow__meta { color: var(--night-text); font-size: 0.875rem; }
 
-.hs__foot { margin-top: clamp(3rem, 7vw, 5rem); }
-.hs__count, .hs__progress { display: none; }
-.hs__more {
+.wrow__arrow { font-size: 1.15rem; transition: transform 0.3s var(--ease); }
+@media (hover: hover) {
+  .wrow:hover .wrow__arrow { transform: translate(3px, -3px); }
+  .wrow:hover .wrow__arrow--page { transform: translateX(4px); }
+}
+
+.windex__more {
   display: inline-block;
-  padding-top: 1.25rem;
+  margin-top: clamp(2rem, 4vw, 3rem);
   color: var(--night-text);
   text-decoration: underline;
   text-underline-offset: 0.3em;
   transition: color 0.2s var(--ease);
 }
-.hs__more:hover { color: var(--on-night); }
+.windex__more:hover { color: var(--on-night); }
 
-/* ----- pinned: the stage sticks under the nav while the track moves sideways ----- */
-
-.hs.is-pinned {
-  --stage-h: calc(100vh - var(--nav-h));
-  /* compact cards: about 512px wide at a 1280px viewport, never wider than 560px; the cover is
-     5:3 of that width (about 307px), and gives up height first on short screens */
-  --card-w: clamp(26rem, 40vw, 35rem);
-  padding: 0;
+@media (max-width: 760px) {
+  .windex__cols { grid-template-columns: minmax(0, 1fr); }
+  .windex__col:first-child { padding-right: 0; }
+  .windex__col + .windex__col { margin-top: 3rem; padding-left: 0; border-left: 0; }
+  .wrow { grid-template-columns: 4.5rem minmax(0, 1fr) auto; }
 }
-.hs.is-pinned .hs__stage {
-  position: sticky;
-  top: var(--nav-h);
-  height: var(--stage-h);
-  display: grid;
-  grid-template-columns: minmax(0, 1fr); /* never widen to fit the track */
-  grid-template-rows: auto minmax(0, 1fr) auto;
-  overflow: hidden;
-  overflow: clip;
-}
-.is-pinned .hs__head { padding-top: clamp(1.25rem, 4vh, 2.75rem); margin-bottom: clamp(1rem, 3vh, 2rem); }
-.is-pinned .hs__title { font-size: clamp(2.5rem, min(5.4vw, 9vh), 5.5rem); }
-
-.is-pinned .hs__track {
-  position: relative; /* card offsetLeft is measured from the track */
-  /* one row of covers and one row of text, shared by every card (subgrid), so all covers are
-     the same height and all links line up. The cover row takes its 5:3 height when there is
-     room and shrinks first (covers stay whole, on their mat) when the stage is short. */
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: var(--card-w);
-  grid-template-rows: minmax(0, calc(var(--card-w) * 0.6)) auto;
-  align-content: center;
-  gap: 0 1.5rem;
-  max-width: none;
-  height: 100%;
-  margin: 0;
-  /* line the first card up with the page's content column */
-  padding-inline: max(var(--gutter), calc((100% - var(--max)) / 2 + var(--gutter)));
-  will-change: transform;
-}
-.is-pinned :is(.hs-card, .hs-card__inner) {
-  grid-row: span 2;
-  display: grid;
-  grid-template-rows: subgrid;
-  min-height: 0;
-}
-.is-pinned .hs-card__media { aspect-ratio: auto; height: 100%; }
-.is-pinned .hs-card__body { display: flex; flex-direction: column; align-items: flex-start; }
-.is-pinned .hs-card__title { font-size: clamp(1.75rem, 2.4vw, 2.25rem); }
-.is-pinned .hs-card__summary { padding-bottom: 1rem; }
-.is-pinned .hs-card__link { margin-top: auto; }
-
-.is-pinned .hs__foot {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: clamp(1rem, 2.5vw, 2rem);
-  margin-top: 0;
-  padding-block: clamp(0.9rem, 2.6vh, 1.75rem);
-}
-.is-pinned .hs__count {
-  display: block;
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-}
-.hs__count span { color: var(--night-text); font-weight: 400; }
-.is-pinned .hs__progress {
-  display: block;
-  height: 1px;
-  background: var(--night-rule);
-}
-.hs__progress span {
-  display: block;
-  height: 100%;
-  background: #fff;
-  transform: scaleX(0);
-  transform-origin: left;
-}
-.is-pinned .hs__more { padding-top: 0; }
 
 /* ---------- How I work: four steps in one connected row ---------- */
 
@@ -2301,6 +2219,11 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
 .cs__part img { width: 100%; height: 100%; }
 .cs__part:focus-visible { outline-offset: -4px; outline-width: 3px; }
 
+/* personal project page: the PDF alone, below the title */
+.pdoc { margin-top: clamp(2rem, 5vw, 4rem); }
+.pdoc__part { background: #fff; }
+.pdoc__part img { display: block; width: 100%; height: 100%; }
+
 /* reader dialog */
 
 .reader {
@@ -2879,9 +2802,6 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
 
 @media (max-width: 1100px) {
 
-  .hs__title { grid-column: 1 / -1; }
-  .hs__note { grid-column: 1 / 10; margin-top: 1.25rem; }
-
   .mod--about {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     grid-template-areas: 'intro intro' 'portrait meta' 'model desk';
@@ -3060,8 +2980,9 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
   [data-theme='dark'] :is(body, .about) { --g-minor: rgb(255 255 255 / 0.02); }
   [data-theme='dark'] .hero { --g-minor: rgb(255 255 255 / 0.03); }
   [data-theme='dark'] :is(.contact, .footer, .phead--dark) { --g-minor: rgb(255 255 255 / 0.02); }
-  [data-theme='dark'] .work { --g-minor: rgb(255 255 255 / 0.014); }
-  :is(.work, .contact, .footer, .phead--dark) { --g-minor: rgb(255 255 255 / 0.05); }
+  [data-theme='dark'] .work { --g-minor: rgb(255 255 255 / 0.009); }
+  :is(.contact, .footer, .phead--dark) { --g-minor: rgb(255 255 255 / 0.05); }
+  .work { --g-minor: rgb(255 255 255 / 0.03); }
   /* toolbar centred at the foot of the hero, every tool a 44px target; the hint and Reset
      share a line under it */
   .hero__play {
@@ -3077,11 +2998,6 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
   .hero__tool { width: 44px; height: 44px; font-size: 18px; }
   .hero__bar-rule { height: 20px; margin-inline: 4px; }
   .about__tools { display: block; }
-
-  .hs__note { grid-column: 1 / -1; }
-  .hs-card__media { aspect-ratio: 4 / 3; }
-  .hs-card__body { grid-template-columns: minmax(0, 1fr); }
-  .hs-card__link { grid-column: 1; grid-row: auto; justify-self: start; margin-top: 1rem; }
 
   .mod__photo figcaption { font-size: 0.875rem; }
 
@@ -3136,32 +3052,27 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
 
 /* ---------- Homepage images ---------- */
 
-/* Selected Work covers, Outside the brief previews, About photos and Ideas in motion: black and
+/* Outside the brief previews, About photos and Ideas in motion: black and
    white (CSS only; the files keep their colour), taking back their colour over 0.4s while the
    image or its card is hovered, while it has keyboard focus, or during a press on a touch
    screen. Hover is left to real pointers, as a tap would otherwise leave a sticky colour.
-   These classes appear only on the home page; the Gallery keeps its original colours. The
+   These classes appear only on the home page; the Gallery and Selected Work keep their colours. The
    transition of the previews and About photos sits beside their own scale transitions above; reduced motion (below)
    makes the change immediate. */
-.hs-card__cover,
 .teaser__mask img,
 .mod__photo img,
 .about__avatar,
 .ideas__tile img { filter: grayscale(1); }
-.hs-card__cover,
 .about__avatar,
 .ideas__tile img { transition: filter 0.4s ease; }
 @media (hover: hover) {
-  .hs-card:hover .hs-card__cover,
   .teaser__btn:hover img,
   .mod__photo:hover img,
   .about__avatar:hover,
   .ideas__tile:hover img { filter: grayscale(0); }
 }
-.hs-card:has(a:focus-visible) .hs-card__cover,
 .teaser__btn:focus-visible img,
 .ideas__tile:focus-visible img,
-.hs-card:active .hs-card__cover,
 .teaser__btn:active img,
 .mod__photo:active img,
 .about__avatar:active,

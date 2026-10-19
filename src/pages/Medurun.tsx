@@ -71,7 +71,7 @@ export default function Medurun() {
           { label: 'How it was made', value: 'Built fully with AI' },
           { label: 'Status', value: 'Live website' },
         ]}
-        actions={<External href={LIVE}>View live website</External>}
+        actions={<External href={LIVE}>View AI prototype</External>}
       />
 
       <section className="wrap showcase" aria-label="Website preview">
@@ -116,7 +116,7 @@ export default function Medurun() {
           </figure>
         </div>
         <div className="end-cta">
-          <External href={LIVE}>View live website</External>
+          <External href={LIVE}>View AI prototype</External>
         </div>
       </section>
 

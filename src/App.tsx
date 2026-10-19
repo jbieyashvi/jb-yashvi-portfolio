@@ -13,6 +13,7 @@ import Iica from './pages/Iica'
 import Retina from './pages/Retina'
 import Flowtech from './pages/Flowtech'
 import Compass from './pages/Compass'
+import PersonalProject from './pages/PersonalProject'
 import Gallery from './pages/Gallery'
 import NotFound from './pages/NotFound'
 
@@ -199,6 +200,9 @@ export default function App() {
           <Route path="/work/retina" element={<Retina />} />
           <Route path="/work/flowtech" element={<Flowtech />} />
           <Route path="/work/compass" element={<Compass />} />
+          {(['gema', 'roam', 'zensenta', 'influish', 'relay'] as const).map((slug) => (
+            <Route key={slug} path={`/work/${slug}`} element={<PersonalProject slug={slug} />} />
+          ))}
           {/* the Playground page became the Ideas in motion section; old links land there */}
           <Route path="/playground" element={<Navigate to="/#ideas" replace />} />
           <Route path="/gallery" element={<Gallery />} />

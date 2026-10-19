@@ -1,13 +1,13 @@
 import { Fragment, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { mapYears, roleYears, roles } from '../data/journey'
-import { contact, projects } from '../data/projects'
+import { clientProjects, contact } from '../data/projects'
 
 /** résumé text, with the names of projects that have a case study linked to it */
 function withProjectLinks(text: string): ReactNode {
-  const names = projects.map((p) => p.name).join('|')
+  const names = clientProjects.map((p) => p.name).join('|')
   return text.split(new RegExp(`\\b(${names})\\b`)).map((part, i) => {
-    const p = projects.find((x) => x.name === part)
+    const p = clientProjects.find((x) => x.name === part)
     return p ? (
       <Link key={i} to={`/work/${p.slug}`}>
         {part}

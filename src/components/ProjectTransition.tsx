@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { projects } from '../data/projects'
+import { personalProjects, projects } from '../data/projects'
 
 const COLS = 5
 /** the panel is fully over the screen; navigate underneath it */
@@ -42,7 +42,7 @@ export default function ProjectTransition() {
       if (!a || (a.target && a.target !== '_self') || a.hasAttribute('download')) return
       const url = new URL(a.href, window.location.href)
       if (url.origin !== window.location.origin) return
-      const project = projects.find((p) => url.pathname === `/work/${p.slug}`)
+      const project = [...projects, ...personalProjects].find((p) => url.pathname === `/work/${p.slug}`)
       if (!project) return
       // a transition is already running: swallow repeat clicks instead of queuing another
       if (target.current) {

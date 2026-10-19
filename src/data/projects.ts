@@ -15,6 +15,8 @@ export interface Project {
   coverSize?: [number, number]
   /** Device mockup used as the project-page hero */
   mockup?: Mockup
+  /** false: the page and next-project links stay, but it is not listed in Selected Work */
+  showcased?: boolean
 }
 
 /** A real screenshot at its natural pixel size */
@@ -116,6 +118,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'retina',
+    showcased: false,
     name: 'Retina.ai',
     track: 'ai',
     type: 'Store staff mobile app',
@@ -134,6 +137,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'flowtech',
+    showcased: false,
     name: 'Flowtech',
     track: 'ai',
     type: 'RFQ-to-PO web platform',
@@ -158,11 +162,37 @@ export const projects: Project[] = [
 
 ]
 
+/** A personal project: its page at /work/{slug} shows the PDF itself. Files live in
+ *  public/work/personal/: `${slug}.pdf`, its page slices in `${slug}/` (scripts/slice-pdfs.mjs)
+ *  and a thumbnail cut from it, `${slug}-thumb.avif` / `.webp` (scripts/pdf-thumbs.mjs). */
+export interface PersonalProject { slug: string; name: string; subtitle: string }
+
+export const personalProjects: PersonalProject[] = [
+  { slug: 'gema', name: 'GEMA', subtitle: 'Care between appointments' },
+  { slug: 'roam', name: 'Roam', subtitle: 'AI travel planner' },
+  { slug: 'zensenta', name: 'Zensenta', subtitle: 'Clinical workspace' },
+  { slug: 'influish', name: 'Influish', subtitle: 'Creator redesign' },
+  { slug: 'relay', name: 'Relay', subtitle: 'Clearer handoff from Sales to CS' },
+]
+
 export const getProject = (slug: string) => projects.find((p) => p.slug === slug)!
 
-export const nextProject = (slug: string) => {
-  const i = projects.findIndex((p) => p.slug === slug)
-  return projects[(i + 1) % projects.length]
+/** The client projects visitors are shown, in order: Selected Work, résumé links and the
+ *  next-project sequence all follow this list. Unlisted pages (showcased: false) keep their
+ *  routes but are never linked to. */
+export const clientProjects = projects.filter((p) => p.showcased !== false)
+
+/** Every project visitors are shown, as one Next-project loop: the client projects, then the
+ *  personal ones, then back to the first client project. */
+export const projectSequence: { slug: string; name: string }[] = [...clientProjects, ...personalProjects]
+
+/** The project after `slug` in projectSequence, wrapping to the start. An unlisted client page
+ *  (showcased: false) leads to the next listed client project after it. */
+export const nextProject = (slug: string): { slug: string; name: string } => {
+  const i = projectSequence.findIndex((p) => p.slug === slug)
+  if (i !== -1) return projectSequence[(i + 1) % projectSequence.length]
+  const j = projects.findIndex((p) => p.slug === slug)
+  return projects.slice(j + 1).find((p) => p.showcased !== false) ?? projectSequence[0]
 }
 
 export const contact = {
