@@ -39,16 +39,16 @@ export const roles: Role[] = [
     from: '2020',
     to: '2025',
     summary:
-      'Delivered graphic design work from 2020 and product design engagements from 2023, translating client requirements into brand identities, user flows, web and mobile interfaces, and reusable design systems.',
+      'Designed logos, landing pages, product apps and dashboards; collaborated with product managers on product design and platform redesigns. Graphic design from 2020; product design from 2023.',
     details: [],
   },
   {
     company: 'Sneaco',
-    role: 'Product Designer · Part-time',
+    role: 'Founding Designer · Part-time',
     from: 'Oct 2023',
     to: 'Oct 2024',
     summary:
-      'Designed end-to-end product interfaces, using competitive research to inform features; built and maintained a design system to support consistency and developer handoff.',
+      'Worked as the founding designer at an early-stage startup, designing its website, mobile app and Instagram creatives.',
     details: [],
   },
   {
@@ -65,7 +65,7 @@ export const roles: Role[] = [
     from: 'Oct 2023',
     to: 'Dec 2023',
     summary:
-      'Contributed to digital product design and created high-fidelity interactive prototypes aligned with business requirements and user needs.',
+      'Supported product and user research to understand the product and its users; assisted the Senior Product Designer in creating interface screens.',
     details: [],
   },
 ]
