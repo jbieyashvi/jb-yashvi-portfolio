@@ -290,7 +290,7 @@ export default function HeroCanvas() {
         </div>
 
         <div className="hero__foot">
-          <p className="hero__lede">I design clear experiences for complex supply chain and operational workflows, using <span className="keep">AI-assisted</span> prototyping to explore and refine ideas.</p>
+          <p className="hero__lede">I design clear, intuitive web and mobile experiences across SaaS, <span className="keep">e-commerce</span>, logistics and operations, using <span className="keep">AI-assisted</span> prototyping to bring ideas to life.</p>
           <a href="#work" className="btn btn--solid hero__cta">
             Explore my work <span aria-hidden="true" className="btn__icon">↗</span>
           </a>
