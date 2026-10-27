@@ -25,12 +25,13 @@ export const roles: Role[] = [
     from: 'May 2025',
     to: 'Oct 2026',
     summary:
-      'Led end-to-end product design across web and mobile products, translating complex business requirements into user flows, information architecture, high-fidelity UI, prototypes, and developer-ready designs.',
+      'Owned end-to-end web and mobile product design, translating business requirements into user flows, information architecture, high-fidelity UI and developer-ready designs.',
     details: [
-      'Redesigned navigation, information hierarchy, and decision points across procurement and logistics workflows to make complex tasks easier to follow.',
-      'Built reusable components and standardized tables, forms, and status patterns to support consistent interfaces across products.',
-      'Used AI-assisted tools to explore workflow edge cases and build interactive prototypes for design reviews and developer discussions.',
-      'Presented alternative design solutions to clients, explained trade-offs, and gathered feedback to refine the preferred approach.',
+      'Simplified a client workflow by reducing steps and clarifying information hierarchy; refined the design through internal team testing to make tasks easier to follow.',
+      'Built reusable components and standardized tables, forms and status patterns to support consistent experiences and clearer design handoff.',
+      'Guided client design reviews with alternative solutions and explicit trade-offs; incorporated feedback to align design decisions with business needs.',
+      'Used AI-assisted tools to explore workflow edge cases and build interactive prototypes for client reviews and engineering discussions.',
+      'Partnered with developers through handoff and implementation reviews to resolve usability issues and maintain design intent.',
     ],
   },
   {
@@ -39,10 +40,9 @@ export const roles: Role[] = [
     from: 'Oct 2024',
     to: 'Mar 2025',
     summary:
-      'Interviewed hostel students and unmarried adults about their laundry routines, spending, and service needs to inform product design for a startup offering one-day laundry and ironing services.',
+      'Interviewed hostel students and adults about laundry routines, spending and service needs to inform a one-day laundry and ironing service.',
     details: [
-      'Established the initial visual language and reusable UI patterns to support consistent design across features.',
-      'Collaborated directly with founders and developers to translate early product requirements into interactive prototypes and implementation-ready designs.',
+      'Defined the initial visual language and reusable UI patterns; collaborated with founders and developers on interactive prototypes and implementation-ready designs.',
     ],
   },
   {
@@ -50,7 +50,7 @@ export const roles: Role[] = [
     role: 'UI/UX Design Intern',
     from: 'May 2024',
     to: 'Jul 2024',
-    summary: 'Designed and refined admin-panel experiences with a focus on usability, information hierarchy, and visual consistency.',
+    summary: 'Refined admin-panel experiences with a focus on usability, information hierarchy and visual consistency.',
     details: [],
   },
   {
@@ -58,7 +58,7 @@ export const roles: Role[] = [
     role: 'Product Design Intern',
     from: 'Oct 2023',
     to: 'Dec 2023',
-    summary: 'Supported the Senior Product Designer in creating high-fidelity UI screens and interactive prototypes.',
+    summary: 'Supported the Senior Product Designer with high-fidelity UI screens and interactive prototypes.',
     details: [],
   },
 ]

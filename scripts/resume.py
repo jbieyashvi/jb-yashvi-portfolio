@@ -4,8 +4,9 @@ project root). Edit the text below and run:
 
     python3 scripts/resume.py            # or: python3 scripts/resume.py out.pdf to preview elsewhere
 
-Needs ReportLab (pip install reportlab). Helvetica on A4, 46pt side margins; the portfolio's
+Needs ReportLab (pip install reportlab). Times on A4, 40pt side margins; the portfolio's
 My journey (src/data/journey.ts) copies the Experience bullets word for word, so change both.
+Text in <b>…</b> is set in bold; everything else is plain text.
 """
 
 from pathlib import Path
@@ -14,83 +15,75 @@ from xml.sax.saxutils import escape
 
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle
-from reportlab.platypus import Frame, Paragraph, Table, TableStyle
+from reportlab.platypus import Frame, HRFlowable, Paragraph
 from reportlab.pdfgen.canvas import Canvas
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / 'public/resume/Jb-Yashvi-Resume.pdf'
 
 NAME = 'Jb Yashvi'
-HEADLINE = 'PRODUCT DESIGNER'
-PHONE = '8949741873'
+HEADLINE = 'Product Designer'
+PLACE = 'Jaipur, India | +91 8949741873 | '
 EMAIL = 'jbieyashvi011@gmail.com'
 LINKEDIN = ('LinkedIn', 'https://www.linkedin.com/in/jb-yashvi/')
 PORTFOLIO = ('Portfolio', 'https://jb-yashvi-portfolio.vercel.app/')
 
 SUMMARY = (
-    'Product Designer focused on web and mobile products, enterprise workflows, dashboards, and design systems. '
-    'Experienced in end-to-end design, from user flows and interaction design to high-fidelity UI, developer handoff, and '
-    'implementation reviews. Uses AI-assisted tools to explore ideas and build interactive prototypes.'
+    'Product Designer focused on enterprise workflows, dashboards, and web and mobile products. Owns design from '
+    'problem definition and user flows through high-fidelity UI, prototyping, developer <b>handoff and implementation '
+    'reviews</b>. Brings experience in procurement and logistics, reusable design systems, client collaboration and '
+    'AI-assisted prototyping.'
 )
 
-# each entry: the bold heading lines as (left, right) pairs, then the bullets
+# each entry: the bold heading, the italic line under it, an optional note, then the bullets
 EXPERIENCE = [
-    ([('Heizen (Gamma Opengig Work Pvt Ltd)', 'Remote'),
-      ('Senior Product Designer', 'May 2026 – Oct 2026'),
-      ('Product Designer', 'May 2025 – Apr 2026')], [
-        'Led end-to-end product design across web and mobile products, translating complex business requirements into '
-        'user flows, information architecture, high-fidelity UI, prototypes, and developer-ready designs.',
-        'Redesigned navigation, information hierarchy, and decision points across procurement and logistics workflows to '
-        'make complex tasks easier to follow.',
-        'Built reusable components and standardized tables, forms, and status patterns to support consistent interfaces '
-        'across products.',
-        'Used AI-assisted tools to explore workflow edge cases and build interactive prototypes for design reviews and '
-        'developer discussions.',
-        'Presented alternative design solutions to clients, explained trade-offs, and gathered feedback to refine the '
-        'preferred approach.',
+    ('Heizen (Gamma Opengig Work Pvt Ltd) | May 2025 - Oct 2026', 'Senior Product Designer | Remote',
+     '<b>Promoted in May 2026</b> after joining as Product Designer in May 2025.', [
+        'Owned <b>end-to-end web and mobile product design</b>, translating business requirements into user flows, '
+        'information architecture, high-fidelity UI and developer-ready designs.',
+        'Simplified a client workflow by <b>reducing steps and clarifying information hierarchy</b>; refined the design '
+        'through internal team testing to make tasks easier to follow.',
+        'Built <b>reusable components</b> and standardized tables, forms and status patterns to support consistent '
+        'experiences and clearer design handoff.',
+        'Guided <b>client design reviews</b> with alternative solutions and explicit trade-offs; incorporated feedback to '
+        'align design decisions with business needs.',
+        'Used AI-assisted tools to explore <b>workflow edge cases</b> and build interactive prototypes for client reviews '
+        'and engineering discussions.',
+        'Partnered with developers through <b>handoff and implementation reviews</b> to resolve usability issues and '
+        'maintain design intent.',
     ]),
-    ([('Founding Product Designer', 'Oct 2024 – Mar 2025'),
-      ('Sneaco · Part-time', 'Jaipur')], [
-        'Interviewed hostel students and unmarried adults about their laundry routines, spending, and service needs to '
-        'inform product design for a startup offering one-day laundry and ironing services.',
-        'Established the initial visual language and reusable UI patterns to support consistent design across features.',
-        'Collaborated directly with founders and developers to translate early product requirements into interactive '
-        'prototypes and implementation-ready designs.',
+    ('Sneaco | Part-time | Oct 2024 - Mar 2025', 'Founding Product Designer | Jaipur', None, [
+        '<b>Interviewed hostel students and adults</b> about laundry routines, spending and service needs to inform a '
+        'one-day laundry and ironing service.',
+        'Defined the initial <b>visual language and reusable UI patterns</b>; collaborated with founders and developers on '
+        'interactive prototypes and implementation-ready designs.',
     ]),
-    ([('UI/UX Design Intern', 'May 2024 – Jul 2024'),
-      ('Urban Culture', '')], [
-        'Designed and refined admin-panel experiences with a focus on usability, information hierarchy, and visual '
-        'consistency.',
+    ('Urban Culture | May 2024 - Jul 2024', 'UI/UX Design Intern', None, [
+        'Refined admin-panel experiences with a focus on usability, information hierarchy and visual consistency.',
     ]),
-    ([('Product Design Intern', 'Oct 2023 – Dec 2023'),
-      ('POLO', '')], [
-        'Supported the Senior Product Designer in creating high-fidelity UI screens and interactive prototypes.',
+    ('POLO | Oct 2023 - Dec 2023', 'Product Design Intern', None, [
+        'Supported the Senior Product Designer with high-fidelity UI screens and interactive prototypes.',
     ]),
-]
-
-EDUCATION = [
-    ('Bachelor of Architecture (B.Arch)', '2025'),
-    ('Malaviya National Institute of Technology Jaipur (MNIT Jaipur)', 'Jaipur, India'),
 ]
 
 SKILLS = [
-    ('Product Design', 'User Research, User Flows, Information Architecture, Wireframing, Interaction Design, Visual '
-     'Design, UI Design, Responsive Design, Prototyping, Design Systems, Developer Handoff'),
-    ('Tools', 'Figma, FigJam, Framer, Adobe Illustrator, Adobe XD, Sketch'),
-    ('AI & Prototyping', 'Claude, ChatGPT, Codex, Claude Code'),
-    ('Technical', 'HTML/CSS fundamentals, AI-assisted code prototyping'),
+    ('Product design:', 'User research, user flows, information architecture, <b>interaction design</b>, visual design, '
+     'responsive design, <b>prototyping</b>, <b>design systems</b>, developer handoff'),
+    ('Tools:', '<b>Figma</b>, FigJam, Framer, Adobe Illustrator, Adobe XD, Sketch'),
+    ('AI and technical:', 'AI-assisted prototyping, Claude, ChatGPT, Codex, Claude Code, HTML/CSS fundamentals'),
 ]
 
-# styles; spaceBefore is the gap above each block (Frame adds it unless the block is first)
-body = ParagraphStyle('body', fontName='Helvetica', fontSize=9.3, leading=12.3)
-name = ParagraphStyle('name', fontName='Helvetica-Bold', fontSize=22, leading=25)
-headline = ParagraphStyle('headline', fontName='Helvetica-Bold', fontSize=11, leading=14, spaceBefore=6)
-section = ParagraphStyle('section', fontName='Helvetica-Bold', fontSize=10, leading=13, spaceBefore=12)
-role = ParagraphStyle('role', fontName='Helvetica-Bold', fontSize=9.5, leading=12.5)
-right = ParagraphStyle('right', parent=role, alignment=2)
-bullet = ParagraphStyle('bullet', parent=body, leftIndent=10, firstLineIndent=-8, spaceBefore=3)
+EDUCATION = ('Malaviya National Institute of Technology Jaipur | 2025', 'Bachelor of Architecture (B.Arch) | Jaipur, India')
 
-WIDTH = A4[0] - 92
+# styles; spaceBefore is the gap above each block (Frame adds it unless the block is first)
+body = ParagraphStyle('body', fontName='Times-Roman', fontSize=10, leading=12)
+name = ParagraphStyle('name', fontName='Times-Roman', fontSize=24, leading=28, alignment=1)
+headline = ParagraphStyle('headline', parent=body, fontName='Times-Bold', alignment=1, spaceBefore=2)
+centred = ParagraphStyle('centred', parent=body, alignment=1)
+section = ParagraphStyle('section', fontName='Times-Bold', fontSize=12, leading=14, spaceBefore=8)
+head = ParagraphStyle('head', parent=body, fontName='Times-Bold', spaceBefore=4)
+sub = ParagraphStyle('sub', parent=body, fontName='Times-Italic', spaceBefore=3)
+bullet = ParagraphStyle('bullet', parent=body, leftIndent=18, bulletIndent=0, spaceBefore=1)
 
 
 def p(text, style, before=None):
@@ -101,41 +94,39 @@ def p(text, style, before=None):
 
 
 def link(label, href):
-    return f'<a href="{href}" color="black">{escape(label)}</a>'
+    return f'<a href="{href}" color="#1155cc"><u>{escape(label)}</u></a>'
 
 
-def heading(lines, before):
-    """bold lines with the left text flush left and the right text (dates, place) flush right"""
-    t = Table([[p(escape(l), role), p(escape(r), right)] for l, r in lines], colWidths=[WIDTH * 0.7, WIDTH * 0.3])
-    t.setStyle(TableStyle([('LEFTPADDING', (0, 0), (-1, -1), 0), ('RIGHTPADDING', (0, 0), (-1, -1), 0),
-                           ('TOPPADDING', (0, 0), (-1, -1), 0), ('BOTTOMPADDING', (0, 0), (-1, -1), 0)]))
-    t.spaceBefore = before
-    return t
+def title(text):
+    return [p(escape(text), section), HRFlowable(width='100%', thickness=0.8, color='black', spaceBefore=1, spaceAfter=2)]
 
 
 def story():
     out = [
         p(escape(NAME), name),
-        p(' | '.join([escape(PHONE), link(EMAIL, f'mailto:{EMAIL}'), link(*LINKEDIN), link(*PORTFOLIO)]), body, 4),
         p(escape(HEADLINE), headline),
-        p(escape(SUMMARY), body, 4),
-        p('WORK EXPERIENCE', section),
+        p(escape(PLACE) + escape(EMAIL), centred, 2),
+        p(link(*LINKEDIN) + ' | ' + link(*PORTFOLIO), centred, 2),
     ]
-    for i, (lines, points) in enumerate(EXPERIENCE):
-        out.append(heading(lines, 5 if i == 0 else 8))
-        out += [p('• ' + escape(b), bullet) for b in points]
-    out += [p('EDUCATION', section), heading(EDUCATION, 5)]
-    out.append(p('SKILLS', section))
-    out += [p(f'• <b>{escape(k)}</b> | {escape(v)}', bullet) for k, v in SKILLS]
+    out += title('Summary') + [p(SUMMARY, body)]
+    out += title('Experience')
+    for i, (first, second, note, points) in enumerate(EXPERIENCE):
+        out.append(p(escape(first), head, 0 if i == 0 else None))
+        out.append(p(escape(second), sub))
+        if note:
+            out.append(p(f'<i>{note}</i>', sub))
+        out += [Paragraph(b, bullet, bulletText='●') for b in points]
+    out += title('Skills') + [p(f'<b>{escape(k)}</b> {v}', body, 0 if i == 0 else 3) for i, (k, v) in enumerate(SKILLS)]
+    out += title('Education') + [p(escape(EDUCATION[0]), head, 0), p(escape(EDUCATION[1]), sub)]
     return out
 
 
 def build(path=OUT):
     width, height = A4
     c = Canvas(str(path), pagesize=A4, pageCompression=1)
-    c.setTitle('Jb Yashvi - Product Designer Resume')
+    c.setTitle('Jb-Yashvi-Product-Designer-Resume')
     c.setAuthor('Jb Yashvi')
-    frame = Frame(46, 38, WIDTH, height - 76, leftPadding=0, rightPadding=0, topPadding=0, bottomPadding=0)
+    frame = Frame(40, 36, width - 80, height - 72, leftPadding=0, rightPadding=0, topPadding=0, bottomPadding=0)
     flow = story()
     frame.addFromList(flow, c)
     if flow:
