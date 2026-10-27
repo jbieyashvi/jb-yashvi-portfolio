@@ -21,7 +21,7 @@ export interface Role {
 export const roles: Role[] = [
   {
     company: 'Heizen (Gamma Opengig Work Pvt Ltd)',
-    role: 'Senior Product Designer',
+    role: 'Product Designer → Senior Product Designer',
     from: 'May 2025',
     to: 'Oct 2026',
     summary:
@@ -30,7 +30,7 @@ export const roles: Role[] = [
       'Redesigned navigation, information hierarchy, and decision points across procurement and logistics workflows to make complex tasks easier to follow.',
       'Built reusable components and standardized tables, forms, and status patterns to support consistent interfaces across products.',
       'Used AI-assisted tools to explore workflow edge cases and build interactive prototypes for design reviews and developer discussions.',
-      'Collaborated closely with product managers, engineers, and stakeholders through design reviews, handoff, and implementation QA.',
+      'Presented alternative design solutions to clients, explained trade-offs, and gathered feedback to refine the preferred approach.',
     ],
   },
   {
@@ -39,7 +39,7 @@ export const roles: Role[] = [
     from: 'Oct 2024',
     to: 'Mar 2025',
     summary:
-      'Defined core user flows, information architecture, wireframes, and high-fidelity interfaces as the startup’s founding product designer.',
+      'Interviewed hostel students and unmarried adults about their laundry routines, spending, and service needs to inform product design for a startup offering one-day laundry and ironing services.',
     details: [
       'Established the initial visual language and reusable UI patterns to support consistent design across features.',
       'Collaborated directly with founders and developers to translate early product requirements into interactive prototypes and implementation-ready designs.',
