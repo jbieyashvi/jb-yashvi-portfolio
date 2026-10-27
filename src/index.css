@@ -247,15 +247,15 @@ body, .hero, .work, .about, .contact, .footer, .phead--dark {
 }
 /* Selected Work: the faintest grid, so the projects lead */
 .work {
-  --g-minor: rgb(255 255 255 / 0.035);
-  --g-major: rgb(255 255 255 / 0.05);
-  --g-plus: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cpath d='M120 114.5v11M114.5 120h11' stroke='%23fff' stroke-opacity='.12' stroke-width='1.25'/%3E%3C/svg%3E");
+  --g-minor: rgb(255 255 255 / 0.02);
+  --g-major: rgb(255 255 255 / 0.03);
+  --g-plus: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cpath d='M120 114.5v11M114.5 120h11' stroke='%23fff' stroke-opacity='.07' stroke-width='1.25'/%3E%3C/svg%3E");
 }
 [data-theme='dark'] .work {
   --grid-line: rgb(255 255 255 / 0.045);
-  --g-minor: rgb(255 255 255 / 0.01);
-  --g-major: rgb(255 255 255 / 0.016);
-  --g-plus: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cpath d='M120 114.5v11M114.5 120h11' stroke='%23fff' stroke-opacity='.05' stroke-width='1.25'/%3E%3C/svg%3E");
+  --g-minor: rgb(255 255 255 / 0.007);
+  --g-major: rgb(255 255 255 / 0.011);
+  --g-plus: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cpath d='M120 114.5v11M114.5 120h11' stroke='%23fff' stroke-opacity='.035' stroke-width='1.25'/%3E%3C/svg%3E");
 }
 /* Contact runs into the footer: it ends its grid on that edge where the footer starts its own */
 .contact { --gy: 100%; }

@@ -20,52 +20,45 @@ export interface Role {
 
 export const roles: Role[] = [
   {
-    company: 'Heizen',
+    company: 'Heizen (Gamma Opengig Work Pvt Ltd)',
     role: 'Senior Product Designer',
     from: 'May 2025',
-    to: 'Present',
-    current: true,
+    to: 'Oct 2026',
     summary:
-      'Designed web and mobile experiences across multiple client projects in supply chain, logistics, procurement and operations, translating complex workflows into user flows, interfaces and interactive prototypes.',
+      'Led end-to-end product design across web and mobile products, translating complex business requirements into user flows, information architecture, high-fidelity UI, prototypes, and developer-ready designs.',
     details: [
-      'TAN90: Designed a cold-chain logistics platform to bring Excel-based and manual workflows into a shared digital workspace, covering orders, inventory and delivery coordination across four role-based portals through design handoff.',
-      'CMP Autobot for Compass Group India: Created the design system for an ingredient-to-article mapping workspace and built its interface using AI tools, supporting human review of suggested matches.',
-      'NUTRIO: Designed a healthy-meal ordering and subscription product for gym-goers and mothers planning children’s lunches, covering the customer app, delivery partner app, kitchen panel and admin dashboard through design handoff.',
+      'Redesigned navigation, information hierarchy, and decision points across procurement and logistics workflows to make complex tasks easier to follow.',
+      'Built reusable components and standardized tables, forms, and status patterns to support consistent interfaces across products.',
+      'Used AI-assisted tools to explore workflow edge cases and build interactive prototypes for design reviews and developer discussions.',
+      'Collaborated closely with product managers, engineers, and stakeholders through design reviews, handoff, and implementation QA.',
     ],
   },
   {
-    company: 'Freelance',
-    role: 'Graphic & Product Designer',
-    from: '2020',
-    to: '2025',
-    summary:
-      'Designed logos, landing pages, product apps and dashboards; collaborated with product managers on product design and platform redesigns. Graphic design from 2020; product design from 2023.',
-    details: [],
-  },
-  {
     company: 'Sneaco',
-    role: 'Founding Designer · Part-time',
-    from: 'Oct 2023',
-    to: 'Oct 2024',
+    role: 'Founding Product Designer · Part-time',
+    from: 'Oct 2024',
+    to: 'Mar 2025',
     summary:
-      'Worked as the founding designer at an early-stage startup, designing its website, mobile app and Instagram creatives.',
-    details: [],
+      'Defined core user flows, information architecture, wireframes, and high-fidelity interfaces as the startup’s founding product designer.',
+    details: [
+      'Established the initial visual language and reusable UI patterns to support consistent design across features.',
+      'Collaborated directly with founders and developers to translate early product requirements into interactive prototypes and implementation-ready designs.',
+    ],
   },
   {
     company: 'Urban Culture',
     role: 'UI/UX Design Intern',
     from: 'May 2024',
     to: 'Jul 2024',
-    summary: 'Designed an admin panel for operational workflows and created social media content aligned with the brand identity.',
+    summary: 'Designed and refined admin-panel experiences with a focus on usability, information hierarchy, and visual consistency.',
     details: [],
   },
   {
-    company: 'Polo',
-    role: 'Design Intern',
+    company: 'POLO',
+    role: 'Product Design Intern',
     from: 'Oct 2023',
     to: 'Dec 2023',
-    summary:
-      'Supported product and user research to understand the product and its users; assisted the Senior Product Designer in creating interface screens.',
+    summary: 'Supported the Senior Product Designer in creating high-fidelity UI screens and interactive prototypes.',
     details: [],
   },
 ]
