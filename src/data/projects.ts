@@ -178,6 +178,31 @@ export const personalProjects: PersonalProject[] = [
 
 export const getProject = (slug: string) => projects.find((p) => p.slug === slug)!
 
+/** Shown first in Selected Work as large cards, and left out of the index below them. Covers
+ *  live in public/work/featured/ as `${slug}-640` / `-1200`, .avif and .webp (scripts/featured-covers.mjs). */
+export interface FeaturedProject { slug: string; name: string; kind: string; summary: string }
+
+export const featuredProjects: FeaturedProject[] = [
+  {
+    slug: 'drive-sharing',
+    name: 'Drive file access',
+    kind: 'Personal project · Product study',
+    summary: 'A guided way to restrict a selected file, preserve team access, and review the consequences.',
+  },
+  {
+    slug: 'tan90',
+    name: 'TAN90',
+    kind: 'Client project · Designed by me',
+    summary: 'A cold-chain logistics platform. I designed its four portals: admin, warehouse, delivery and customer.',
+  },
+  {
+    slug: 'gema',
+    name: 'GEMA',
+    kind: 'Personal project · Mobile app concept',
+    summary: 'A mobile app concept that keeps everyday care tasks together, including reminders and visit notes.',
+  },
+]
+
 /** The client projects visitors are shown, in order: Selected Work, résumé links and the
  *  next-project sequence all follow this list. Unlisted pages (showcased: false) keep their
  *  routes but are never linked to. */

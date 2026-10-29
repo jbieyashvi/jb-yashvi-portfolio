@@ -949,6 +949,38 @@ html.has-intro { --in: 0.8s; }
   letter-spacing: -0.02em;
 }
 
+/* featured: three large cards above the index; one column on phones */
+.wfeat {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.25rem, 2.5vw, 2rem);
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+}
+.wcard { display: grid; gap: 0.5rem; align-content: start; color: var(--on-night); text-decoration: none; }
+.wcard:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
+.wcard__media {
+  display: block;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+  border: 1px solid var(--night-rule);
+  background: var(--cover-mat, var(--pale));
+}
+.wcard__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.45s var(--ease); }
+.wcard--tan90 { --cover-mat: #f9fbff; }
+.wcard--tan90 .wcard__media img { object-fit: contain; }
+.wcard__kind { color: var(--night-text); font-size: 0.8rem; letter-spacing: 0.04em; text-transform: uppercase; }
+.wcard__name { font-size: clamp(1.5rem, 2.2vw, 2rem); letter-spacing: -0.01em; line-height: 1.1; }
+.wcard__summary { color: var(--night-text); font-size: 0.95rem; line-height: 1.5; max-width: 42ch; }
+@media (hover: hover) {
+  .wcard:hover .wcard__media img { transform: scale(1.03); }
+  .wcard:hover .wrow__arrow--page { transform: translateX(4px); }
+}
+.wcard:focus-visible .wcard__media img { transform: scale(1.03); }
+@media (prefers-reduced-motion: reduce) {
+  .wcard .wcard__media img, .wcard .wrow__arrow { transform: none !important; }
+}
+
 /* two equal columns with a hairline between them; stacked, client first, on phones */
 .windex__cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
 .windex__col:first-child { padding-right: clamp(1.25rem, 3vw, 3rem); }
@@ -973,7 +1005,7 @@ html.has-intro { --in: 0.8s; }
 /* one row = one link: thumbnail, name (with a short label under it) and an arrow */
 .wrow {
   display: grid;
-  grid-template-columns: clamp(4.5rem, 7vw, 6rem) minmax(0, 1fr) auto;
+  grid-template-columns: clamp(6.5rem, 11vw, 9.5rem) minmax(0, 1fr) auto;
   align-items: center;
   column-gap: clamp(0.9rem, 1.6vw, 1.25rem);
   padding: 0.8rem 0.5rem;
@@ -1051,7 +1083,8 @@ html.has-intro { --in: 0.8s; }
   .windex__cols { grid-template-columns: minmax(0, 1fr); }
   .windex__col:first-child { padding-right: 0; }
   .windex__col + .windex__col { margin-top: 3rem; padding-left: 0; border-left: 0; }
-  .wrow { grid-template-columns: 4.5rem minmax(0, 1fr) auto; }
+  .wrow { grid-template-columns: 6.5rem minmax(0, 1fr) auto; }
+  .wfeat { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* ---------- How I work: four steps in one connected row ---------- */
