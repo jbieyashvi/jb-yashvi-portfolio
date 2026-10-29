@@ -3,6 +3,7 @@ import CaseStudyViewer from '../components/CaseStudyViewer'
 import NextProject from '../components/NextProject'
 import NutrioStory from '../components/NutrioStory'
 import ProjectHeader from '../components/ProjectHeader'
+import Tan90Story from '../components/Tan90Story'
 import useTitle from '../components/useTitle'
 
 const nutrioSections = [
@@ -50,10 +51,10 @@ const content = {
       <>
         <p className="lede">
           Tan90 is a cold-chain logistics platform. It connects admin, warehouse managers, delivery operations and customers
-          in one system, from placing an order to approving its Proof of Delivery.
+          in one system, <mark>from placing an order to approving its Proof of Delivery</mark>.
         </p>
         <p>
-          I designed the platform across its four portals, covering order management, inventory, freezing stations, delivery
+          I designed the platform across <mark>its four portals</mark>, covering order management, inventory, freezing stations, delivery
           coordination and POD approval, through design handoff.
         </p>
         <p className="aside-note">
@@ -76,7 +77,7 @@ export default function CaseStudyPage({ slug }: { slug: 'nutrio' | 'tan90' }) {
   const c = content[slug]
   useTitle(`${c.name}, product design case study | Jb Yashvi`)
   return (
-    <article>
+    <article className={slug === 'tan90' ? 't90-page' : undefined}>
       <ProjectHeader name={c.name} type={c.type} intro={c.intro} meta={[...c.meta]} actions={c.actions} />
       {slug === 'nutrio' && (
         <>
@@ -84,6 +85,7 @@ export default function CaseStudyPage({ slug }: { slug: 'nutrio' | 'tan90' }) {
           <NutrioStory />
         </>
       )}
+      {slug === 'tan90' && <Tan90Story />}
       <div id="full" tabIndex={-1}>
         <CaseStudyViewer id={slug} name={c.name} pdf={c.pdf} pdfSize={c.pdfSize} lead={slug === 'tan90'} />
       </div>

@@ -2709,6 +2709,12 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
 .surfaces h3 { font-size: 1.05rem; font-weight: 500; }
 .surfaces p { margin-top: 0.3rem; color: var(--graphite); }
 
+/* ----- TAN90: context before the PDF ----- */
+.t90__copy { display: grid; gap: 1rem; }
+.t90__copy p { font-size: 1.15rem; line-height: 1.5; max-width: 56ch; }
+.t90 .surfaces { margin-top: 0; }
+.t90__flow-title { margin: 2.5rem 0 0.75rem; font-size: 1.05rem; font-weight: 500; }
+
 /* ----- Compass: Confirm, Reject, Link APL ----- */
 .control { padding-block: clamp(2.5rem, 6vw, 5rem); border-top: 1px solid var(--rule); }
 .control__head { display: grid; gap: 0.75rem; margin-bottom: clamp(2rem, 4vw, 3rem); }
@@ -3437,7 +3443,8 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
 .dv-results dd { margin: 0.5rem 0 0; }
 
 /* editorial highlight: same yellow and navy in both themes, wraps line by line */
-.dv mark {
+.dv mark,
+.t90-page mark {
   padding: 0.05em 0.12em;
   margin: 0 -0.04em;
   border-radius: 2px;
