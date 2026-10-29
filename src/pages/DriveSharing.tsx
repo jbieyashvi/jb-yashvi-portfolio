@@ -474,7 +474,7 @@ function Head({ id, kicker, title, children }: { id: string; kicker: string; tit
 }
 
 export default function DriveSharing() {
-  useTitle('Google Drive file access study | Jb Yashvi')
+  useTitle('Google Drive access study | Jb Yashvi')
   const { open, lightbox } = useLightbox(items)
 
   return (

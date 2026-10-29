@@ -168,7 +168,7 @@ export const projects: Project[] = [
 export interface PersonalProject { slug: string; name: string; subtitle: string }
 
 export const personalProjects: PersonalProject[] = [
-  { slug: 'drive-sharing', name: 'Drive file access', subtitle: 'Keep a few files private' },
+  { slug: 'drive-sharing', name: 'Google Drive access', subtitle: 'Keep a few files private' },
   { slug: 'gema', name: 'GEMA', subtitle: 'Care between appointments' },
   { slug: 'roam', name: 'Roam', subtitle: 'AI travel planner' },
   { slug: 'zensenta', name: 'Zensenta', subtitle: 'Clinical workspace' },
@@ -185,7 +185,7 @@ export interface FeaturedProject { slug: string; name: string; kind: string; sum
 export const featuredProjects: FeaturedProject[] = [
   {
     slug: 'drive-sharing',
-    name: 'Drive file access',
+    name: 'Google Drive access',
     kind: 'Personal project · Product study',
     summary: 'A guided way to restrict a selected file, preserve team access, and review the consequences.',
   },

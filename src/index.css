@@ -3127,7 +3127,7 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
 .next__link--prev:hover .next__name span { transform: translateX(-6px); }
 
 
-/* ---------- Drive file access study ---------- */
+/* ---------- Google Drive access study ---------- */
 
 /* one centred shell for the hero and the article; the sidebar joins from 1100px */
 .dv-shell__inner { max-width: 1240px; margin-inline: auto; padding-inline: var(--gutter); }
