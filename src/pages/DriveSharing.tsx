@@ -460,22 +460,22 @@ function Storyboard() {
 /** The decisions behind B, shown beside the screens they shaped */
 const decisions = [
   {
-    decision: 'Make the option easier to find.',
-    why: 'In the walkthroughs, people weren’t sure where to start. So I put ‘Restrict access to this file…’ in the menu where you already change that person’s access.',
+    decision: 'I added ‘Restrict access to this file…’ as a separate action in the person’s role menu.',
+    why: 'In the walkthroughs, people weren’t sure where to start. I hoped putting it where you already change someone’s access would make it easier to find.',
     tradeoff: 'Sitting next to roles like Editor, it could look like just another role. I used a divider and clear wording to set it apart.',
-    next: 'Whether people find it without help.',
+    next: 'Whether people find the action without help, and understand what it does.',
   },
   {
-    decision: 'Choose the folder and people on one screen.',
-    why: 'One person said A had too many clicks. In B, I put both choices together.',
+    decision: 'I combined the folder and people choices on one screen.',
+    why: 'One person said A had too many clicks.',
     tradeoff: 'Fewer screens, but more to read at once.',
-    next: 'Whether this is actually quicker. I didn’t time either version.',
+    next: 'Whether people can complete the task without help, and whether it’s actually quicker. I didn’t time either version.',
   },
   {
-    decision: 'Show what will change before saving.',
-    why: 'Moving the file changes who can open it. I wanted that to be clear before anyone confirms.',
+    decision: 'I added a review showing the file move, who keeps access and who loses it.',
+    why: 'Moving the file changes who can open it. I wanted that to be clear before anyone saves.',
     tradeoff: 'One more step before saving.',
-    next: 'Whether the review helps people spot someone they unticked by mistake.',
+    next: 'Whether people understand the result, and spot someone they unticked by mistake.',
   },
 ] as const
 
@@ -555,13 +555,13 @@ export default function DriveSharing() {
               </div>
             </dl>
             <div className="dv-signal">
-              <p className="dv-signal__kind">What I saw in testing</p>
+              <p className="dv-signal__kind">What I learned and changed</p>
               <p className="dv-signal__text">
-                I tested with three people, and the <mark>results were mixed</mark>. What I saw changed how the
-                restrict flow works. One person also restored access without help and explained the result
-                correctly.
+                I spoke with three people and tested the sharing flow. They were unsure what to do next in Drive, and
+                one person felt my first version had too many clicks. I made <mark>a second version</mark> with a
+                restriction action in the role menu and the folder and people choices on one screen.
               </p>
-              <p className="dv-signal__note">I tested A first, then B. It wasn’t a controlled experiment, and I didn’t measure anything in real Drive.</p>
+              <p className="dv-signal__note">The revised flow still needs further testing. Detailed findings are below.</p>
             </div>
           </div>
         </div>
@@ -592,7 +592,11 @@ export default function DriveSharing() {
 
             {/* The problem */}
             <section id="problem" className="dv-sec" aria-labelledby="problem-title" tabIndex={-1}>
-              <Head id="problem" kicker="The problem" title="Most of the project is shared. One file isn’t.">
+              <Head id="problem" kicker="The problem" title="The project is shared. One file needs to become private.">
+                <p>
+                  Alex can currently open File A through the project folder. The owner wants to remove Alex’s access to
+                  this file while keeping the rest of the project shared.
+                </p>
                 <p className="dv-statement">
                   When people tried this in Drive as it is today, they weren’t sure how to{' '}
                   <mark>keep one file private and leave the rest of the project shared</mark>.
@@ -649,7 +653,7 @@ export default function DriveSharing() {
                     ))}
                   </tbody>
                 </table>
-                <p className="dv-matrix__note">Only one thing changes: Alex loses File A but keeps the rest of the project.</p>
+                <p className="dv-matrix__note">Now Alex can open File A. After the change, Alex loses File A only and keeps the rest of the project.</p>
               </div>
             </section>
 
@@ -943,8 +947,8 @@ export default function DriveSharing() {
                   their own and explained the result correctly.
                 </p>
                 <p className="dv-head__note">
-                  These notes cover both the restrict and the restore tasks. I didn’t record a separate result for each
-                  person and task.
+                  These notes cover both the restrict and the restore tasks. I didn’t record results separately for each
+                  person, task and version, so I can’t make a reliable comparison.
                 </p>
               </Head>
               <div className="dv-feedback">
@@ -1005,6 +1009,7 @@ export default function DriveSharing() {
                 <li>Whether people can finish on their own, and correctly guess who keeps access</li>
                 <li>Whether the review helps people spot someone they unticked by mistake</li>
                 <li>How it compares with Drive’s current steps, and A vs B in a fair order, with half the people seeing B first</li>
+                <li>Record the task, version, help needed, point of confusion and final understanding for each participant.</li>
               </ul>
               <div className="dv-end">
                 <External href={PROTO}>Try the prototype</External>
