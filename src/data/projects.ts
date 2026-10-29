@@ -168,6 +168,7 @@ export const projects: Project[] = [
 export interface PersonalProject { slug: string; name: string; subtitle: string }
 
 export const personalProjects: PersonalProject[] = [
+  { slug: 'drive-sharing', name: 'Drive file access', subtitle: 'Keep a few files private' },
   { slug: 'gema', name: 'GEMA', subtitle: 'Care between appointments' },
   { slug: 'roam', name: 'Roam', subtitle: 'AI travel planner' },
   { slug: 'zensenta', name: 'Zensenta', subtitle: 'Clinical workspace' },
@@ -193,6 +194,12 @@ export const nextProject = (slug: string): { slug: string; name: string } => {
   if (i !== -1) return projectSequence[(i + 1) % projectSequence.length]
   const j = projects.findIndex((p) => p.slug === slug)
   return projects.slice(j + 1).find((p) => p.showcased !== false) ?? projectSequence[0]
+}
+
+/** The project before `slug` in projectSequence, wrapping to the end */
+export const previousProject = (slug: string): { slug: string; name: string } => {
+  const i = projectSequence.findIndex((p) => p.slug === slug)
+  return projectSequence[(Math.max(i, 0) - 1 + projectSequence.length) % projectSequence.length]
 }
 
 export const contact = {
