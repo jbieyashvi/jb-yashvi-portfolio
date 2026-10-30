@@ -44,7 +44,7 @@ function toTop(e: MouseEvent) {
 const noop = () => {}
 
 export default function Home() {
-  useTitle('Jb Yashvi, Senior Product Designer')
+  useTitle('Jb Yashvi, Product Designer')
   // iOS Safari only applies :active (the images' colour during a press) once a touch listener
   // exists; a passive one never delays or cancels a tap
   useEffect(() => {

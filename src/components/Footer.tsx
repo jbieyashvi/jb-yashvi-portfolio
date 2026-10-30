@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="footer__row">
           <div className="footer__lead">
             <p className="footer__name">
-              Jb Yashvi <span className="footer__role">Senior Product Designer</span>
+              Jb Yashvi <span className="footer__role">Product Designer</span>
             </p>
             <Clock />
           </div>

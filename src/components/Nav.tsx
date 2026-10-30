@@ -106,9 +106,9 @@ export default function Nav() {
   return (
     <header className="nav" data-open={open || undefined}>
       <div className="nav__inner wrap">
-        <Link to="/" className="nav__brand" aria-label="Jb Yashvi, Senior Product Designer, home">
+        <Link to="/" className="nav__brand" aria-label="Jb Yashvi, Product Designer, home">
           <span className="nav__name">Jb Yashvi</span>
-          <span className="nav__role">Senior Product Designer</span>
+          <span className="nav__role">Product Designer</span>
         </Link>
         <nav id="nav-menu" ref={menu} aria-label="Primary">
           <ul className="nav__links">
