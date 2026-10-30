@@ -1,5 +1,5 @@
 /*
- * My journey: the Experience section of the latest résumé (public/resume/Jb-Yashvi-Resume.pdf),
+ * My journey: the Experience section of the latest résumé (public/resume/Jb-Yashvi-Product-Designer-Resume.pdf),
  * in the résumé's own order. Company names, roles, dates and bullet text are copied from it word
  * for word; nothing here is added. The first bullet is the entry's summary, the rest are its
  * details. Some roles overlap, so My journey lists every role with its own dates rather than as
@@ -25,13 +25,15 @@ export const roles: Role[] = [
     from: 'May 2025',
     to: 'Oct 2026',
     summary:
-      'Owned end-to-end web and mobile product design, translating business requirements into user flows, information architecture, high-fidelity UI and developer-ready designs.',
+      'Research and adoption: Centralized Google Forms, Excel and WhatsApp hiring workflows in one actively used platform. Interviewed stakeholders and designed round-wise pipelines, candidate tables with contextual detail drawers, assignments, interview feedback and AI-assisted candidate search.',
     details: [
-      'Simplified a client workflow by reducing steps and clarifying information hierarchy; refined the design through internal team testing to make tasks easier to follow.',
-      'Built reusable components and standardized tables, forms and status patterns to support consistent experiences and clearer design handoff.',
-      'Guided client design reviews with alternative solutions and explicit trade-offs; incorporated feedback to align design decisions with business needs.',
-      'Used AI-assisted tools to explore workflow edge cases and build interactive prototypes for client reviews and engineering discussions.',
-      'Partnered with developers through handoff and implementation reviews to resolve usability issues and maintain design intent.',
+      'Enterprise mobile design: Enabled employees to track shipments and manage courier assignments without a laptop through Shipway by Unicommerce’s launched mobile app; prioritized essential tracking, returns, KYC and invoicing workflows.',
+      'Workflow simplification: Made hidden ingredient-mapping options visible in Compass Group’s tool and replaced double-click interactions with a single-step flow, clarifying available actions; redesign launched.',
+      'Product ownership: Led design for launched Nutrio and Step Up products. Owned Nutrio’s subscription flows across customer, admin, kitchen and delivery-partner interfaces as the sole designer; structured Step Up’s trainer, trainee and society management, bookings, payments and society-ledger workflows.',
+      'AI product experiences: Redesigned Gema’s patient app and Vela’s task-management tool around AI assistants; both products launched. Created light and dark themes for Vela.',
+      'Platform consolidation: Designed Super Fine’s initial unified platform concept, bringing order, automation, operations, recipe and accounting workflows from five separate tools into one experience.',
+      'Engineering collaboration: Used AI-assisted prototypes to redesign Red Sox’s dashboard, chatbot and PDF creation/editing modules with developers; changes implemented.',
+      'Brand and website design: Designed Heizen’s website theme, hero and selected sections, integrating Shark Tank India recognition; created Nutrio’s logo and packaging and Moss’s initial live landing page.',
     ],
   },
   {

@@ -236,5 +236,5 @@ export const contact = {
   instagram: 'https://www.instagram.com/jbie_uiux/',
   /** Résumé PDF in public/resume, opened in a new tab (not a forced download). BASE_URL keeps
    *  it working if the site is ever served from a subpath, and from any route. */
-  resume: `${import.meta.env.BASE_URL}resume/Jb-Yashvi-Resume.pdf`,
+  resume: `${import.meta.env.BASE_URL}resume/Jb-Yashvi-Product-Designer-Resume.pdf`,
 }
