@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { contact, featuredProjects, moreProjects, type FeaturedProject } from '../data/projects'
+import { contact, COVER_V, featuredProjects, moreProjects, type FeaturedProject } from '../data/projects'
 import loadAhead from './loadAhead'
 
 const pad = (v: number) => String(v).padStart(2, '0')
@@ -109,10 +109,10 @@ function TileCard({ tile: t }: { tile: Tile }) {
       <Link className={`wtile wtile--${t.slug}`} to={`/work/${t.slug}`}>
         <span className="wtile__media" aria-hidden="true">
           <picture>
-            <source type="image/avif" srcSet={`${t.cover}-640.avif 640w, ${t.cover}-1200.avif 1200w`} sizes="(max-width: 760px) 80vw, 26rem" />
+            <source type="image/avif" srcSet={`${t.cover}-640.avif${COVER_V} 640w, ${t.cover}-1200.avif${COVER_V} 1200w`} sizes="(max-width: 760px) 80vw, 26rem" />
             <img
-              src={`${t.cover}-640.webp`}
-              srcSet={`${t.cover}-640.webp 640w, ${t.cover}-1200.webp 1200w`}
+              src={`${t.cover}-640.webp${COVER_V}`}
+              srcSet={`${t.cover}-640.webp${COVER_V} 640w, ${t.cover}-1200.webp${COVER_V} 1200w`}
               sizes="(max-width: 760px) 80vw, 26rem"
               alt=""
               loading="lazy"
@@ -140,10 +140,10 @@ function FeaturedCard({ project: p, index }: { project: FeaturedProject; index: 
       <Link className={`wcard wcard--${p.slug}`} to={`/work/${p.slug}`}>
         <span className="wcard__media" aria-hidden="true">
           <picture>
-            <source type="image/avif" srcSet={`${cover}-640.avif 640w, ${cover}-1200.avif 1200w`} sizes="(max-width: 760px) 100vw, 50vw" />
+            <source type="image/avif" srcSet={`${cover}-640.avif${COVER_V} 640w, ${cover}-1200.avif${COVER_V} 1200w`} sizes="(max-width: 760px) 100vw, 50vw" />
             <img
-              src={`${cover}-640.webp`}
-              srcSet={`${cover}-640.webp 640w, ${cover}-1200.webp 1200w`}
+              src={`${cover}-640.webp${COVER_V}`}
+              srcSet={`${cover}-640.webp${COVER_V} 640w, ${cover}-1200.webp${COVER_V} 1200w`}
               sizes="(max-width: 760px) 100vw, 50vw"
               alt=""
               width={1200}

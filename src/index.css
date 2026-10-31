@@ -354,6 +354,29 @@ main > article:not(.gallery-page) { background-color: var(--paper); }
   text-decoration: none;
   line-height: 1.2;
 }
+/* case studies: All work beside the name, so the way back stays on screen; the page's own
+   top-of-header back link is then left out (the one by Next project stays) */
+.nav__brand:has(+ .nav__back) { margin-right: 0; }
+.nav__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+  min-height: 36px;
+  margin-right: auto;
+  margin-left: 1.25rem;
+  padding: 0 0.95rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  color: var(--blue);
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+.nav__back:hover { border-color: var(--blue); background: var(--pale); }
+main .back:not(.next .back) { display: none; }
 .nav__name { color: var(--blue); font-size: 1.05rem; font-weight: 500; letter-spacing: -0.01em; white-space: nowrap; }
 .nav__role { color: var(--graphite); font-size: 0.8rem; white-space: nowrap; }
 
@@ -3210,6 +3233,12 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
   /* 40px to look compact in the bar; the outline below stretches its tap area to 44px */
   .nav__cta { position: relative; min-height: 40px; padding-inline: 0.85rem; }
   .nav__cta::after { content: ''; position: absolute; inset: -2px 0; }
+  /* room for All work: the role gives way, and the link becomes a round arrow button like the
+     theme switch, its words kept for screen readers; the outline stretches its tap area to 44px */
+  .nav__brand:has(+ .nav__back) .nav__role { display: none; }
+  .nav__back { position: relative; justify-content: center; width: 40px; min-height: 40px; margin-left: 0.5rem; padding: 0; font-size: 1.05rem; }
+  .nav__back::after { content: ''; position: absolute; inset: -2px; }
+  .nav__back-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
   .nav__menu-btn {
     display: grid;
@@ -3282,6 +3311,8 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
 /* the narrowest phones: a tighter Contact button keeps a clear gap after the two-line role */
 @media (max-width: 340px) {
   .nav__cta { padding-inline: 0.6rem; }
+  .nav__inner:has(.nav__back) { gap: 0.35rem; }
+  .nav__back { margin-left: 0.25rem; }
 }
 
 /* Contact: the main cell above the links, which stay two across until phone width */

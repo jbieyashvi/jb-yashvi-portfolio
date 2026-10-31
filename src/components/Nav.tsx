@@ -57,13 +57,15 @@ function useSectionInView(on: boolean) {
 /**
  * The header: name and role on the left; the links, theme switch and a Contact now button on
  * the right. On phones the bar keeps the name, a shorter Contact button, the theme switch and a
- * menu control; the links fold into a menu that opens below the bar.
+ * menu control; the links fold into a menu that opens below the bar. On a case study an All work
+ * link sits beside the name, so the way back is on screen however far down the page is read.
  * The menu closes on a link, Escape, a tap outside it, or when the screen grows wide enough
  * to show the links again.
  */
 export default function Nav() {
   const { pathname, hash } = useLocation()
   const onHome = pathname === '/'
+  const onCase = pathname.startsWith('/work/')
   const inView = useSectionInView(onHome)
   const [open, setOpen] = useState(false)
   const button = useRef<HTMLButtonElement>(null)
@@ -110,6 +112,11 @@ export default function Nav() {
           <span className="nav__name">Jb Yashvi</span>
           <span className="nav__role">Product Designer</span>
         </Link>
+        {onCase && (
+          <Link to="/#work" className="nav__back">
+            <span aria-hidden="true">←</span> <span className="nav__back-text">All work</span>
+          </Link>
+        )}
         <nav id="nav-menu" ref={menu} aria-label="Primary">
           <ul className="nav__links">
             <li><Link to={to('work')} aria-current={current('work')} onClick={close}>Work</Link></li>

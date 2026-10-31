@@ -1,4 +1,5 @@
 import { useEffect, useRef, type CSSProperties } from 'react'
+import { COVER_V } from '../data/projects'
 
 type Tone = 'sun' | 'sky' | 'rose' | 'lilac'
 type Doodle = 'house' | 'circle' | 'under' | 'stars'
@@ -130,12 +131,12 @@ export default function StoryScroll() {
           </figure>
           <figure className="scard scard--compass" style={at('circle')}>
             <span className="scard__tape scard__tape--sky" />
-            <img src="/work/featured/compass-640.webp" width={640} height={427} alt="" loading="lazy" decoding="async" />
+            <img src={`/work/featured/compass-640.webp${COVER_V}`} width={640} height={427} alt="" loading="lazy" decoding="async" />
             <figcaption>Compass Group, CMP Autobot</figcaption>
           </figure>
           <figure className="scard scard--shipway" style={at('under')}>
             <span className="scard__tape scard__tape--rose" />
-            <img src="/work/featured/shipway-640.webp" width={640} height={427} alt="" loading="lazy" decoding="async" />
+            <img src={`/work/featured/shipway-640.webp${COVER_V}`} width={640} height={427} alt="" loading="lazy" decoding="async" />
             <figcaption>Shipway at Heizen</figcaption>
           </figure>
           <ul className="scard scard--tools" style={at('stars')}>

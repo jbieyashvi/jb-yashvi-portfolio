@@ -205,6 +205,10 @@ export const personalProjects: PersonalProject[] = [
 
 export const getProject = (slug: string) => projects.find((p) => p.slug === slug)!
 
+/** Appended to home cover URLs. Covers keep their file names and browsers keep images for a
+ *  while, so bump this whenever a cover image is replaced or visitors keep seeing the old one. */
+export const COVER_V = '?v=2'
+
 /** Shown first in Selected Work as large cards, and left out of the index below them. Covers
  *  live in public/work/featured/ as `${slug}-640` / `-1200`, .avif and .webp (scripts/featured-covers.mjs).
  *  `highlight`: the one proof point shown large on the card, a short value and what it counts. */
