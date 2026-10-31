@@ -18,6 +18,7 @@ const DESKTOP = 'Existing desktop platform, not my design. From the client’s r
 
 const sections = [
   { id: 'overview', label: 'Overview' },
+  { id: 'role', label: 'What I did' },
   { id: 'challenge', label: 'Desktop-to-mobile challenge' },
   { id: 'decisions', label: 'Three key design decisions' },
   { id: 'iteration', label: 'Iteration' },
@@ -250,7 +251,7 @@ function Pair({ left, right, leftTag, rightTag, open }: {
 
 function More({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <details className="dv-more">
+    <details className="dv-more" open>
       <summary>{title}</summary>
       <div className="dv-more__body">{children}</div>
     </details>
@@ -351,7 +352,7 @@ const decisions = [
 
 function Decision({ need, did, intent, tradeoff }: { need: string; did: string; intent: string; tradeoff: string }) {
   return (
-    <dl className="dv-why sw-why">
+    <dl className="dv-why cp-why sw-why">
       <div><dt>The need</dt><dd>{need}</dd></div>
       <div><dt>What I designed</dt><dd>{did}</dd></div>
       <div><dt>Intent</dt><dd>{intent}</dd></div>
@@ -359,6 +360,23 @@ function Decision({ need, did, intent, tradeoff }: { need: string; did: string; 
     </dl>
   )
 }
+
+/** The headline numbers, from the brief, the screens and the Google Play listing */
+const glance = [
+  { tone: 'sun', value: '10K+', label: 'Downloads of the app on Google Play' },
+  { tone: 'sky', value: '9 → 1', label: 'Desktop columns reworked into a single order card' },
+  { tone: 'rose', value: '8 couriers', label: 'Compared in one scannable list instead of a grid' },
+  { tone: 'mint', value: '5 stages', label: 'Of the order journey brought to mobile' },
+] as const
+
+/** My part, end to end; each row points to where it is shown */
+const role = [
+  { title: 'Order journey', body: 'Rebuilt the app around the five stages an order goes through.', href: '#challenge', link: 'The challenge' },
+  { title: 'Order cards', body: 'Turned wide desktop rows into one card per order, showing what its stage needs.', href: '#decisions', link: 'Decision A' },
+  { title: 'Courier list', body: 'Fit the eight-courier comparison grid into a list read top to bottom.', href: '#decisions', link: 'Decision B' },
+  { title: 'Onboarding', body: 'Cut a four-step setup down to a short sign-up and a checklist on Home.', href: '#iteration', link: 'Iteration' },
+  { title: 'After launch', body: 'Reviewed and revised the order cards across every stage.', href: '#iteration', link: 'Iteration' },
+] as const
 
 function Head({ id, kicker, title, children }: { id: string; kicker: string; title: string; children?: React.ReactNode }) {
   return (
@@ -426,6 +444,14 @@ export default function Shipway() {
               </p>
             </div>
           </div>
+          <ul className="cp-glance" aria-label="At a glance">
+            {glance.map((g) => (
+              <li key={g.value} className={`cp-glance__card cp-tone--${g.tone}`}>
+                <span className="cp-glance__value">{g.value}</span>
+                <span className="cp-glance__label">{g.label}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </header>
 
@@ -444,12 +470,6 @@ export default function Shipway() {
                   of its order cards.
                 </p>
               </Head>
-              <ul className="sw-stats" aria-label="The work in numbers">
-                <li><strong>5</strong> order stages brought to mobile</li>
-                <li><strong>9 → 1</strong> desktop columns reworked into a single order card</li>
-                <li><strong>8</strong> courier options turned into one scannable list</li>
-                <li><strong>10K+</strong> downloads of the app on Google Play</li>
-              </ul>
               <dl className="dv-facts" aria-label="Project at a glance">
                 <div>
                   <dt>Client</dt>
@@ -469,6 +489,30 @@ export default function Shipway() {
                 </div>
               </dl>
               <Phones slugs={['home-setup', 'track']} open={open} eager />
+            </section>
+
+            {/* What I did */}
+            <section id="role" className="dv-sec" aria-labelledby="role-title" tabIndex={-1}>
+              <Head id="role" kicker="What I did" title="From a desktop platform to an app on Google Play.">
+                <p>
+                  I owned the mobile product design, and <mark>came back after launch to cut the order cards down</mark>.
+                </p>
+              </Head>
+              <ol className="cp-role">
+                {role.map((r, i) => (
+                  <li key={r.title} className="cp-role__card">
+                    <span className="cp-role__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                    <h3>{r.title}</h3>
+                    <p>{r.body}</p>
+                    <a className="cp-role__link" href={r.href}>
+                      {r.link} <span aria-hidden="true">→</span>
+                    </a>
+                  </li>
+                ))}
+              </ol>
+              <p className="cp-role__not">
+                <strong>Starting point:</strong> the client’s existing desktop platform, which I didn’t design.
+              </p>
             </section>
 
             {/* Desktop-to-mobile challenge */}
@@ -651,24 +695,14 @@ export default function Shipway() {
             <section id="delivery" className="dv-sec" aria-labelledby="delivery-title" tabIndex={-1}>
               <Head id="delivery" kicker="Delivery" title="Launched on Android, refined after release." />
               <ol className="sw-outcomes">
-                <li><strong>Designed</strong> the mobile experience for Shipway’s existing shipping workflows, from onboarding to tracking.</li>
-                <li><strong>Launched</strong> as Shipway’s Android app, live on Google Play with 10K+ downloads.</li>
-                <li><strong>Refined</strong> after release: I revised the order cards across every stage.</li>
+                <li><strong>Designed</strong><span>The mobile experience for Shipway’s existing shipping workflows, from onboarding to tracking.</span></li>
+                <li><strong>Launched</strong><span>As Shipway’s Android app, live on Google Play with 10K+ downloads.</span></li>
+                <li><strong>Refined</strong><span>After release, I revised the order cards across every stage.</span></li>
               </ol>
-              <dl className="dv-results sw-delivery">
-                <div>
-                  <dt>Released app</dt>
-                  <dd>
-                    <a href={PLAY} target="_blank" rel="noopener noreferrer">
-                      Shipway on Google Play<span className="sr-only"> (opens in a new tab)</span>
-                    </a>
-                  </dd>
-                </div>
-                <div>
-                  <dt>Downloads</dt>
-                  <dd>10K+ on Google Play, as of October 2026</dd>
-                </div>
-              </dl>
+              <a className="cp-inuse sw-live" href={PLAY} target="_blank" rel="noopener noreferrer">
+                <span className="cp-inuse__dot" aria-hidden="true" /> Live on Google Play · 10K+ downloads, as of October 2026
+                <span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span>
+              </a>
             </section>
 
             {/* Reflection */}

@@ -19,6 +19,7 @@ const FROM_PDF = 'From the CMP Autobot design system PDF.'
 
 const sections = [
   { id: 'overview', label: 'Overview' },
+  { id: 'role', label: 'What I did' },
   { id: 'context', label: 'Context' },
   { id: 'map', label: 'How it fits together' },
   { id: 'queues', label: 'Four queues' },
@@ -421,6 +422,31 @@ const decisions = [
   },
 ] as const
 
+/** The headline facts, all from the brief and the prototype; nothing here is measured */
+const glance = [
+  { tone: 'sun', value: '2 → 1', label: 'Excel plus another tool became one table' },
+  { tone: 'sky', value: '676 · 4,626', label: 'MOGs and articles for one site in the prototype' },
+  { tone: 'rose', value: '5 weeks', label: 'Of design, then changes after launch' },
+  { tone: 'mint', value: 'Daily', label: 'In use by the client’s menu planning operators' },
+] as const
+
+/** My part, end to end; each card points to where it is shown */
+const role = [
+  { title: 'Workflow', body: 'Turned the task into three screens, one flow and four queues.', href: '#map', link: 'How it fits together' },
+  { title: 'Interface', body: 'Explored four layouts, then designed My Tasks around six decisions.', href: '#decisions', link: 'Design decisions' },
+  { title: 'Design system', body: 'Built a small system on shadcn/ui and Radix, documented in a PDF.', href: '#system', link: 'Design system' },
+  { title: 'Built with AI', body: 'Implemented the interface myself, with AI.', href: LIVE, link: 'Open the prototype' },
+  { title: 'After launch', body: 'Fixed the two problems the client’s team reported, in the row itself.', href: '#after', link: 'After launch' },
+] as const
+
+/** Outcome as problem and fix; the problems are the ones named in the brief and after launch */
+const results = [
+  { was: 'Review split across Excel and another tool, which the team found confusing and slow.', now: 'All the review work in one table.' },
+  { was: 'A plain “no” didn’t tell anyone what went wrong.', now: 'Every rejection carries a reason that matches the Autobot’s checks.' },
+  { was: 'A wrong Confirm or Reject had no easy way back.', now: 'It can be switched on the same row.' },
+  { was: 'No way to mark which correct article comes first.', now: 'A star sets the default.' },
+] as const
+
 function Decision({ need, does, why }: { need: string; does: string; why: string }) {
   return (
     <dl className="dv-why cp-why">
@@ -558,6 +584,14 @@ export default function Compass() {
               <p className="dv-signal__note">The AI model, backend and data integrations were built by others.</p>
             </div>
           </div>
+          <ul className="cp-glance" aria-label="At a glance">
+            {glance.map((g) => (
+              <li key={g.value} className={`cp-glance__card cp-tone--${g.tone}`}>
+                <span className="cp-glance__value">{g.value}</span>
+                <span className="cp-glance__label">{g.label}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </header>
 
@@ -584,6 +618,34 @@ export default function Compass() {
                   My Tasks, the final design. <span className="dv-tag">Final design</span>
                 </figcaption>
               </figure>
+            </section>
+
+            {/* What I did */}
+            <section id="role" className="dv-sec" aria-labelledby="role-title" tabIndex={-1}>
+              <Head id="role" kicker="What I did" title="From the first flow to the shipped screen.">
+                <p>
+                  I owned the design end to end, and <mark>built the interface myself with AI</mark>.
+                </p>
+              </Head>
+              <ol className="cp-role">
+                {role.map((r, i) => {
+                  const external = r.href.startsWith('http')
+                  return (
+                    <li key={r.title} className="cp-role__card">
+                      <span className="cp-role__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                      <h3>{r.title}</h3>
+                      <p>{r.body}</p>
+                      <a className="cp-role__link" href={r.href} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+                        {r.link} <span aria-hidden="true">{external ? '↗' : '→'}</span>
+                        {external && <span className="sr-only"> (opens in a new tab)</span>}
+                      </a>
+                    </li>
+                  )
+                })}
+              </ol>
+              <p className="cp-role__not">
+                <strong>Not mine:</strong> the AI model, the backend and the data integrations, built by others.
+              </p>
             </section>
 
             {/* Context */}
@@ -613,7 +675,7 @@ export default function Compass() {
                 </div>
                 <div>
                   <dt>Scale in the prototype</dt>
-                  <dd>676 MOGs and 4,626 articles for one site (demo data)</dd>
+                  <dd>676 MOGs and 4,626 articles for one site</dd>
                 </div>
               </dl>
               <p className="dv-diagram-label">Workflow framing</p>
@@ -857,26 +919,18 @@ export default function Compass() {
               <Head id="outcome" kicker="Outcome" title="What changed for the operators.">
                 <p>The client’s operators now do this review in one place, every day.</p>
               </Head>
-              <dl className="dv-results">
-                <div>
-                  <dt>One place instead of two</dt>
-                  <dd>
-                    <mark>All the review work in one table</mark>, instead of Excel plus another tool.
-                  </dd>
-                </div>
-                <div>
-                  <dt>Mistakes are cheap</dt>
-                  <dd>A wrong Confirm or Reject can be switched on the same row.</dd>
-                </div>
-                <div>
-                  <dt>Priority is explicit</dt>
-                  <dd>The star shows which article to use first.</dd>
-                </div>
-                <div>
-                  <dt>In use</dt>
-                  <dd>The client’s operators use it day to day.</dd>
-                </div>
-              </dl>
+              <ol className="cp-ba">
+                {results.map((r) => (
+                  <li key={r.now} className="cp-ba__row">
+                    <p className="cp-ba__was"><span className="cp-ba__tag">Problem</span>{r.was}</p>
+                    <span className="cp-ba__arrow" aria-hidden="true">→</span>
+                    <p className="cp-ba__now"><span className="cp-ba__tag">Now</span>{r.now}</p>
+                  </li>
+                ))}
+              </ol>
+              <p className="cp-inuse">
+                <span className="cp-inuse__dot" aria-hidden="true" /> In use day to day by the client’s operators.
+              </p>
             </section>
 
             {/* Reflection */}

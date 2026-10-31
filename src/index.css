@@ -4146,6 +4146,56 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
 .dv-matrix.cp-matrix { max-width: 980px; overflow-x: auto; }
 .cp-matrix tbody th { white-space: nowrap; }
 
+/* Compass presentation: tinted cards that carry the impact and my part. Text stays dark on the
+   pastel tints in both themes, like the flow chips above. */
+.cp-tone--sun { --tint: #fff1a8; --edge: #e6cd3c; }
+.cp-tone--sky { --tint: #d6e9ff; --edge: #7fb2ec; }
+.cp-tone--rose { --tint: #ffdcd4; --edge: #ef9a88; }
+.cp-tone--lilac { --tint: #e7defc; --edge: #a993e6; }
+.cp-tone--mint { --tint: #d3f0e1; --edge: #6fc39a; }
+
+.cp-glance { list-style: none; padding: 0; margin: clamp(2rem, 4vw, 2.75rem) 0 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+.cp-glance__card { display: grid; gap: 0.4rem; align-content: start; padding: 1.1rem 1.15rem 1.2rem; border-radius: 14px; background: var(--tint); border: 1.5px solid var(--edge); color: #17171a; }
+.cp-glance__value { font-size: clamp(1.6rem, 2.6vw, 2.15rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1.05; }
+.cp-glance__label { font-size: 0.88rem; line-height: 1.4; color: #3b3b40; }
+
+.cp-role { list-style: none; padding: 0; margin: 0; max-width: 980px; border-top: 1.5px solid var(--ink); }
+.cp-role__card { display: grid; grid-template-columns: 3.5rem minmax(9rem, 13rem) minmax(0, 1fr) auto; align-items: baseline; gap: 0.4rem 1.25rem; padding: 1.15rem 0; border-bottom: 1px solid var(--rule); }
+.cp-role__num { font-size: clamp(1.4rem, 2vw, 1.75rem); font-weight: 400; letter-spacing: -0.03em; color: var(--graphite); font-variant-numeric: tabular-nums; }
+.dv .cp-role__card h3 { margin: 0; font-size: 1.15rem; font-weight: 500; letter-spacing: -0.01em; }
+.dv .cp-role__card p { margin: 0; font-size: 0.98rem; line-height: 1.45; color: var(--graphite); }
+.dv .cp-role__link { font-size: 0.85rem; font-weight: 500; white-space: nowrap; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.cp-role__link:hover { text-decoration-thickness: 2px; }
+.cp-role__card:hover .cp-role__num { color: var(--ink); }
+.dv .cp-role__not { margin: 1rem 0 0; font-size: 0.9rem; color: var(--graphite); }
+.cp-role__not strong { color: var(--ink); font-weight: 500; }
+
+/* Problem / What I did / Why: no fills, a rule on top of each, my part carries the heavy rule */
+.dv .dv-why.cp-why { max-width: none; padding: 0; border: 0; gap: 1rem; }
+.dv .cp-why > div { padding-top: 0.6rem; border-top: 1px solid var(--rule); }
+.dv .cp-why > div:nth-child(2) { border-top: 3px solid var(--ink); }
+.dv .cp-why dd, .dv .cp-why > div:first-child dd { color: var(--graphite); font-weight: 400; }
+.dv .cp-why > div:nth-child(2) dt { color: var(--ink); }
+.dv .cp-why > div:nth-child(2) dd { color: var(--ink); font-weight: 500; }
+
+/* Outcome: problem and what it became, read across one row */
+.cp-ba { list-style: none; padding: 0; margin: 0; max-width: 980px; border-top: 1.5px solid var(--ink); }
+.cp-ba__row { display: grid; grid-template-columns: minmax(0, 1fr) 2.5rem minmax(0, 1fr); align-items: baseline; padding: 1.1rem 0; border-bottom: 1px solid var(--rule); }
+.dv .cp-ba__row p { margin: 0; display: grid; gap: 0.3rem; align-content: start; }
+.dv .cp-ba__was { color: var(--graphite); }
+.dv .cp-ba__now { color: var(--ink); font-weight: 500; font-size: clamp(1.05rem, 1.6vw, 1.25rem); letter-spacing: -0.01em; line-height: 1.35; }
+.cp-ba__arrow { justify-self: center; font-size: 1.2rem; color: var(--graphite); }
+.cp-ba__tag { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--graphite); }
+.dv .cp-inuse { display: inline-flex; align-items: center; gap: 0.55rem; margin: 1.5rem 0 0; padding: 0.45rem 0.9rem; border-radius: 999px; background: var(--ink); color: var(--paper); font-size: 0.9rem; font-weight: 500; }
+.cp-inuse__dot { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: #3ccf7f; box-shadow: 0 0 0 3px rgb(60 207 127 / 0.3); }
+
+@media (max-width: 1100px) {
+  .cp-glance { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cp-role__card { grid-template-columns: 3rem minmax(0, 1fr); }
+  .cp-role__card > p, .cp-role__link { grid-column: 2; }
+  .cp-role__link { justify-self: start; }
+}
+
 @media (max-width: 1100px) {
   .cp-flow { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .cp-flow__step:nth-child(3)::after { content: none; }
@@ -4158,6 +4208,10 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
   .cp-flow__step:nth-child(3)::after { content: '↓'; }
   .cp-step--wide .dv-why { grid-template-columns: minmax(0, 1fr); }
   .cp-step--wide .cp-why { grid-template-columns: minmax(0, 1fr); }
+  .cp-glance { gap: 0.6rem; }
+  .cp-glance__card { padding: 0.9rem; }
+  .cp-ba__row { grid-template-columns: minmax(0, 1fr); gap: 0.5rem; }
+  .cp-ba__arrow { justify-self: start; transform: rotate(90deg); line-height: 1; }
   .cp-matrix table, .cp-matrix tbody, .cp-matrix tr, .cp-matrix th, .cp-matrix td { display: block; }
   .cp-matrix thead { display: none; }
   .cp-matrix tbody tr { padding: 0.75rem 0; border-top: 1px solid var(--rule); }
@@ -4181,7 +4235,6 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
 .sw-stats { list-style: none; padding: 0; margin: 0 0 clamp(2rem, 4vw, 2.75rem); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem var(--col-gap); max-width: 980px; }
 .sw-stats li { display: grid; gap: 0.35rem; align-content: start; padding-top: 0.9rem; border-top: 2px solid var(--ink); font-size: 0.9rem; line-height: 1.4; color: var(--graphite); }
 .sw-stats strong { font-size: clamp(1.9rem, 1.4rem + 1.6vw, 2.6rem); font-weight: 500; line-height: 1; letter-spacing: -0.02em; color: var(--ink); }
-.sw-outcomes strong { font-weight: 600; }
 .dv .sw-baseline { display: grid; gap: 0.6rem; max-width: 980px; margin: 0 0 clamp(2rem, 4vw, 2.75rem); }
 .sw-baseline .sw-zoom.dv-screen__zoom, .sw-pair__desk .sw-zoom.dv-screen__zoom { border-radius: 8px; background: #fff; }
 .sw-decisions { list-style: none; padding: 0; margin: 0; display: grid; gap: clamp(3rem, 6vw, 4.5rem); }
@@ -4205,7 +4258,12 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
 .sw-diff dd { margin: 0.5rem 0 0; }
 .sw-diff ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.35rem; }
 .sw-diff__item--out li { text-decoration: line-through; text-decoration-color: var(--graphite); text-decoration-thickness: 1px; color: var(--graphite); }
-.sw-outcomes { margin: 0 0 clamp(1.75rem, 3.5vw, 2.5rem); padding-left: 1.25rem; display: grid; gap: 0.5rem; max-width: 64ch; font-size: 1.05rem; }
+.sw-outcomes { list-style: none; margin: 0; padding: 0; max-width: 980px; border-top: 1.5px solid var(--ink); }
+.sw-outcomes li { display: grid; grid-template-columns: minmax(8rem, 13rem) minmax(0, 1fr); align-items: baseline; gap: 0.3rem 1.25rem; padding: 1.15rem 0; border-bottom: 1px solid var(--rule); }
+.dv .sw-outcomes strong { font-size: clamp(1.4rem, 2.2vw, 1.85rem); font-weight: 500; letter-spacing: -0.02em; line-height: 1.1; }
+.sw-outcomes span { color: var(--graphite); font-size: 1.02rem; }
+.dv .sw-live { color: var(--paper); text-decoration: none; }
+.dv .sw-live:hover { opacity: 0.9; }
 .sw-sources { margin: 0.75rem 0 0; padding-left: 1.1rem; display: grid; gap: 0.35rem; max-width: 72ch; font-size: 0.9rem; color: var(--graphite); }
 
 @media (max-width: 1100px) {
@@ -4230,6 +4288,7 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
   .sw-pair__grid--phones .sw-pair__phone { max-width: none; }
   .sw-compare.dv-compare { grid-template-columns: minmax(0, 1fr); }
   .sw-diff { grid-template-columns: minmax(0, 1fr); }
+  .sw-outcomes li { grid-template-columns: minmax(0, 1fr); }
 }
 
 .dv .sw-rounds { display: grid; gap: 1.75rem; margin-top: 1.5rem; }
