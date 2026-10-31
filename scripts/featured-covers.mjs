@@ -1,5 +1,5 @@
-// Large 3:2 covers for the three Featured cards on the home page, cut from images already on
-// the site. Run from the repo root: node scripts/featured-covers.mjs
+// Large 3:2 covers for the Featured cards and the personal tiles in More projects on the home
+// page, cut from images already on the site. Run from the repo root: node scripts/featured-covers.mjs
 import sharp from 'sharp'
 import { mkdirSync } from 'node:fs'
 
@@ -13,10 +13,12 @@ const covers = [
   // three prototype screens on a warm ground, made from the case study's own screenshots
   ['rider-pickup-delay', 'public/work/rider-pickup-delay/cover-1800.webp', null],
   ['tan90', 'public/work/covers/home/tan90-1200.webp', null],
-  // the home cover (dashboard beside a token card), trimmed from 16:10 to 3:2
-  // the home cover (three phones), trimmed from 4:3 to 3:2
-  ['shipway', 'public/work/covers/home/shipway.png', { left: 0, top: 40, width: 1440, height: 960 }],
-  ['compass', 'public/work/covers/home/compass.png', { left: 50, top: 0, width: 1500, height: 1000 }],
+  // Relay's first PDF page: the monitor on the desk, above the caption band
+  ['relay', 'public/work/personal/relay/01-2000.webp', { left: 0, top: 100, width: 2000, height: 1333 }],
+  // app-store style cards around the real app screens, rendered from an HTML layout
+  ['shipway', 'public/work/covers/home/shipway-promo.png', null],
+  // the real dashboard on a laptop against a sunlit wall, rendered from an HTML layout
+  ['compass', 'public/work/covers/home/compass-laptop.png', null],
 ]
 for (const [name, src, box] of covers) {
   const base = box ? sharp(src).extract(box) : sharp(src)

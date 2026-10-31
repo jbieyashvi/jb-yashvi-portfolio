@@ -207,7 +207,6 @@ export const getProject = (slug: string) => projects.find((p) => p.slug === slug
 
 /** Shown first in Selected Work as large cards, and left out of the index below them. Covers
  *  live in public/work/featured/ as `${slug}-640` / `-1200`, .avif and .webp (scripts/featured-covers.mjs).
- *  `loop`: a short muted screen recording, `${slug}-loop.mp4` / `.webm`, played over the cover on hover.
  *  `highlight`: the one proof point shown large on the card, a short value and what it counts. */
 export interface FeaturedProject {
   slug: string
@@ -215,25 +214,22 @@ export interface FeaturedProject {
   kind: string
   summary: string
   highlight: { value: string; label: string }
-  loop?: boolean
 }
 
 export const featuredProjects: FeaturedProject[] = [
-  {
-    slug: 'shipway',
-    name: 'Shipway',
-    kind: 'Client · Android app',
-    highlight: { value: '10K+', label: 'downloads on Google Play' },
-    loop: true,
-    summary: 'A desktop shipping platform redesigned as an Android app: orders, couriers, pickups and tracking.',
-  },
   {
     slug: 'compass',
     name: 'Compass Group — CMP Autobot',
     kind: 'Client · B2B web tool',
     highlight: { value: 'Daily', label: 'in use by kitchen operators' },
-    loop: true,
     summary: 'A worklist where kitchen operators check AI-suggested ingredient matches and confirm, reject or fix them, hundreds at a time.',
+  },
+  {
+    slug: 'shipway',
+    name: 'Shipway',
+    kind: 'Client · Android app',
+    highlight: { value: '10K+', label: 'downloads on Google Play' },
+    summary: 'A desktop shipping platform redesigned as an Android app: orders, couriers, pickups and tracking.',
   },
   {
     slug: 'drive-sharing',
@@ -252,9 +248,20 @@ export const clientProjects = projects.filter((p) => p.showcased !== false)
 /** The personal projects visitors are shown; unlisted ones (listed: false) keep their routes */
 export const listedPersonalProjects = personalProjects.filter((p) => p.listed !== false)
 
-/** Every project visitors are shown, as one Next-project loop: the client projects, then the
- *  personal ones, then back to the first client project. */
-export const projectSequence: { slug: string; name: string }[] = [...clientProjects, ...listedPersonalProjects]
+const isFeatured = (slug: string) => featuredProjects.some((f) => f.slug === slug)
+
+/** Everything after the featured three, in the order of the More projects strip: client, then
+ *  built with AI, then personal */
+export const moreProjects: { slug: string; name: string; meta: string; group: 'client' | 'ai' | 'personal'; cover: string }[] = [
+  ...clientProjects.filter((p) => !isFeatured(p.slug) && p.track !== 'ai').map((p) => ({ slug: p.slug, name: p.name, meta: p.tagline, group: 'client' as const, cover: p.cover })),
+  ...clientProjects.filter((p) => !isFeatured(p.slug) && p.track === 'ai').map((p) => ({ slug: p.slug, name: p.name, meta: p.tagline, group: 'ai' as const, cover: p.cover })),
+  // personal tiles use the 3:2 covers made by scripts/featured-covers.mjs
+  ...listedPersonalProjects.filter((p) => !isFeatured(p.slug)).map((p) => ({ slug: p.slug, name: p.name, meta: p.subtitle, group: 'personal' as const, cover: `/work/featured/${p.slug}` })),
+]
+
+/** Every project visitors are shown, as one Next-project loop in home-page order: the featured
+ *  three, then the More projects strip, then back to the first featured project. */
+export const projectSequence: { slug: string; name: string }[] = [...featuredProjects, ...moreProjects].map(({ slug, name }) => ({ slug, name }))
 
 /** The project after `slug` in projectSequence, wrapping to the start. An unlisted client page
  *  (showcased: false) leads to the next listed client project after it. */

@@ -1,29 +1,31 @@
-import { useEffect, useId, useRef, useState, type ReactNode, type Ref } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { clientProjects, contact, featuredProjects, listedPersonalProjects, type FeaturedProject, type PersonalProject, type Project } from '../data/projects'
+import { contact, featuredProjects, moreProjects, type FeaturedProject } from '../data/projects'
 import loadAhead from './loadAhead'
 
 const pad = (v: number) => String(v).padStart(2, '0')
-const PERSONAL = '/work/personal'
 const FEATURED = '/work/featured'
 
-const isFeatured = (slug: string) => featuredProjects.some((f) => f.slug === slug)
-const otherClient = clientProjects.filter((p) => !isFeatured(p.slug))
-const designed = otherClient.filter((p) => p.track !== 'ai')
-const builtWithAI = otherClient.filter((p) => p.track === 'ai')
-const otherPersonal = listedPersonalProjects.filter((p) => !isFeatured(p.slug))
-const moreCount = designed.length + builtWithAI.length + otherPersonal.length
+type Group = (typeof moreProjects)[number]['group']
+type Tile = (typeof moreProjects)[number] & { num: number }
+
+// numbered on from the featured three
+const tiles: Tile[] = moreProjects.map((t, i) => ({ ...t, num: featuredProjects.length + i + 1 }))
+
+const FILTERS: { key: Group | 'all'; label: string }[] = [
+  { key: 'all', label: 'All' },
+  { key: 'client', label: 'Client' },
+  { key: 'ai', label: 'Built with AI' },
+  { key: 'personal', label: 'Personal' },
+]
 
 /**
  * Selected work: the three featured projects one per row, image and text alternating sides, so
- * they lead. The rest wait behind "See all projects" as a compact index: Client Projects (with
- * the AI-built ones in their own group below) and Personal Projects side by side (stacked,
- * client first, on phones). Every row is one link to the project's page: for a personal
- * project, a page showing its PDF; for a client project, its case study.
+ * they lead. The rest follow as one horizontal strip of tiles in mixed sizes, each a big number
+ * with the name under it, a line above that tracks the scroll, and filters below. Every tile is
+ * one link to the project's page: a case study, or for a personal project its PDF page.
  */
 export default function WorkShowcase() {
-  const [more, setMore] = useState(false)
-  const moreId = useId()
   return (
     <div className="wrap windex">
       <h2 id="work-title" className="windex__title" data-reveal>Selected Work</h2>
@@ -32,59 +34,110 @@ export default function WorkShowcase() {
         {featuredProjects.map((p, i) => <FeaturedCard key={p.slug} project={p} index={i} />)}
       </ul>
 
-      <div className="windex__toggle">
-        <button type="button" className="btn btn--ghost-dark" aria-expanded={more} aria-controls={moreId} onClick={() => setMore((m) => !m)}>
-          {more ? 'Show fewer projects' : `See all projects (${moreCount})`}
-          <span className="windex__chev" aria-hidden="true">↓</span>
-        </button>
+      <MoreWork />
+    </div>
+  )
+}
+
+function MoreWork() {
+  const [filter, setFilter] = useState<Group | 'all'>('all')
+  const strip = useRef<HTMLUListElement>(null)
+  const dot = useRef<HTMLSpanElement>(null)
+  const shown = filter === 'all' ? tiles : tiles.filter((t) => t.group === filter)
+
+  // the dot rides the line as the strip scrolls; set directly so scrolling never re-renders
+  const track = () => {
+    const el = strip.current
+    if (!el || !dot.current) return
+    const max = el.scrollWidth - el.clientWidth
+    dot.current.style.left = `${max > 0 ? (el.scrollLeft / max) * 100 : 0}%`
+  }
+  useEffect(() => {
+    if (strip.current) strip.current.scrollLeft = 0
+    track()
+    window.addEventListener('resize', track)
+    return () => window.removeEventListener('resize', track)
+  }, [filter])
+
+  const step = (dir: 1 | -1) => {
+    const el = strip.current
+    if (!el) return
+    const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    el.scrollBy({ left: dir * el.clientWidth * 0.8, behavior: smooth ? 'smooth' : 'auto' })
+  }
+
+  return (
+    <section className="wmore" aria-labelledby="more-title">
+      <header className="wmore__head">
+        <h3 id="more-title" className="wmore__title">More projects</h3>
+        <div className="wmore__nav">
+          <button type="button" className="wmore__step" aria-label="Scroll projects back" onClick={() => step(-1)}>←</button>
+          <button type="button" className="wmore__step" aria-label="Scroll projects forward" onClick={() => step(1)}>→</button>
+        </div>
+      </header>
+
+      <div className="wmore__track" aria-hidden="true">
+        <span>{pad(shown[0].num)}.</span>
+        <span className="wmore__line"><span ref={dot} className="wmore__dot" /></span>
+        <span>{pad(shown[shown.length - 1].num)}.</span>
       </div>
 
-      <div id={moreId} className="windex__more-work" hidden={!more}>
-        <div className="windex__cols">
-          <div className="windex__col">
-            <Group id="client-title" title="Client Projects" count={designed.length}>
-              {designed.map((p) => <ClientRow key={p.slug} project={p} />)}
-            </Group>
-            <Group id="ai-title" title="Built with AI" count={builtWithAI.length}>
-              {builtWithAI.map((p) => <ClientRow key={p.slug} project={p} />)}
-            </Group>
-          </div>
-          <div className="windex__col">
-            <Group id="personal-title" title="Personal Projects" count={otherPersonal.length}>
-              {otherPersonal.map((p) => <PersonalRow key={p.slug} project={p} />)}
-            </Group>
-          </div>
-        </div>
+      <ul ref={strip} className="wmore__strip" onScroll={track}>
+        {shown.map((t) => <TileCard key={t.slug} tile={t} />)}
+      </ul>
 
+      <footer className="wmore__foot">
+        <div className="wmore__filters" role="group" aria-label="Show projects">
+          {FILTERS.map((f) => (
+            <button key={f.key} type="button" className="wmore__filter" aria-pressed={filter === f.key} onClick={() => setFilter(f.key)}>
+              {f.label}
+            </button>
+          ))}
+        </div>
         <a className="windex__more" href={contact.instagram} target="_blank" rel="noopener noreferrer">
           More prototype demos on Instagram <span aria-hidden="true">↗</span>
           <span className="sr-only"> (opens in a new tab)</span>
         </a>
-      </div>
-    </div>
+      </footer>
+    </section>
+  )
+}
+
+function TileCard({ tile: t }: { tile: Tile }) {
+  return (
+    <li>
+      <Link className={`wtile wtile--${t.slug}`} to={`/work/${t.slug}`}>
+        <span className="wtile__media" aria-hidden="true">
+          <picture>
+            <source type="image/avif" srcSet={`${t.cover}-640.avif 640w, ${t.cover}-1200.avif 1200w`} sizes="(max-width: 760px) 80vw, 26rem" />
+            <img
+              src={`${t.cover}-640.webp`}
+              srcSet={`${t.cover}-640.webp 640w, ${t.cover}-1200.webp 1200w`}
+              sizes="(max-width: 760px) 80vw, 26rem"
+              alt=""
+              loading="lazy"
+              ref={loadAhead}
+              decoding="async"
+            />
+          </picture>
+        </span>
+        <span className="wtile__cap">
+          <span className="wtile__num">{pad(t.num)}.</span>
+          <span className="wtile__text">
+            <span className="wtile__name">{t.name}</span>
+            <span className="wtile__meta">{t.meta}</span>
+          </span>
+        </span>
+      </Link>
+    </li>
   )
 }
 
 function FeaturedCard({ project: p, index }: { project: FeaturedProject; index: number }) {
   const cover = `${FEATURED}/${p.slug}`
-  const video = useRef<HTMLVideoElement>(null)
-  const play = () => { const v = video.current; if (v) v.play().catch(() => {}) }
-  const stop = () => { const v = video.current; if (v) { v.pause(); v.currentTime = 0 } }
-  // Touch screens have no hover, so the loop plays while the card is mostly in view instead
-  useEffect(() => {
-    const v = video.current
-    if (!v || matchMedia('(hover: hover)').matches) return
-    const io = new IntersectionObserver(([e]) => (e.isIntersecting ? play() : stop()), { threshold: 0.6 })
-    io.observe(v)
-    return () => io.disconnect()
-  }, [])
   return (
     <li>
-      <Link
-        className={`wcard wcard--${p.slug}`}
-        to={`/work/${p.slug}`}
-        {...(p.loop && { onMouseEnter: play, onMouseLeave: stop, onFocus: play, onBlur: stop })}
-      >
+      <Link className={`wcard wcard--${p.slug}`} to={`/work/${p.slug}`}>
         <span className="wcard__media" aria-hidden="true">
           <picture>
             <source type="image/avif" srcSet={`${cover}-640.avif 640w, ${cover}-1200.avif 1200w`} sizes="(max-width: 760px) 100vw, 50vw" />
@@ -100,7 +153,6 @@ function FeaturedCard({ project: p, index }: { project: FeaturedProject; index: 
               decoding="async"
             />
           </picture>
-          {p.loop && <CardLoop src={`${cover}-loop`} ref={video} />}
         </span>
         <span className="wcard__text">
           <span className="wcard__num" aria-hidden="true">{pad(index + 1)}</span>
@@ -115,85 +167,6 @@ function FeaturedCard({ project: p, index }: { project: FeaturedProject; index: 
             Read case study <span className="wrow__arrow wrow__arrow--page">→</span>
           </span>
         </span>
-      </Link>
-    </li>
-  )
-}
-
-/** The muted loop layered over a featured cover. It fades in only once frames are playing, so
- *  the cover shows while it loads, and it is left out entirely for reduced motion or Save-Data. */
-function CardLoop({ src, ref }: { src: string; ref: Ref<HTMLVideoElement> }) {
-  const skip =
-    matchMedia('(prefers-reduced-motion: reduce)').matches ||
-    (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData
-  if (skip) return null
-  return (
-    <video
-      ref={ref}
-      className="wcard__loop"
-      muted
-      loop
-      playsInline
-      preload="none"
-      disablePictureInPicture
-      onPlaying={(e) => e.currentTarget.classList.add('is-on')}
-      onPause={(e) => e.currentTarget.classList.remove('is-on')}
-    >
-      <source src={`${src}.webm`} type="video/webm" />
-      <source src={`${src}.mp4`} type="video/mp4" />
-    </video>
-  )
-}
-
-function Group({ id, title, count, children }: { id: string; title: string; count: number; children: ReactNode }) {
-  return (
-    <section className="windex__group" aria-labelledby={id}>
-      <header className="windex__head">
-        <h3 id={id} className="windex__label">{title}</h3>
-        <span className="windex__count" aria-hidden="true">{pad(count)}</span>
-      </header>
-      <ul className="windex__list">{children}</ul>
-    </section>
-  )
-}
-
-function PersonalRow({ project: p }: { project: PersonalProject }) {
-  const thumb = `${PERSONAL}/${p.slug}-thumb`
-  return (
-    <li>
-      <Link className="wrow" to={`/work/${p.slug}`}>
-        <span className="wrow__thumb" aria-hidden="true">
-          <picture>
-            <source type="image/avif" srcSet={`${thumb}.avif`} />
-            <img src={`${thumb}.webp`} alt="" width={400} height={300} loading="lazy" ref={loadAhead} decoding="async" />
-          </picture>
-        </span>
-        <span className="wrow__text">
-          <span className="wrow__name">{p.name}</span>
-          <span className="wrow__meta">{p.subtitle}</span>
-        </span>
-        <span className="wrow__arrow wrow__arrow--page" aria-hidden="true">→</span>
-      </Link>
-    </li>
-  )
-}
-
-function ClientRow({ project: p }: { project: Project }) {
-  const [w, h] = p.coverSize ?? [1600, 1000]
-  return (
-    <li>
-      <Link className={`wrow wrow--${p.slug}`} to={`/work/${p.slug}`}>
-        <span className="wrow__thumb" aria-hidden="true">
-          <picture>
-            <source type="image/avif" srcSet={`${p.cover}-640.avif`} />
-            <img src={`${p.cover}-640.webp`} alt="" width={w} height={h} loading="lazy" ref={loadAhead} decoding="async" />
-          </picture>
-        </span>
-        <span className="wrow__text">
-          <span className="wrow__name">{p.name}</span>
-          <span className="wrow__meta">{p.tagline}</span>
-        </span>
-        <span className="wrow__arrow wrow__arrow--page" aria-hidden="true">→</span>
       </Link>
     </li>
   )

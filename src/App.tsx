@@ -6,6 +6,7 @@ import Intro from './components/Intro'
 import ProjectTransition from './components/ProjectTransition'
 import RevealManager from './components/RevealManager'
 import { revealAbove, revealThrough } from './components/reveal'
+import { lenis } from './components/smoothScroll'
 import Home from './pages/Home'
 import CaseStudyPage from './pages/CaseStudyPage'
 import Medurun from './pages/Medurun'
@@ -101,6 +102,11 @@ function ScrollManager() {
     const fragment = performance.now() - fragmentAt.current < 1000
     fragmentAt.current = -Infinity
     const restoreTo = navType === 'POP' && !fragment ? saved.current[key] : undefined
+    // drop any glide still running from the old page, so it cannot pull this scroll back
+    if (!document.documentElement.classList.contains('no-scroll')) {
+      lenis.stop()
+      lenis.start()
+    }
 
     if (restoreTo === undefined && (!id || !document.getElementById(id))) {
       // instant, so a new page never smooth-scrolls up from the old page's position

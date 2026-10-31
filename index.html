@@ -14,14 +14,14 @@
         try { t = localStorage.getItem('jb-theme') } catch (e) {}
         if (t !== 'dark') t = 'light'
         document.documentElement.dataset.theme = t
-        document.querySelector('meta[name="theme-color"]').content = t === 'dark' ? '#111216' : '#ffffff'
+        document.querySelector('meta[name="theme-color"]').content = t === 'dark' ? '#111113' : '#ffffff'
       })()
     </script>
     <!-- Branded intro: only on the first homepage load in this tab session, never with a
          #hash, on another page, after a reload or with reduced motion. Decided before first
          paint (so it sits before the stylesheets); if the app never mounts, the failsafe
          ends the intro state. -->
-    <style>html.has-intro:not(.intro-done) { background: #07377b; } html[data-theme="dark"].has-intro:not(.intro-done) { background: #111216; }</style>
+    <style>html.has-intro:not(.intro-done) { background: #17171a; } html[data-theme="dark"].has-intro:not(.intro-done) { background: #111113; }</style>
     <script>
       (function () {
         try {

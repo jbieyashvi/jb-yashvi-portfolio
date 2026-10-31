@@ -3,7 +3,7 @@ import { useSyncExternalStore } from 'react'
 export type Theme = 'light' | 'dark'
 
 const KEY = 'jb-theme'
-const META = { light: '#ffffff', dark: '#111216' }
+const META = { light: '#ffffff', dark: '#111113' }
 
 /** the theme on the page: index.html set it before first paint (light unless chosen) */
 const read = (): Theme => (document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light')
