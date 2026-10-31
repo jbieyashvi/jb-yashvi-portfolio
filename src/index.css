@@ -1451,6 +1451,231 @@ html.has-intro { --in: 0.8s; }
   .story + .work { margin-top: 0; }
 }
 
+/* ---------- The route: every stop from MNIT Jaipur to now, walked by scrolling ---------- */
+
+.route {
+  --r-sun: #ffe58f; --r-sun-edge: #d9b52c;
+  --r-sky: #c7e3ff; --r-sky-edge: #5d9be0;
+  --r-rose: #ffd0c8; --r-rose-edge: #e57f6b;
+  --r-lilac: #e2d6ff; --r-lilac-edge: #9479dc;
+  --r-mint: #cdeedd; --r-mint-edge: #4fb283;
+  --r-road: #d9503a;
+  position: relative;
+  height: calc(100svh * 4.2);
+  border-top: 1px solid var(--rule);
+}
+[data-theme='dark'] .route {
+  --r-sun: #3d3518; --r-sun-edge: #e6c64a;
+  --r-sky: #1b2c42; --r-sky-edge: #79b0ef;
+  --r-rose: #40221d; --r-rose-edge: #f19682;
+  --r-lilac: #2b2342; --r-lilac-edge: #ad96ee;
+  --r-mint: #17342a; --r-mint-edge: #67c79a;
+  --r-road: #f0735a;
+}
+.route__pin {
+  position: sticky;
+  top: var(--nav-h);
+  height: calc(100svh - var(--nav-h));
+  overflow: clip;
+}
+.route__inner {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: clamp(0.75rem, 2vh, 1.5rem);
+  height: 100%;
+  padding-block: clamp(1.25rem, 4vh, 2.5rem) clamp(1rem, 3vh, 2rem);
+}
+.route__kicker { color: var(--graphite); font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.route__title {
+  margin-top: 0.35rem;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+.route__body {
+  display: grid;
+  grid-template-columns: minmax(18rem, 25rem) 1fr;
+  gap: clamp(1rem, 3vw, 3rem);
+  align-items: center;
+  min-height: 0;
+}
+
+/* the stop's card: all stacked in one cell, the current one shown */
+.route__cards { display: grid; }
+.rcard {
+  grid-area: 1 / 1;
+  align-self: center;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  border-radius: 18px;
+  background: var(--paper);
+  box-shadow: 0 18px 40px -24px rgb(0 0 0 / 0.35);
+  opacity: 0;
+  translate: 0 14px;
+  transition: opacity 0.35s ease, translate 0.5s var(--ease);
+}
+.rcard.is-on { opacity: 1; translate: none; }
+.rcard__top {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.85rem;
+  align-items: center;
+  padding: 1rem 1.15rem;
+  border-bottom: 1px solid var(--rule);
+  background: var(--tone);
+}
+.rcard--sun { --tone: var(--r-sun); --edge: var(--r-sun-edge); }
+.rcard--sky { --tone: var(--r-sky); --edge: var(--r-sky-edge); }
+.rcard--rose { --tone: var(--r-rose); --edge: var(--r-rose-edge); }
+.rcard--lilac { --tone: var(--r-lilac); --edge: var(--r-lilac-edge); }
+.rcard--mint { --tone: var(--r-mint); --edge: var(--r-mint-edge); }
+.rcard__num {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1.5px solid var(--edge);
+  border-radius: 12px;
+  background: var(--paper);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.rcard__name { display: block; font-weight: 600; }
+.rcard__when { display: block; margin-top: 0.1rem; color: var(--graphite); font-size: 0.8rem; line-height: 1.35; }
+.rcard__count { align-self: start; color: var(--graphite); font-size: 0.75rem; letter-spacing: 0.06em; }
+.rcard__title {
+  padding: 1.1rem 1.15rem 0;
+  font-size: clamp(1.3rem, 1.9vw, 1.65rem);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+.rcard__body { padding: 0.6rem 1.15rem 1.2rem; color: var(--graphite); line-height: 1.55; }
+.rcard__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.9rem;
+  align-items: baseline;
+  margin: 0 1.15rem 1.15rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.9rem;
+}
+.rcard__links span:first-child { color: var(--graphite); }
+.rcard__links a { font-weight: 500; text-underline-offset: 3px; }
+
+/* the plan and the route over it */
+.route__map { height: 100%; min-height: 0; }
+.route__map svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.route__ground { fill: url(#route-iso); }
+#route-iso path { fill: none; stroke: var(--rule); stroke-width: 1; opacity: 0.7; }
+#route-hatch path { stroke: var(--graphite); stroke-width: 0.8; opacity: 0.35; }
+/* the road: three red lines, made from a wide red stroke, a paper gap and a thin red centre */
+.road { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.road--out { stroke-width: 20px; }
+.road--gap { stroke: var(--paper); stroke-width: 14px; }
+.road--mid { stroke-width: 2.5px; }
+.route__track .road--out, .route__track .road--mid { stroke: var(--rule); }
+.route__line .road--out, .route__line .road--mid { stroke: var(--r-road); }
+.route__line .road { stroke-dasharray: var(--len, 0) 99999; stroke-dashoffset: var(--off, 0); }
+/* the buildings: pencil-grey until the route reaches them, then inked in with their colour */
+.rbuild path { fill: var(--paper); stroke: var(--graphite); stroke-width: 1.2; stroke-linejoin: round; stroke-linecap: round; transition: stroke 0.5s, fill 0.5s; }
+.rbuild .wall--r { fill: url(#route-hatch); }
+.rbuild .roof { fill: var(--paper); }
+.rbuild .win { fill: var(--paper); }
+.rbuild .stripe, .rbuild .pole, .rbuild .wave { fill: none; }
+.rbuild { opacity: 0.55; transform: translateY(6px); transition: opacity 0.5s, transform 0.7s cubic-bezier(0.3, 1.6, 0.5, 1); }
+.rbuild.is-past { opacity: 1; transform: none; }
+.rbuild.is-past path { stroke: var(--ink); }
+.rbuild.is-past .accent, .rbuild.is-past .win--lit, .rbuild.is-past .win--door { fill: var(--tone); }
+.rbuild.is-past .win--door { fill: var(--edge); }
+.rbuild.is-past .wave { stroke: var(--edge); stroke-width: 2; }
+.rbuild--sun { --tone: var(--r-sun); --edge: var(--r-sun-edge); }
+.rbuild--sky { --tone: var(--r-sky); --edge: var(--r-sky-edge); }
+.rbuild--rose { --tone: var(--r-rose); --edge: var(--r-rose-edge); }
+.rbuild--lilac { --tone: var(--r-lilac); --edge: var(--r-lilac-edge); }
+.rbuild--mint { --tone: var(--r-mint); --edge: var(--r-mint-edge); }
+/* life around the town: trees sway, people stroll back and forth */
+.rtree path, .rtree circle { fill: var(--paper); stroke: var(--graphite); stroke-width: 1.2; }
+.rtree > g { transform-box: fill-box; transform-origin: 50% 100%; animation: rtree-sway 4s ease-in-out infinite alternate; animation-delay: var(--d); }
+@keyframes rtree-sway { from { transform: rotate(-3deg); } to { transform: rotate(3deg); } }
+.rwalker path { fill: none; stroke: var(--ink); stroke-width: 1.4; stroke-linecap: round; }
+.rwalker circle { fill: var(--ink); }
+.rwalker { animation: rwalk var(--t) ease-in-out infinite alternate; }
+@keyframes rwalk { to { transform: translate(var(--dx), var(--dy)); } }
+.route__marker circle { fill: var(--tool-on); stroke: var(--paper); stroke-width: 4; filter: drop-shadow(0 2px 6px rgb(31 95 196 / 0.45)); }
+
+.rpin--sun { --tone: var(--r-sun); --edge: var(--r-sun-edge); }
+.rpin--sky { --tone: var(--r-sky); --edge: var(--r-sky-edge); }
+.rpin--rose { --tone: var(--r-rose); --edge: var(--r-rose-edge); }
+.rpin--lilac { --tone: var(--r-lilac); --edge: var(--r-lilac-edge); }
+.rpin--mint { --tone: var(--r-mint); --edge: var(--r-mint-edge); }
+.rpin__dot { fill: var(--paper); stroke: var(--rule); stroke-width: 2; transition: fill 0.3s, stroke 0.3s; }
+.rpin__num { fill: var(--graphite); font-size: 14px; font-weight: 600; }
+.rpin__label { fill: var(--graphite); font-size: 17px; font-weight: 600; paint-order: stroke; stroke: var(--paper); stroke-width: 6px; stroke-linejoin: round; transition: fill 0.3s; }
+.rpin__year { fill: var(--graphite); font-size: 13px; paint-order: stroke; stroke: var(--paper); stroke-width: 6px; stroke-linejoin: round; opacity: 0.8; }
+.rpin__halo { fill: var(--tone); opacity: 0; transform-box: fill-box; transform-origin: center; }
+.rpin.is-past .rpin__dot { fill: var(--tone); stroke: var(--edge); }
+.rpin.is-past .rpin__num, .rpin.is-past .rpin__label { fill: var(--ink); }
+.rpin.is-on .rpin__halo { opacity: 0.55; animation: rpin-pulse 1.8s ease-out infinite; }
+@keyframes rpin-pulse {
+  from { opacity: 0.6; scale: 0.6; }
+  to { opacity: 0; scale: 1.35; }
+}
+
+/* the stops along the bottom: one dot each, filled as the route reaches it */
+.route__steps { display: flex; gap: 1rem; align-items: center; justify-content: center; }
+.route__steps ol { display: flex; gap: 0.5rem; }
+.rstep {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  padding: 0;
+  border: 1.5px solid var(--rule);
+  border-radius: 50%;
+  background: var(--paper);
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s, scale 0.3s;
+}
+.rstep::after { content: ''; position: absolute; inset: -15px -4px; }
+.rstep--sun { --edge: var(--r-sun-edge); }
+.rstep--sky { --edge: var(--r-sky-edge); }
+.rstep--rose { --edge: var(--r-rose-edge); }
+.rstep--lilac { --edge: var(--r-lilac-edge); }
+.rstep--mint { --edge: var(--r-mint-edge); }
+.rstep.is-past { border-color: var(--edge); background: var(--edge); }
+.rstep[aria-current] { scale: 1.35; box-shadow: 0 0 0 3px var(--paper), 0 0 0 4.5px var(--edge); }
+.route__where { min-width: 9rem; font-size: 0.9rem; font-weight: 500; }
+
+@media (max-width: 900px) {
+  .route { height: calc(100svh * 4.6); }
+  .route__body { grid-template-columns: 1fr; grid-template-rows: minmax(0, 1fr) auto; align-items: stretch; gap: 0.75rem; }
+  .route__map { order: -1; }
+  .rcard { align-self: end; }
+  .rcard__top { padding: 0.8rem 0.95rem; gap: 0.7rem; }
+  .rcard__num { width: 2.1rem; height: 2.1rem; border-radius: 10px; font-size: 0.85rem; }
+  .rcard__title { padding: 0.8rem 0.95rem 0; font-size: 1.15rem; }
+  .rcard__body { padding: 0.4rem 0.95rem 0.9rem; font-size: 0.9rem; line-height: 1.45; }
+  .rcard__links { margin: 0 0.95rem 0.9rem; padding-top: 0.7rem; font-size: 0.85rem; }
+  .rpin__label { font-size: 34px; stroke-width: 10px; }
+  .rpin__year, .rpin__more { display: none; }
+  .route__where { min-width: 0; }
+}
+
+/* reduced motion: the route drawn whole, every card listed under it */
+.route--still { height: auto; }
+.route--still .route__pin { position: static; height: auto; }
+.route--still .route__map { height: min(60vh, 34rem); }
+.route--still .route__body { grid-template-columns: 1fr; }
+.route--still .route__map { order: -1; }
+.route--still .route__cards { grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: 1rem; }
+.route--still .rcard { grid-area: auto; opacity: 1; translate: none; }
+.route--still .route__steps { display: none; }
+.route--still .route__line .road { stroke-dasharray: none; }
+.route--still .route__marker { display: none; }
+.route--still .rtree > g, .route--still .rwalker { animation: none; }
+
 /* ---------- How I work: four steps in one connected row ---------- */
 
 .process { padding-block: clamp(3.5rem, 7vw, 6rem); }

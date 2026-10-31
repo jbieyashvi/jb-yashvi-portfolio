@@ -3,6 +3,7 @@ import HeroCanvas from '../components/HeroCanvas'
 import HowIWork from '../components/HowIWork'
 import IdeasInMotion from '../components/IdeasInMotion'
 import Journey from '../components/Journey'
+import JourneyRoute from '../components/JourneyRoute'
 import OutsideTeaser from '../components/OutsideTeaser'
 import StoryScroll from '../components/StoryScroll'
 import useTitle from '../components/useTitle'
@@ -159,6 +160,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <JourneyRoute />
 
       <Journey />
 

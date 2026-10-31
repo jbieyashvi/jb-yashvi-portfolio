@@ -1,10 +1,10 @@
 import type { CSSProperties } from 'react'
 
 const steps = [
-  { title: 'Understand', text: 'Learn about the people, problem and business goals.' },
-  { title: 'Map', text: 'Turn insights into clear flows and early ideas.' },
-  { title: 'Make', text: 'Design interfaces and bring ideas to life through prototypes.' },
-  { title: 'Refine', text: 'Test, gather feedback and improve the details.' },
+  { title: 'Understand', text: 'Start from client calls, the brief and the product as it is. On my own projects, interviews and walkthroughs.' },
+  { title: 'Map', text: 'Map the workflow end to end: who does each step, and where it breaks.' },
+  { title: 'Make', text: 'Design the screens and the design system, and build working prototypes with Figma, Claude and Codex.' },
+  { title: 'Refine', text: 'Review with the client and team, test where I can, and keep improving after launch.' },
 ]
 
 const pad = (v: number) => String(v).padStart(2, '0')
