@@ -5,7 +5,7 @@ import loadAhead from '../components/loadAhead'
 import NextProject from '../components/NextProject'
 import useTitle from '../components/useTitle'
 
-type Slug = 'gema' | 'roam' | 'zensenta' | 'influish' | 'relay'
+type Slug = 'gema' | 'zensenta' | 'relay'
 
 /**
  * A personal project is its PDF: the page shows only the name and every page of the original

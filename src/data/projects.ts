@@ -171,9 +171,7 @@ export const personalProjects: PersonalProject[] = [
   { slug: 'drive-sharing', name: 'Google Drive access', subtitle: 'Keep a few files private' },
   { slug: 'rider-pickup-delay', name: 'Rider pickup delays', subtitle: 'Pickup records and delay review' },
   { slug: 'gema', name: 'GEMA', subtitle: 'Care between appointments' },
-  { slug: 'roam', name: 'Roam', subtitle: 'AI travel planner' },
   { slug: 'zensenta', name: 'Zensenta', subtitle: 'Clinical workspace' },
-  { slug: 'influish', name: 'Influish', subtitle: 'Creator redesign' },
   { slug: 'relay', name: 'Relay', subtitle: 'Clearer handoff from Sales to CS' },
 ]
 

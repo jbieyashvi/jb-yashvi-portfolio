@@ -204,7 +204,7 @@ export default function App() {
           <Route path="/work/compass" element={<Compass />} />
           <Route path="/work/drive-sharing" element={<DriveSharing />} />
           <Route path="/work/rider-pickup-delay" element={<RiderPickupDelay />} />
-          {(['gema', 'roam', 'zensenta', 'influish', 'relay'] as const).map((slug) => (
+          {(['gema', 'zensenta', 'relay'] as const).map((slug) => (
             <Route key={slug} path={`/work/${slug}`} element={<PersonalProject slug={slug} />} />
           ))}
           {/* the Playground page became the Ideas in motion section; old links land there */}
