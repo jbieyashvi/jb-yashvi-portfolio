@@ -3606,3 +3606,219 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
   .dv-bubble--alex { justify-self: end; }
 }
 .dv-panel .dv-bubble--think { margin-bottom: 0.75rem; }
+
+/* ---------------------------------------------------------------
+   Rider pickup delays: builds on the dv-* case-study layout. Prototype phones, the flow at a
+   glance, sources, approaches and the walkthrough fixes; orange is the one extra accent.
+   --------------------------------------------------------------- */
+.rp { --rp-accent: #c2410c; --rp-wash: #fff4ec; }
+:root[data-theme='dark'] .rp { --rp-accent: #fb923c; --rp-wash: #2a1d14; }
+
+/* a prototype screen: the phone only, opening the enlarged view */
+.rp-phone {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 1px solid var(--rule);
+  border-radius: clamp(18px, 2.4vw, 28px);
+  background: #fff;
+  overflow: hidden;
+  cursor: zoom-in;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.08);
+}
+.rp-phone img { display: block; width: 100%; height: auto; }
+.rp-phone:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+
+/* the concept at a glance: three screens in reading order */
+.rp-flow { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem clamp(1rem, 3vw, 2.5rem); max-width: 760px; }
+.rp-flow li { display: grid; gap: 0.6rem; align-content: start; }
+.rp-flow .rp-phone { border-radius: clamp(12px, 1.4vw, 18px); }
+.rp-flow__label { display: flex; gap: 0.4rem; align-items: baseline; font-size: 0.85rem; font-weight: 500; }
+.rp-flow__num { color: var(--rp-accent); font-variant-numeric: tabular-nums; }
+.rp .dv-cap a { color: inherit; text-underline-offset: 3px; }
+
+/* public sources */
+.rp-sources { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--col-gap); max-width: 980px; }
+.rp-sources li { padding-top: 0.9rem; border-top: 2px solid var(--ink); }
+.rp-sources h3 { margin-top: 0.4rem; font-size: 1rem; line-height: 1.35; }
+.rp-sources h3 a { color: inherit; text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 3px; }
+.rp-sources h3 a:hover { text-decoration-color: currentColor; }
+.rp-sources__by { margin-top: 0.3rem; font-size: 0.85rem !important; color: var(--graphite); }
+.rp-sources li > p:last-child { margin-top: 0.6rem; color: var(--graphite); font-size: 0.95rem !important; }
+.rp-play { margin-top: clamp(2.5rem, 5vw, 3.5rem); }
+.rp-play__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 240px)); gap: clamp(1.25rem, 3vw, 2rem); align-items: start; }
+.rp-play > .dv-cap a { color: inherit; text-underline-offset: 3px; }
+
+/* paper sketches */
+.rp-sketches { display: grid; grid-template-columns: repeat(3, minmax(0, 300px)); gap: clamp(1rem, 2.5vw, 1.75rem); align-items: start; }
+
+/* change in thinking */
+.rp-shift { margin-top: 0.75rem; font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.6rem) !important; line-height: 1.3; max-width: 34ch; }
+.rp-shift__then { margin-top: 1.25rem; color: var(--graphite); }
+.rp-shift__why { margin-top: 1.25rem; max-width: 60ch; }
+/* what the evidence showed, beside what I proposed from it */
+.rp-basis { margin: 1.5rem 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--col-gap); max-width: 860px; }
+.rp-basis > div { padding: 0.9rem 1.1rem 1rem; border: 1px solid var(--rule); background: var(--paper); }
+.rp-basis > div.is-mine { border-style: dashed; border-color: var(--rp-accent); }
+.rp-basis dt { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--graphite); }
+.rp-basis .is-mine dt { color: var(--rp-accent); }
+.rp-basis dd { margin: 0.4rem 0 0; font-size: 0.98rem !important; }
+
+/* approaches: the chosen one carries the accent */
+.rp-approaches { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--col-gap); max-width: 1040px; }
+.rp-approaches li { padding: 1rem 1.1rem 1.15rem; border: 1px solid var(--rule); background: var(--paper); }
+.rp-approaches li.is-chosen { border-color: var(--rp-accent); background: var(--rp-wash); box-shadow: inset 3px 0 0 var(--rp-accent); }
+.rp-approaches__verdict { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--graphite); }
+.is-chosen .rp-approaches__verdict { color: var(--rp-accent); }
+.rp-approaches h3 { margin-top: 0.4rem; font-size: 1rem; line-height: 1.3; }
+.rp-approaches p { margin-top: 0.4rem; color: var(--graphite); font-size: 0.95rem !important; }
+
+/* final flow: a phone beside its decision */
+.rp-step { display: grid; grid-template-columns: minmax(0, 280px) minmax(0, 1fr); gap: clamp(1.5rem, 3.5vw, 2.75rem); align-items: center; }
+.rp-step .dv-step__text p { margin-top: 0.6rem; color: var(--graphite); max-width: 52ch; }
+.rp-step .dv-num { color: var(--rp-accent); }
+.rp-legend { margin-top: clamp(2.5rem, 5vw, 3.5rem); max-width: 980px; }
+.rp-legend dl { margin: 1rem 0 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--col-gap); }
+.rp-legend dl > div { padding-top: 0.75rem; border-top: 1px dashed var(--graphite); }
+.rp-legend dt { font-weight: 600; font-size: 0.95rem; }
+.rp-legend dd { margin: 0.3rem 0 0; color: var(--graphite); font-size: 0.95rem !important; }
+
+/* walkthrough: two before-and-after comparisons, drawn in HTML, then the smaller fixes */
+.rp-iters { margin-top: clamp(1.75rem, 3.5vw, 2.5rem); display: grid; gap: clamp(2rem, 4vw, 2.75rem); max-width: 980px; }
+.rp-iter__title { font-size: 1.05rem; }
+.rp-iter__pair { margin-top: 0.85rem; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(0.75rem, 2.5vw, 1.5rem); }
+.rp-iter__side { margin: 0; display: grid; grid-template-rows: auto 1fr auto; gap: 0.6rem; }
+.rp-iter__when { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--graphite); }
+.rp-iter__side.is-after .rp-iter__when { color: var(--rp-accent); }
+.rp-iter__side figcaption { color: var(--graphite); font-size: 0.92rem; line-height: 1.5; }
+.rp-iter__why { margin-top: 0.9rem; max-width: 64ch; }
+.rp-iter__src { margin-top: 0.5rem; color: var(--graphite); font-size: 0.85rem !important; line-height: 1.55; }
+.rp-iter__src .dv-tag { margin: 0 0.35rem 0 0; }
+.rp-iter__link { padding: 0; border: 0; background: none; font: inherit; color: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.rp-iter__link:hover { color: var(--ink); }
+.rp-iter__link:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+/* a simplified phone card: system font and the prototype's own light colours, in both themes */
+.rp-mock { display: grid; gap: 0.55rem; align-content: start; padding: 0.9rem; border: 1px solid #e5e7eb; border-radius: 14px; background: #fff; color: #111827; font: 0.82rem/1.35 system-ui, -apple-system, 'Segoe UI', sans-serif; }
+.rp-mock__kicker { font-size: 0.66rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: #6b7280; }
+.rp-mock__big { font-size: 1rem; font-weight: 700; }
+.rp-mock__btn { justify-self: stretch; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 8px; text-align: center; font-weight: 600; }
+.is-after .rp-mock__btn { border-color: #c2410c; color: #c2410c; }
+.rp-mock__row { display: flex; flex-wrap: wrap; gap: 0.35rem 0.5rem; align-items: center; padding-bottom: 0.5rem; border-bottom: 1px solid #e5e7eb; }
+.rp-mock__row > span { flex: 1 1 auto; color: #4b5563; }
+.rp-mock__row em { font-style: normal; font-size: 0.68rem; font-weight: 600; padding: 0.1rem 0.45rem; border: 1px solid #c2410c; border-radius: 999px; color: #c2410c; background: #fff4ec; }
+.rp-mock__check { display: flex; gap: 0.45rem; align-items: flex-start; }
+.rp-mock__check::before { content: '✓'; flex: none; display: grid; place-items: center; width: 1rem; height: 1rem; border-radius: 3px; background: #c2410c; color: #fff; font-size: 0.7rem; }
+.rp-mock__label { font-size: 0.72rem; font-weight: 600; color: #4b5563; }
+.rp-mock__field { display: block; padding: 0.55rem; border: 1px solid #d1d5db; border-radius: 8px; }
+.rp-mock__lines { display: grid; gap: 0.35rem; }
+.rp-mock__lines i { display: block; height: 0.45rem; border-radius: 4px; background: #e5e7eb; }
+.rp-mock__lines i + i { width: 60%; }
+.rp-others__title { margin-top: clamp(2rem, 4vw, 2.75rem); }
+.rp-others { list-style: none; padding: 0; margin: 0.75rem 0 0; display: grid; gap: 0.6rem; max-width: 980px; }
+.rp-others li { padding-left: 1rem; border-left: 2px solid var(--rule); }
+.rp-others li span { color: var(--graphite); }
+
+@media (max-width: 1100px) {
+  .rp-approaches { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+  .rp-sources, .rp-legend dl { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
+}
+@media (max-width: 760px) {
+  .rp-step { grid-template-columns: minmax(0, 1fr); }
+  .rp-step .rp-phone { max-width: 300px; }
+  .rp-sketches { grid-template-columns: minmax(0, 1fr); max-width: 360px; }
+}
+@media (max-width: 560px) {
+  .rp-flow { gap: 1rem 0.6rem; }
+  .rp-flow__label { font-size: 0.78rem; }
+  .rp-approaches, .rp-basis { grid-template-columns: minmax(0, 1fr); }
+  .rp-play__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Compass case study: the workflow diagram, approaches and build comparisons, on the .dv layout */
+.cp-links { display: grid; gap: 0.3rem; justify-items: start; }
+.cp-mini { list-style: none; padding: 0; margin: 1.25rem 0 0; display: flex; flex-wrap: wrap; gap: 0.4rem 0; font-size: 0.9rem; }
+.cp-mini__step { display: flex; align-items: center; padding: 0.2rem 0.6rem; border-radius: 6px; color: #0b1f3f; }
+.cp-mini__step:not(:last-child)::after { content: '→'; margin: 0 -0.35rem 0 0.75rem; color: var(--graphite); }
+.cp-mini__step:not(:last-child) { margin-right: 0.75rem; }
+
+/* each stage is styled by who does it: the Autobot, a person, the platform, or another system */
+.cp-flow-wrap { max-width: 980px; }
+.cp-flow { --gap: 1.5rem; list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--gap); }
+.cp-flow__step { position: relative; display: grid; gap: 0.3rem; align-content: start; padding: 0.75rem 0.8rem 0.85rem; border-radius: 10px; border: 1.5px solid transparent; color: #0b1f3f; }
+.cp-flow__step:not(:last-child)::after {
+  content: '→';
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: var(--gap);
+  text-align: center;
+  transform: translateY(-50%);
+  color: var(--graphite);
+}
+.cp-flow__who { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.8; }
+.dv .cp-flow__name { font-size: 0.98rem; font-weight: 600; line-height: 1.25; color: inherit; }
+.cp-flow__num { font-size: 0.75rem; opacity: 0.7; margin-right: 0.15rem; }
+.dv .cp-flow__body { font-size: 0.82rem; line-height: 1.4; color: inherit; }
+.cp-flow__shown { margin-top: 0.2rem; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase; }
+.cp-flow__shown::before { content: '✓ '; }
+.cp-flow__shown--no { opacity: 0.75; }
+.cp-flow__shown--no::before { content: '○ '; }
+.cp-flow__step--ai, .cp-mini__step--ai { background: #e7e1f8; border-color: #b9a9e8; }
+.cp-flow__step--human, .cp-mini__step--human { background: #cdebdd; border-color: #6fbf99; }
+.cp-flow__step--list, .cp-mini__step--list { background: #fff; border-color: #c9d4e4; }
+.cp-flow__step--external, .cp-mini__step--external { background: transparent; border: 1.5px dashed var(--graphite); color: var(--ink); }
+.cp-flow__step--ack, .cp-mini__step--ack { background: #fff08a; border-color: #d9c100; }
+.cp-flow__step--system, .cp-mini__step--system { background: #e6ebf2; border-color: #c9d4e4; }
+.cp-flow { --gap: 1.25rem; }
+.cp-flow__step { padding: 0.7rem 0.75rem; gap: 0.15rem; }
+.cp-flow__who { font-size: 0.68rem; white-space: nowrap; }
+.dv .cp-flow__name { white-space: nowrap; }
+.cp-flow__step--off { border-style: dashed; border-color: var(--graphite); }
+.cp-flow__key { display: flex; align-items: center; gap: 0.5rem; }
+.cp-flow__swatch { width: 1.5rem; height: 0.9rem; border: 1.5px dashed var(--graphite); border-radius: 4px; flex: none; }
+
+.cp-approaches { list-style: none; padding: 0; margin: 0 0 1.5rem; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.5rem, 3vw, 2.5rem) clamp(1.25rem, 2.5vw, 2rem); }
+.cp-approach { display: grid; gap: 0.75rem; align-content: start; }
+.cp-approach--final { padding: 0.9rem; margin: -0.9rem; border: 1.5px solid var(--ink); border-radius: 12px; }
+.cp-approach h3 { display: flex; gap: 0.6rem; align-items: center; }
+.cp-approach > p { color: var(--graphite); font-size: 0.95rem; }
+.cp-approach__tradeoff { margin: 0; display: grid; gap: 0.5rem; }
+.cp-approach__tradeoff dt { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--graphite); }
+.cp-approach__tradeoff dd { margin: 0.15rem 0 0; font-size: 0.95rem !important; }
+
+/* a full-width screen above its explanation, for screens too wide to read at 520px */
+.dv-step.cp-step--wide { grid-template-columns: minmax(0, 1fr); align-items: start; }
+.cp-step--wide .dv-why { max-width: none; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--col-gap); }
+
+.cp-pair + .cp-pair { margin-top: clamp(2rem, 4vw, 2.75rem); }
+.cp-pair__title { margin-bottom: 1rem; }
+.dv .cp-pair__tag { justify-self: start; padding: 0.1em 0.5em; border: 1px solid var(--graphite); border-radius: 4px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--graphite); }
+.dv .cp-pair__tag--final { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+.cp-end { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.cp-surfaces { max-width: 820px; margin-top: 0; }
+.cp-step--wide .cp-why { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.cp-gap { margin-top: clamp(2rem, 4vw, 2.75rem); }
+.dv-matrix.cp-matrix { max-width: 980px; overflow-x: auto; }
+.cp-matrix tbody th { white-space: nowrap; }
+
+@media (max-width: 1100px) {
+  .cp-flow { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .cp-flow__step:nth-child(3)::after { content: none; }
+  .cp-approaches { grid-template-columns: minmax(0, 1fr); max-width: 560px; }
+  .cp-approach--final { margin: 0; }
+}
+@media (max-width: 760px) {
+  .cp-flow { --gap: 1.6rem; grid-template-columns: minmax(0, 1fr); }
+  .cp-flow__step:not(:last-child)::after { content: '↓'; top: 100%; left: 50%; width: auto; transform: translateX(-50%); line-height: var(--gap); }
+  .cp-flow__step:nth-child(3)::after { content: '↓'; }
+  .cp-step--wide .dv-why { grid-template-columns: minmax(0, 1fr); }
+  .cp-step--wide .cp-why { grid-template-columns: minmax(0, 1fr); }
+  .cp-matrix table, .cp-matrix tbody, .cp-matrix tr, .cp-matrix th, .cp-matrix td { display: block; }
+  .cp-matrix thead { display: none; }
+  .cp-matrix tbody tr { padding: 0.75rem 0; border-top: 1px solid var(--rule); }
+  .cp-matrix tbody tr:first-child { border-top: 0; padding-top: 0; }
+  .dv-matrix.cp-matrix th, .dv-matrix.cp-matrix td { border: 0; padding: 0.2rem 0; }
+  .cp-matrix td::before { content: attr(data-label); display: block; font-size: 0.75rem; color: var(--graphite); }
+}

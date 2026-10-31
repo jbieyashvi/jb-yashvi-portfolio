@@ -10,7 +10,11 @@ const covers = [
   ['drive-sharing', 'public/work/drive-sharing/overview-share-dialog-1800.webp', { left: 56, top: 0, width: 1688, height: 1125 }],
   // GEMA's first PDF page: headline and phone, above the rock
   ['gema', 'public/work/personal/gema/01-2000.webp', { left: 0, top: 0, width: 2000, height: 1333 }],
+  // three prototype screens on a warm ground, made from the case study's own screenshots
+  ['rider-pickup-delay', 'public/work/rider-pickup-delay/cover-1800.webp', null],
   ['tan90', 'public/work/covers/home/tan90-1200.webp', null],
+  // the home cover (dashboard beside a token card), trimmed from 16:10 to 3:2
+  ['compass', 'public/work/covers/home/compass.png', { left: 50, top: 0, width: 1500, height: 1000 }],
 ]
 for (const [name, src, box] of covers) {
   const base = box ? sharp(src).extract(box) : sharp(src)

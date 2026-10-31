@@ -169,6 +169,7 @@ export interface PersonalProject { slug: string; name: string; subtitle: string 
 
 export const personalProjects: PersonalProject[] = [
   { slug: 'drive-sharing', name: 'Google Drive access', subtitle: 'Keep a few files private' },
+  { slug: 'rider-pickup-delay', name: 'Rider pickup delays', subtitle: 'Pickup records and delay review' },
   { slug: 'gema', name: 'GEMA', subtitle: 'Care between appointments' },
   { slug: 'roam', name: 'Roam', subtitle: 'AI travel planner' },
   { slug: 'zensenta', name: 'Zensenta', subtitle: 'Clinical workspace' },
@@ -196,10 +197,10 @@ export const featuredProjects: FeaturedProject[] = [
     summary: 'A cold-chain logistics platform. I designed its four portals: admin, warehouse, delivery and customer.',
   },
   {
-    slug: 'gema',
-    name: 'GEMA',
-    kind: 'Personal project · Mobile app concept',
-    summary: 'A mobile app concept that keeps everyday care tasks together, including reminders and visit notes.',
+    slug: 'compass',
+    name: 'Compass Group — CMP Autobot',
+    kind: 'Client project · Design system + AI build',
+    summary: 'A worklist where kitchen operators check AI-suggested ingredient matches and confirm, reject or fix them, hundreds at a time.',
   },
 ]
 

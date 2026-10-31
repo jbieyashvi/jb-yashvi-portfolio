@@ -14,6 +14,7 @@ import Retina from './pages/Retina'
 import Flowtech from './pages/Flowtech'
 import Compass from './pages/Compass'
 import DriveSharing from './pages/DriveSharing'
+import RiderPickupDelay from './pages/RiderPickupDelay'
 import PersonalProject from './pages/PersonalProject'
 import Gallery from './pages/Gallery'
 import NotFound from './pages/NotFound'
@@ -202,6 +203,7 @@ export default function App() {
           <Route path="/work/flowtech" element={<Flowtech />} />
           <Route path="/work/compass" element={<Compass />} />
           <Route path="/work/drive-sharing" element={<DriveSharing />} />
+          <Route path="/work/rider-pickup-delay" element={<RiderPickupDelay />} />
           {(['gema', 'roam', 'zensenta', 'influish', 'relay'] as const).map((slug) => (
             <Route key={slug} path={`/work/${slug}`} element={<PersonalProject slug={slug} />} />
           ))}
