@@ -3456,8 +3456,7 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
 .dv-results dd { margin: 0.5rem 0 0; }
 
 /* editorial highlight: same yellow and navy in both themes, wraps line by line */
-.dv mark,
-.t90-page mark {
+.dv mark {
   padding: 0.05em 0.12em;
   margin: 0 -0.04em;
   border-radius: 2px;

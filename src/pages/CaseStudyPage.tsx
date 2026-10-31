@@ -3,7 +3,6 @@ import CaseStudyViewer from '../components/CaseStudyViewer'
 import NextProject from '../components/NextProject'
 import NutrioStory from '../components/NutrioStory'
 import ProjectHeader from '../components/ProjectHeader'
-import Tan90Story from '../components/Tan90Story'
 import useTitle from '../components/useTitle'
 
 const nutrioSections = [
@@ -42,52 +41,18 @@ const content = {
     ],
     actions: null,
   },
-  tan90: {
-    name: 'TAN90',
-    type: 'Multi-portal product design',
-    pdf: '/case-studies/tan90-case-study.pdf',
-    pdfSize: '8 MB',
-    intro: (
-      <>
-        <p className="lede">
-          Tan90 is a cold-chain logistics platform. It connects admin, warehouse managers, delivery operations and customers
-          in one system, <mark>from placing an order to approving its Proof of Delivery</mark>.
-        </p>
-        <p>
-          I designed the platform across <mark>its four portals</mark>, covering order management, inventory, freezing stations, delivery
-          coordination and POD approval, through design handoff.
-        </p>
-        <p className="aside-note">
-          The design includes an AI-powered POD verification feature for the product’s users; the design itself is my own
-          work, not generated with AI.
-        </p>
-      </>
-    ),
-    meta: [
-      { label: 'My role', value: 'Product design' },
-      { label: 'Portals', value: 'Admin, warehouse manager, delivery, customer' },
-      { label: 'Key workflows', value: 'Orders, inventory, freezing stations, delivery coordination, POD approval' },
-      { label: 'Year', value: '2025' },
-    ],
-    actions: null,
-  },
 } as const
 
-export default function CaseStudyPage({ slug }: { slug: 'nutrio' | 'tan90' }) {
+export default function CaseStudyPage({ slug }: { slug: 'nutrio' }) {
   const c = content[slug]
   useTitle(`${c.name}, product design case study | Jb Yashvi`)
   return (
-    <article className={slug === 'tan90' ? 't90-page' : undefined}>
+    <article>
       <ProjectHeader name={c.name} type={c.type} intro={c.intro} meta={[...c.meta]} actions={c.actions} />
-      {slug === 'nutrio' && (
-        <>
-          <CaseNav sections={nutrioSections} />
-          <NutrioStory />
-        </>
-      )}
-      {slug === 'tan90' && <Tan90Story />}
+      <CaseNav sections={nutrioSections} />
+      <NutrioStory />
       <div id="full" tabIndex={-1}>
-        <CaseStudyViewer id={slug} name={c.name} pdf={c.pdf} pdfSize={c.pdfSize} lead={slug === 'tan90'} />
+        <CaseStudyViewer id={slug} name={c.name} pdf={c.pdf} pdfSize={c.pdfSize} />
       </div>
       <NextProject slug={slug} />
     </article>

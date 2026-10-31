@@ -3,11 +3,11 @@ import slices from '../data/caseSlices.json'
 import loadAhead from './loadAhead'
 
 interface Props {
-  id: 'nutrio' | 'tan90'
+  id: 'nutrio'
   name: string
   pdf: string
   pdfSize: string
-  /** the study is the page's first image (TAN90): its first slice loads at once, at high priority */
+  /** the study is the page's first image: its first slice loads at once, at high priority */
   lead?: boolean
 }
 

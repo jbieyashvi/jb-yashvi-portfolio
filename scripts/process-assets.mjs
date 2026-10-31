@@ -9,10 +9,8 @@ const webp = (src, dest, width, opts = {}) => sharp(src, { limitInputPixels: fal
 
 // Case-study covers: crop the opening spread of each PDF render
 const nutrio = join(tmpdir(), 'nutrio-render.png')
-const tan = join(tmpdir(), 'tan90-render.png')
 const covers = out('public/work/covers')
 await sharp(nutrio, { limitInputPixels: false }).extract({ left: 0, top: 0, width: 2000, height: 1026 }).resize(1600).webp({ quality: 84 }).toFile(`${covers}/nutrio.webp`)
-await sharp(tan, { limitInputPixels: false }).extract({ left: 0, top: 0, width: 2000, height: 1320 }).resize(1600).webp({ quality: 84 }).toFile(`${covers}/tan90.webp`)
 
 // Medurun
 const m = out('public/work/medurun')
