@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import CaseSidebar from '../components/CaseSidebar'
+import ShipwayStory from '../components/ShipwayStory'
 import External from '../components/External'
 import NextProject from '../components/NextProject'
 import { useLightbox } from '../components/Lightbox'
@@ -454,6 +455,8 @@ export default function Shipway() {
           </ul>
         </div>
       </header>
+
+      <ShipwayStory />
 
       <div className="dv-shell">
         <div className="dv-shell__inner dv-shell__grid">

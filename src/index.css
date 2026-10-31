@@ -1564,13 +1564,21 @@ html.has-intro { --in: 0.8s; }
 }
 .rcard__links span:first-child { color: var(--graphite); }
 .rcard__links a { font-weight: 500; text-underline-offset: 3px; }
+.rcard__facts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin: 0 1.15rem 1.15rem;
+}
+.rcard__facts li { padding: 0.65rem 0.7rem; border: 1px solid var(--edge); border-radius: 12px; background: var(--tone); }
+.rcard__value { display: block; font-size: 1.15rem; font-weight: 600; letter-spacing: -0.01em; }
+.rcard__label { display: block; margin-top: 0.2rem; color: var(--graphite); font-size: 0.75rem; line-height: 1.3; }
 
 /* the plan and the route over it */
 .route__map { height: 100%; min-height: 0; }
 .route__map svg { display: block; width: 100%; height: 100%; overflow: visible; }
-.route__ground { fill: url(#route-iso); }
-#route-iso path { fill: none; stroke: var(--rule); stroke-width: 1; opacity: 0.7; }
-#route-hatch path { stroke: var(--graphite); stroke-width: 0.8; opacity: 0.35; }
+.route pattern:not(.route__hatch) path { fill: none; stroke: var(--rule); stroke-width: 1; opacity: 0.7; }
+.route__hatch path { stroke: var(--graphite); stroke-width: 0.8; opacity: 0.35; }
 /* the road: three red lines, made from a wide red stroke, a paper gap and a thin red centre */
 .road { fill: none; stroke-linecap: round; stroke-linejoin: round; }
 .road--out { stroke-width: 20px; }
@@ -1581,7 +1589,7 @@ html.has-intro { --in: 0.8s; }
 .route__line .road { stroke-dasharray: var(--len, 0) 99999; stroke-dashoffset: var(--off, 0); }
 /* the buildings: pencil-grey until the route reaches them, then inked in with their colour */
 .rbuild path { fill: var(--paper); stroke: var(--graphite); stroke-width: 1.2; stroke-linejoin: round; stroke-linecap: round; transition: stroke 0.5s, fill 0.5s; }
-.rbuild .wall--r { fill: url(#route-hatch); }
+.rbuild .wall--r { fill: var(--hatch); }
 .rbuild .roof { fill: var(--paper); }
 .rbuild .win { fill: var(--paper); }
 .rbuild .stripe, .rbuild .pole, .rbuild .wave { fill: none; }
@@ -1591,6 +1599,14 @@ html.has-intro { --in: 0.8s; }
 .rbuild.is-past .accent, .rbuild.is-past .win--lit, .rbuild.is-past .win--door { fill: var(--tone); }
 .rbuild.is-past .win--door { fill: var(--edge); }
 .rbuild.is-past .wave { stroke: var(--edge); stroke-width: 2; }
+.rbuild .dot { fill: none; stroke-width: 3; }
+.rbuild .steam { fill: none; animation: rsteam 2.6s ease-in-out infinite; }
+.rbuild .steam--1 { animation-delay: -1.3s; }
+@keyframes rsteam {
+  0% { opacity: 0; translate: 0 4px; }
+  40% { opacity: 1; }
+  100% { opacity: 0; translate: 0 -10px; }
+}
 .rbuild--sun { --tone: var(--r-sun); --edge: var(--r-sun-edge); }
 .rbuild--sky { --tone: var(--r-sky); --edge: var(--r-sky-edge); }
 .rbuild--rose { --tone: var(--r-rose); --edge: var(--r-rose-edge); }
@@ -1658,6 +1674,10 @@ html.has-intro { --in: 0.8s; }
   .rcard__title { padding: 0.8rem 0.95rem 0; font-size: 1.15rem; }
   .rcard__body { padding: 0.4rem 0.95rem 0.9rem; font-size: 0.9rem; line-height: 1.45; }
   .rcard__links { margin: 0 0.95rem 0.9rem; padding-top: 0.7rem; font-size: 0.85rem; }
+  .rcard__facts { margin: 0 0.95rem 0.9rem; gap: 0.4rem; }
+  .rcard__facts li { padding: 0.45rem 0.55rem; }
+  .rcard__value { font-size: 1rem; }
+  .rcard__label { font-size: 0.7rem; }
   .rpin__label { font-size: 34px; stroke-width: 10px; }
   .rpin__year, .rpin__more { display: none; }
   .route__where { min-width: 0; }
@@ -1674,7 +1694,7 @@ html.has-intro { --in: 0.8s; }
 .route--still .route__steps { display: none; }
 .route--still .route__line .road { stroke-dasharray: none; }
 .route--still .route__marker { display: none; }
-.route--still .rtree > g, .route--still .rwalker { animation: none; }
+.route--still .rtree > g, .route--still .rwalker, .route--still .steam { animation: none; }
 
 /* ---------- How I work: four steps in one connected row ---------- */
 

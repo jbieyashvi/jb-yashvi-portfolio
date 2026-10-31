@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import CaseSidebar from '../components/CaseSidebar'
+import CompassStory from '../components/CompassStory'
 import External from '../components/External'
 import NextProject from '../components/NextProject'
 import { useLightbox } from '../components/Lightbox'
@@ -594,6 +595,8 @@ export default function Compass() {
           </ul>
         </div>
       </header>
+
+      <CompassStory />
 
       <div className="dv-shell">
         <div className="dv-shell__inner dv-shell__grid">
