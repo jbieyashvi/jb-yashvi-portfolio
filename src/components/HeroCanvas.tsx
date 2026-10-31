@@ -32,11 +32,13 @@ const Icon = ({ name }: { name: IconName }) => (
   </svg>
 )
 
-const SKILLS: [string, IconName][] = [
-  ['Product Design', 'layers'],
-  ['UI/UX', 'layout'],
-  ['AI Prototyping', 'spark'],
+// each skill's icon sits on its own colour, the same markers the story section uses
+const SKILLS: [string, IconName, string][] = [
+  ['Product Design', 'layers', 'sky'],
+  ['UI/UX', 'layout', 'rose'],
+  ['AI Prototyping', 'spark', 'lilac'],
 ]
+const MADE_WITH = ['Figma', 'Claude', 'Codex']
 
 /** frame proportions the Frame tool steps through; the first hugs the headline */
 const FRAMES = [
@@ -250,15 +252,20 @@ export default function HeroCanvas() {
             <div className="hero__tag hero__tag--skills">
               <p className="hero__tag-head">What I do</p>
               <ul>
-                {SKILLS.map(([label, icon]) => (
+                {SKILLS.map(([label, icon, tone]) => (
                   <li key={label}>
-                    <Icon name={icon} />
+                    <span className={`hero__chip hero__chip--${tone}`}><Icon name={icon} /></span>
                     {label}
                   </li>
                 ))}
               </ul>
             </div>
-            <p className="hero__tag hero__tag--tools"><span className="sr-only">Tools: </span>Figma · Claude · Codex</p>
+            <p className="hero__tag hero__tag--tools">
+              <span className="sr-only">Tools: </span>
+              {MADE_WITH.map((t, i) => (
+                <span key={t} className={`hero__tool-chip hero__tool-chip--${t.toLowerCase()}`}>{t}{i < MADE_WITH.length - 1 && <span className="sr-only">, </span>}</span>
+              ))}
+            </p>
           </div>
           <div className="hero__play" onPointerEnter={loadFonts} onFocus={loadFonts}>
             <p className="hero__hint" aria-live="polite">{status}</p>

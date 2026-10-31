@@ -625,21 +625,91 @@ main > article:not(.gallery-page) { background-color: var(--paper); }
   font-size: 1rem;
   line-height: 1.65;
 }
-.hero__tag--skills li .hero__icon { font-size: 1rem; color: var(--tag-head); }
+/* What I do: a yellow sticky note with a strip of tape, each skill on its own colour chip */
+.hero__tag--skills {
+  --note: #fff3b0;
+  --chip-sky: #c7e3ff;
+  --chip-rose: #ffd0c8;
+  --chip-lilac: #e2d6ff;
+  background: var(--note);
+  color: #1a1a1d;
+  outline-color: rgb(0 0 0 / 0.06);
+  box-shadow: 0 2px 3px rgb(0 0 0 / 0.05), 0 16px 32px -14px rgb(120 90 0 / 0.35);
+}
+.hero__tag--skills::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 56px;
+  height: 18px;
+  margin-left: -28px;
+  border-radius: 2px;
+  background: rgb(255 255 255 / 0.55);
+  outline: 1px solid rgb(0 0 0 / 0.05);
+  rotate: -5deg;
+}
+.hero__tag--skills .hero__tag-head { color: #6b5a12; font-weight: 600; letter-spacing: 0.01em; }
+.hero__tag--skills li { font-weight: 500; }
+.hero__tag--skills li + li { margin-top: 0.3rem; }
+.hero__chip {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 8px;
+  color: #1a1a1d;
+}
+.hero__chip .hero__icon { font-size: 1rem; }
+.hero__chip--sky { background: var(--chip-sky); }
+.hero__chip--rose { background: var(--chip-rose); }
+.hero__chip--lilac { background: var(--chip-lilac); }
+[data-theme='dark'] .hero__tag--skills {
+  --note: #3a3418;
+  --chip-sky: rgb(110 170 255 / 0.3);
+  --chip-rose: rgb(255 140 120 / 0.3);
+  --chip-lilac: rgb(170 140 255 / 0.32);
+  color: #f4f1e6;
+  outline-color: rgb(255 255 255 / 0.08);
+  box-shadow: 0 16px 32px -14px rgb(0 0 0 / 0.7);
+}
+[data-theme='dark'] .hero__tag--skills::before { background: rgb(255 255 255 / 0.14); outline: 0; }
+[data-theme='dark'] .hero__tag--skills .hero__tag-head { color: #e3cf6a; }
+[data-theme='dark'] .hero__chip { color: #f4f1e6; }
 
-/* lower left: below the "DESIGNER" glyphs, straddling the bottom edge */
+/* lower left: the tools as three stickers, below the "DESIGNER" glyphs */
 .hero__tag--tools {
   top: calc(100% - var(--h) * 0.06);
   right: calc(100% - var(--h) * 0.75);
-  padding: 0.6rem 0.95rem;
-  border: 1px solid var(--rule);
-  background: var(--paper);
-  color: var(--graphite);
-  font-size: 0.95rem;
+  display: flex;
+  gap: 0.4rem;
+  background: none;
   outline: 0;
   box-shadow: none;
   rotate: -3deg;
 }
+.hero__tool-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.85rem 0.45rem 0.65rem;
+  border: 1px solid var(--tint-edge);
+  border-radius: 999px;
+  background: linear-gradient(var(--tint), var(--tint)) var(--paper); /* solid, so the frame never shows through */
+  color: var(--ink);
+  font-size: 0.95rem;
+  font-weight: 500;
+  box-shadow: 0 8px 18px -12px rgb(0 0 0 / 0.35);
+}
+.hero__tool-chip::before { content: ''; width: 0.6em; height: 0.6em; border-radius: 50%; background: var(--dot); }
+.hero__tool-chip:nth-child(3) { rotate: 4deg; translate: 0 -2px; }
+.hero__tool-chip--figma { --dot: #a259ff; --tint: #f1e6ff; --tint-edge: #ddc8fb; }
+.hero__tool-chip--claude { --dot: #d97757; --tint: #ffe9e0; --tint-edge: #f6cdbd; }
+.hero__tool-chip--codex { --dot: #17171a; --tint: #eceef1; --tint-edge: #d6d9de; }
+[data-theme='dark'] .hero__tool-chip--figma { --tint: rgb(162 89 255 / 0.18); --tint-edge: rgb(162 89 255 / 0.35); }
+[data-theme='dark'] .hero__tool-chip--claude { --tint: rgb(217 119 87 / 0.18); --tint-edge: rgb(217 119 87 / 0.35); }
+[data-theme='dark'] .hero__tool-chip--codex { --dot: #f4f4f5; --tint: rgb(255 255 255 / 0.08); --tint-edge: rgb(255 255 255 / 0.16); }
 
 /* the toolbar row: a hint (and what the last tool did) on the left, Reset on the right */
 .hero__play {
@@ -3281,6 +3351,9 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
   .hero__tag--skills li + li::before { content: "·"; margin-inline: 0.45em; }
   .hero__tag--skills li .hero__icon { display: none; }
   [data-theme='dark'] .hero__tag--skills { box-shadow: none; }
+  .hero__tag--skills::before, .hero__chip { display: none; }
+  .hero__tag--skills li { font-weight: 400; }
+  .hero__tag--skills li + li { margin-top: 0; }
   .hero__tag--tools { display: none; }
   /* the canvas grid, simplified: larger plain cells, no major lines or plus marks */
   :root { --cell: 56px; }
