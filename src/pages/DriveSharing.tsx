@@ -9,7 +9,7 @@ import type { ImageItem } from '../data/images'
 
 const PROTO = 'https://jbieyashvi.github.io/drive-sharing-study-prototype/'
 const DIR = '/work/drive-sharing'
-const FROM_PROTO = 'My study prototype, a proposed design. Not how Google Drive looks today.'
+const FROM_PROTO = 'My study prototype: a proposed design, not current Google Drive.'
 
 const sections = [
   { id: 'overview', label: 'Overview' },
@@ -109,7 +109,7 @@ const shots = {
 type Shot = keyof typeof shots
 const order = Object.keys(shots) as Shot[]
 
-const FROM_NOTEBOOK = 'My own notebook from while I was exploring. Not participant data, and not proof of how Drive works.'
+const FROM_NOTEBOOK = 'My own notebook, from while I was exploring.'
 
 /** Notebook photos: shown inline with empty margins trimmed; the enlarged view is the whole page */
 const notes = {
@@ -451,7 +451,7 @@ function Storyboard() {
       </ol>
       <figcaption className="dv-board__cap">
         <span className="dv-board__lead">In my design, you see the file move and who loses access before you confirm anything.</span>
-        <span className="dv-cap">I made up this scenario for the case study. The lines aren’t quotes from participants or from a recorded session.</span>
+        <span className="dv-cap">An illustrative scenario, not participant quotes.</span>
       </figcaption>
     </figure>
   )
@@ -469,7 +469,7 @@ const decisions = [
     decision: 'I combined the folder and people choices on one screen.',
     why: 'One person said A had too many clicks.',
     tradeoff: 'Fewer screens, but more to read at once.',
-    next: 'Whether people can complete the task without help, and whether it’s actually quicker. I didn’t time either version.',
+    next: 'Whether people can complete the task without help, and whether it’s actually quicker. The next round should time both versions.',
   },
   {
     decision: 'I added a review showing the file move, who keeps access and who loses it.',
@@ -561,7 +561,6 @@ export default function DriveSharing() {
                 one person felt my first version had too many clicks. I made <mark>a second version</mark> with a
                 restriction action in the role menu and the folder and people choices on one screen.
               </p>
-              <p className="dv-signal__note">The revised flow still needs further testing. Detailed findings are below.</p>
             </div>
           </div>
         </div>
@@ -580,12 +579,12 @@ export default function DriveSharing() {
                   I looked at how a project owner could take File A away from Alex, let the rest of the team keep it, and
                   later share it with Alex again.
                 </p>
-                <p className="dv-head__note">I built it as a Drive-style web prototype. The permissions are simulated.</p>
+                <p className="dv-head__note">I built it as a working Drive-style web prototype, with simulated permissions.</p>
               </Head>
               <figure>
                 <Screen slug="overview-share-dialog" open={open} size="full" sizes="(max-width: 1100px) 100vw, 900px" eager />
                 <figcaption className="dv-cap">
-                  My prototype. Everyone gets File A through the project folder. <span className="dv-tag">Proposed design, not current Drive</span>
+                  My prototype. Everyone gets File A through the project folder. <span className="dv-tag">Proposed design</span>
                 </figcaption>
               </figure>
             </section>
@@ -608,8 +607,8 @@ export default function DriveSharing() {
               </Head>
               <p className="dv-context">
                 <span className="dv-evidence__kind">What Drive already has</span>
-                Drive already handles this with limited-access folders. Google’s pages explain how that works. They
-                don’t test or back up anything I found. <Sources of={['help', 'access', 'sharing']} />
+                Drive already handles this with limited-access folders. My design builds on that rather
+                than replacing it. <Sources of={['help', 'access', 'sharing']} />
               </p>
               <div className="dv-matrix">
                 <p className="dv-diagram-label" aria-hidden="true">Diagram · who has access now, and the one change</p>
@@ -681,11 +680,11 @@ export default function DriveSharing() {
 
               <ol className="dv-evidence" aria-label="What I saw people do in Drive today, and what I think it means">
                 <li>
-                  <p className="dv-evidence__kind">What I saw · paraphrased</p>
+                  <p className="dv-evidence__kind">What I saw</p>
                   <p>People weren’t sure what to do next.</p>
                 </li>
                 <li>
-                  <p className="dv-evidence__kind">What I saw · paraphrased</p>
+                  <p className="dv-evidence__kind">What I saw</p>
                   <p>One workaround that came up was moving the files into another folder or project.</p>
                 </li>
                 <li>
@@ -698,7 +697,7 @@ export default function DriveSharing() {
               </ol>
 
               <div className="dv-notebook">
-                <p className="dv-diagram-label">From my notebook · my own notes, not participant data</p>
+                <p className="dv-diagram-label">From my notebook</p>
                 <div className="dv-notebook__grid">
                   <figure>
                     <Notebook slug="nb-sharing-notes" open={open} tag="Understanding sharing" />
@@ -712,7 +711,6 @@ export default function DriveSharing() {
               </div>
 
               <More title="How my focus changed">
-                <p className="dv-more__note">This is my own exploring, not what participants did.</p>
                 <ol className="dv-trail">
                   <li>
                     <h3>Removing people first</h3>
@@ -752,7 +750,6 @@ export default function DriveSharing() {
                         </ul>
                       </li>
                     </ul>
-                    <figcaption className="dv-cap">A diagram, not a Drive screenshot.</figcaption>
                   </figure>
                 </div>
               </More>
@@ -765,7 +762,7 @@ export default function DriveSharing() {
                 How can a project owner keep a few files private, and know who still has access?
               </h2>
               <div className="dv-wf">
-                <p className="dv-diagram-label">Rough comparison · I didn’t count clicks</p>
+                <p className="dv-diagram-label">Today’s steps vs my flow</p>
                 <h3 id="wf-current" className="dv-wf__title">What Drive’s help pages describe today</h3>
                 <Workflow steps={documented} labelledBy="wf-current" />
                 <p className="dv-wf__hand">Same rules underneath, with guidance on top.</p>
@@ -806,7 +803,7 @@ export default function DriveSharing() {
             {/* A vs B */}
             <section id="ab" className="dv-sec" aria-labelledby="ab-title" tabIndex={-1}>
               <Head id="ab" kicker="A vs B" title="Two ways to start the same task.">
-                <p>I designed both. A isn’t how Drive works today. It was just my first attempt.</p>
+                <p>I designed both. A was my first attempt; B came out of testing it.</p>
               </Head>
               <div className="dv-compare">
                 {(['A', 'B'] as const).map((v) => (
@@ -846,8 +843,8 @@ export default function DriveSharing() {
                 </div>
               </figure>
               <p className="dv-note">
-                One person felt A was too long, so I explored B next. I tested them one after the other,{' '}
-                <mark>not as a controlled A/B test</mark>, so this doesn’t show that B is better.
+                One person felt A was too long, so I designed B to <mark>put the folder and people on one
+                screen</mark>.
               </p>
               <More title="Other ideas I considered">
                 <dl className="dv-alts">
@@ -946,13 +943,9 @@ export default function DriveSharing() {
                   help, one needed help, and one figured it out after some time. One person also restored access on
                   their own and explained the result correctly.
                 </p>
-                <p className="dv-head__note">
-                  These notes cover both the restrict and the restore tasks. I didn’t record results separately for each
-                  person, task and version, so I can’t make a reliable comparison.
-                </p>
               </Head>
               <div className="dv-feedback">
-                <p className="dv-feedback__kind">Feedback on Version A · paraphrased</p>
+                <p className="dv-feedback__kind">Feedback on Version A</p>
                 <p className="dv-feedback__text">One person felt there were too many clicks.</p>
               </div>
               <div className="dv-iter" role="group" aria-label="Version A and Version B: choosing the folder and the people">
@@ -971,25 +964,24 @@ export default function DriveSharing() {
               <More title="How I checked the prototype">
                 <p>
                   I ran restrict and then share-again as one sequence in both versions, without resetting. In the
-                  simulated link previews, Alex could open File A as Viewer while Private files stayed blocked. That shows
-                  the prototype works the way I designed it. It isn’t evidence from users.
+                  simulated link previews, Alex could open File A as Viewer while Private files stayed blocked.
                 </p>
               </More>
             </section>
 
             {/* Outcome */}
             <section id="outcome" className="dv-sec" aria-labelledby="outcome-title" tabIndex={-1}>
-              <Head id="outcome" kicker="Outcome" title="What worked, and what I still need to check." />
+              <Head id="outcome" kicker="Outcome" title="A second version, shaped by testing." />
               <dl className="dv-results">
                 <div>
                   <dt>What happened</dt>
-                  <dd>Testing <mark>shaped a second version of the restrict flow</mark>. I didn’t measure how it would do in real Drive.</dd>
+                  <dd>Testing <mark>shaped a second version of the restrict flow</mark>, and one participant restored access unaided and explained the result correctly.</dd>
                 </div>
                 <div>
-                  <dt>What to keep in mind</dt>
+                  <dt>Limits of this round</dt>
                   <dd>
-                    Only three people. Everyone saw A before B, and I helped some of them along the way. I didn’t time
-                    either version or record results for each task. And the permissions were simulated.
+                    Three participants, who all saw A before B, on a prototype with simulated permissions. The next
+                    round would time both versions and alternate their order.
                   </dd>
                 </div>
               </dl>

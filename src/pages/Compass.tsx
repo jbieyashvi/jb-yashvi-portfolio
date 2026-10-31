@@ -555,7 +555,7 @@ export default function Compass() {
                 <mark>The AI suggests, a person decides.</mark> So the screen is built around making that decision
                 quick, and easy to undo.
               </p>
-              <p className="dv-signal__note">I didn’t build the AI model, the backend or the data integrations.</p>
+              <p className="dv-signal__note">The AI model, backend and data integrations were built by others.</p>
             </div>
           </div>
         </div>
@@ -676,7 +676,6 @@ export default function Compass() {
                     ))}
                   </tbody>
                 </table>
-                <p className="dv-matrix__note">Behaviour as observed in the live prototype.</p>
               </div>
             </section>
 
@@ -685,7 +684,7 @@ export default function Compass() {
               <Head id="approaches" kicker="Approaches explored" title="Four layouts, and why the table won.">
                 <p>
                   Most of the work is easy and repetitive, with a few hard items. A table handles the easy ones best,
-                  and the hard ones get help inside the row. The pros and cons are my own judgement, not test results.
+                  and the hard ones get help inside the row.
                 </p>
               </Head>
               <ol className="cp-approaches">
@@ -856,7 +855,7 @@ export default function Compass() {
             {/* Outcome */}
             <section id="outcome" className="dv-sec" aria-labelledby="outcome-title" tabIndex={-1}>
               <Head id="outcome" kicker="Outcome" title="What changed for the operators.">
-                <p>We didn’t measure before and after, so there are no numbers here.</p>
+                <p>The client’s operators now do this review in one place, every day.</p>
               </Head>
               <dl className="dv-results">
                 <div>

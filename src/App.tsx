@@ -14,6 +14,7 @@ import Retina from './pages/Retina'
 import Flowtech from './pages/Flowtech'
 import Compass from './pages/Compass'
 import Shipway from './pages/Shipway'
+import Tan90 from './pages/Tan90'
 import DriveSharing from './pages/DriveSharing'
 import RiderPickupDelay from './pages/RiderPickupDelay'
 import PersonalProject from './pages/PersonalProject'
@@ -197,7 +198,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/work/nutrio" element={<CaseStudyPage slug="nutrio" />} />
-          <Route path="/work/tan90" element={<CaseStudyPage slug="tan90" />} />
+          <Route path="/work/tan90" element={<Tan90 />} />
           <Route path="/work/medurun" element={<Medurun />} />
           <Route path="/work/iica" element={<Iica />} />
           <Route path="/work/retina" element={<Retina />} />

@@ -17,6 +17,8 @@ export interface Project {
   mockup?: Mockup
   /** false: the page and next-project links stay, but it is not listed in Selected Work */
   showcased?: boolean
+  /** Selected Work row label, type · proof (the group heading gives the context) */
+  tagline: string
 }
 
 /** A real screenshot at its natural pixel size */
@@ -28,10 +30,49 @@ export type Mockup =
 
 export const projects: Project[] = [
   {
+    slug: 'shipway',
+    name: 'Shipway',
+    track: 'designed',
+    type: 'Shipping app for Android',
+    tagline: 'Android app · 10K+ downloads',
+    summary:
+      'Shipway by Unicommerce had a desktop shipping platform. Through Heizen, I designed its Android app for managing orders, assigning couriers and tracking shipments.',
+    contribution: 'Mobile product design, then a post-launch revision of the order cards. Launched on Android.',
+    cover: '/work/covers/home/shipway',
+    coverAlt: 'Three phones showing the Shipway app: the Orders list, a Track Order timeline and the Pickup tab of manifests.',
+    coverSize: [1440, 1080],
+  },
+  {
+    slug: 'tan90',
+    name: 'TAN90',
+    track: 'designed',
+    type: 'Multi-portal product design',
+    tagline: 'Logistics platform · 4 portals',
+    summary:
+      'A cold-chain logistics platform, from orders and inventory to delivery. I designed its four portals: admin, warehouse, delivery and customer.',
+    contribution: 'Product design across all four portals, from order management to POD approval, through design handoff.',
+    cover: '/work/covers/home/tan90',
+    coverAlt: 'A tablet with a keyboard showing the Tan90 admin dashboard.',
+    coverSize: [1279, 853],
+  },  {
+    slug: 'nutrio',
+    name: 'NUTRIO',
+    track: 'designed',
+    type: 'End-to-end product design',
+    tagline: '4 apps · Research to handoff',
+    summary:
+      'A healthy-food ordering and subscription product: customer app, delivery partner app, kitchen panel and admin dashboard.',
+    contribution: 'User research and end-to-end UX/UI design, through design handoff. No AI used.',
+    cover: '/work/covers/home/nutrio',
+    coverAlt: 'A phone on concrete steps showing the Nutrio welcome screen with a yellow Get Started button, beside the NutriO logo.',
+    coverSize: [1160, 773],
+  },
+  {
     slug: 'compass',
     name: 'Compass Group — CMP Autobot',
     track: 'system',
     type: 'Design system & AI-assisted platform',
+    tagline: 'B2B web tool · In daily use',
     summary:
       'A workspace where Compass Group India teams review AI-suggested ingredient-to-article matches, deciding each with Confirm, Reject or Link APL. I created its design system and built it using AI.',
     contribution: 'Created the design system and built the platform using AI.',
@@ -51,47 +92,13 @@ export const projects: Project[] = [
       ],
     },
   },
-  {
-    slug: 'nutrio',
-    name: 'NUTRIO',
-    track: 'designed',
-    type: 'End-to-end product design',
-    summary:
-      'A healthy-food ordering and subscription product: customer app, delivery partner app, kitchen panel and admin dashboard.',
-    contribution: 'User research and end-to-end UX/UI design, through design handoff. No AI used.',
-    cover: '/work/covers/home/nutrio',
-    coverAlt: 'A phone on concrete steps showing the Nutrio welcome screen with a yellow Get Started button, beside the NutriO logo.',
-    coverSize: [1160, 773],
-  },
-  {
-    slug: 'tan90',
-    name: 'TAN90',
-    track: 'designed',
-    type: 'Multi-portal product design',
-    summary:
-      'A cold-chain logistics platform, from orders and inventory to delivery. I designed its four portals: admin, warehouse, delivery and customer.',
-    contribution: 'Product design across all four portals, from order management to POD approval, through design handoff.',
-    cover: '/work/covers/home/tan90',
-    coverAlt: 'A tablet with a keyboard showing the Tan90 admin dashboard.',
-    coverSize: [1279, 853],
-  },
-  {
-    slug: 'shipway',
-    name: 'Shipway',
-    track: 'designed',
-    type: 'Shipping app for Android',
-    summary:
-      'Shipway by Unicommerce had a desktop shipping platform. Through Heizen, I designed its Android app for managing orders, assigning couriers and tracking shipments.',
-    contribution: 'Mobile product design, then a post-launch revision of the order cards. Launched on Android.',
-    cover: '/work/covers/home/shipway',
-    coverAlt: 'Three phones showing the Shipway app: the Orders list, a Track Order timeline and the Pickup tab of manifests.',
-    coverSize: [1440, 1080],
-  },
+
   {
     slug: 'medurun',
     name: 'Medurun',
     track: 'ai',
     type: 'Ambulance-booking platform landing page',
+    tagline: 'Landing page · Live on the web',
     summary: 'The public landing page for an ambulance-booking and emergency healthcare-mobility platform.',
     contribution: 'Built the landing page fully with AI. Live on the web.',
     cover: '/work/covers/home/medurun',
@@ -114,6 +121,7 @@ export const projects: Project[] = [
     name: 'IICA',
     track: 'ai',
     type: 'Creator collaboration mobile app',
+    tagline: 'Mobile app · Interactive prototype',
     summary: 'A mobile app for creators, artists and influencers: discovery, profiles, collaboration, events, classes and shopping.',
     contribution: 'Built the app’s interactive prototype fully with AI.',
     cover: '/work/covers/home/iica',
@@ -134,6 +142,7 @@ export const projects: Project[] = [
     name: 'Retina.ai',
     track: 'ai',
     type: 'Store staff mobile app',
+    tagline: 'Store staff app · Interactive prototype',
     summary: 'A store staff app for finding assigned articles, scanning barcodes and capturing product images.',
     contribution: 'Built the interactive prototype of this store staff app, one app within the larger Retina.ai project, fully with AI.',
     cover: '/work/covers/home/retina',
@@ -153,6 +162,7 @@ export const projects: Project[] = [
     name: 'Flowtech',
     track: 'ai',
     type: 'RFQ-to-PO web platform',
+    tagline: 'Web platform · Frontend prototype',
     summary:
       'An RFQ-to-PO platform that takes a deal from inquiry and quotation to PO verification and sales order. I designed its interface fully using AI.',
     contribution: 'Designed the platform’s interface fully using AI, shown here as a frontend prototype.',
@@ -177,40 +187,49 @@ export const projects: Project[] = [
 /** A personal project: its page at /work/{slug} shows the PDF itself. Files live in
  *  public/work/personal/: `${slug}.pdf`, its page slices in `${slug}/` (scripts/slice-pdfs.mjs)
  *  and a thumbnail cut from it, `${slug}-thumb.avif` / `.webp` (scripts/pdf-thumbs.mjs). */
-export interface PersonalProject { slug: string; name: string; subtitle: string }
+export interface PersonalProject {
+  slug: string
+  name: string
+  subtitle: string
+  /** false: the page keeps its route but is not listed in Selected Work or the next-project loop */
+  listed?: boolean
+}
 
 export const personalProjects: PersonalProject[] = [
   { slug: 'drive-sharing', name: 'Google Drive access', subtitle: 'Keep a few files private' },
   { slug: 'rider-pickup-delay', name: 'Rider pickup delays', subtitle: 'Pickup records and delay review' },
   { slug: 'gema', name: 'GEMA', subtitle: 'Care between appointments' },
-  { slug: 'zensenta', name: 'Zensenta', subtitle: 'Clinical workspace' },
+  { slug: 'zensenta', name: 'Zensenta', subtitle: 'Clinical workspace', listed: false },
   { slug: 'relay', name: 'Relay', subtitle: 'Clearer handoff from Sales to CS' },
 ]
 
 export const getProject = (slug: string) => projects.find((p) => p.slug === slug)!
 
 /** Shown first in Selected Work as large cards, and left out of the index below them. Covers
- *  live in public/work/featured/ as `${slug}-640` / `-1200`, .avif and .webp (scripts/featured-covers.mjs). */
-export interface FeaturedProject { slug: string; name: string; kind: string; summary: string }
+ *  live in public/work/featured/ as `${slug}-640` / `-1200`, .avif and .webp (scripts/featured-covers.mjs).
+ *  `loop`: a short muted screen recording, `${slug}-loop.mp4` / `.webm`, played over the cover on hover. */
+export interface FeaturedProject { slug: string; name: string; kind: string; summary: string; loop?: boolean }
 
 export const featuredProjects: FeaturedProject[] = [
   {
-    slug: 'drive-sharing',
-    name: 'Google Drive access',
-    kind: 'Personal project · Product study',
-    summary: 'A guided way to restrict a selected file, preserve team access, and review the consequences.',
-  },
-  {
-    slug: 'tan90',
-    name: 'TAN90',
-    kind: 'Client project · Designed by me',
-    summary: 'A cold-chain logistics platform. I designed its four portals: admin, warehouse, delivery and customer.',
+    slug: 'shipway',
+    name: 'Shipway',
+    kind: 'Client · Android app · Live, 10K+ downloads',
+    loop: true,
+    summary: 'A desktop shipping platform redesigned as an Android app: orders, couriers, pickups and tracking, now at 10K+ downloads.',
   },
   {
     slug: 'compass',
     name: 'Compass Group — CMP Autobot',
-    kind: 'Client project · Design system + AI build',
+    kind: 'Client · B2B web tool · In daily use',
+    loop: true,
     summary: 'A worklist where kitchen operators check AI-suggested ingredient matches and confirm, reject or fix them, hundreds at a time.',
+  },
+  {
+    slug: 'drive-sharing',
+    name: 'Google Drive access',
+    kind: 'Personal study · Web prototype · Tested with 3 people',
+    summary: 'A guided way to restrict a selected file, preserve team access, and review the consequences.',
   },
 ]
 
@@ -219,9 +238,12 @@ export const featuredProjects: FeaturedProject[] = [
  *  routes but are never linked to. */
 export const clientProjects = projects.filter((p) => p.showcased !== false)
 
+/** The personal projects visitors are shown; unlisted ones (listed: false) keep their routes */
+export const listedPersonalProjects = personalProjects.filter((p) => p.listed !== false)
+
 /** Every project visitors are shown, as one Next-project loop: the client projects, then the
  *  personal ones, then back to the first client project. */
-export const projectSequence: { slug: string; name: string }[] = [...clientProjects, ...personalProjects]
+export const projectSequence: { slug: string; name: string }[] = [...clientProjects, ...listedPersonalProjects]
 
 /** The project after `slug` in projectSequence, wrapping to the start. An unlisted client page
  *  (showcased: false) leads to the next listed client project after it. */

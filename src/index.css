@@ -959,6 +959,7 @@ html.has-intro { --in: 0.8s; }
 .wcard { display: grid; gap: 0.5rem; align-content: start; color: var(--on-night); text-decoration: none; }
 .wcard:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
 .wcard__media {
+  position: relative;
   display: block;
   aspect-ratio: 3 / 2;
   overflow: hidden;
@@ -967,6 +968,16 @@ html.has-intro { --in: 0.8s; }
   background: var(--cover-mat, var(--pale));
 }
 .wcard__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.45s var(--ease); }
+.wcard__loop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s var(--ease);
+}
+.wcard__loop.is-on { opacity: 1; }
 .wcard--tan90 { --cover-mat: #f9fbff; }
 .wcard--tan90 .wcard__media img { object-fit: contain; }
 .wcard__kind { color: var(--night-text); font-size: 0.8rem; letter-spacing: 0.04em; text-transform: uppercase; }
@@ -988,6 +999,7 @@ html.has-intro { --in: 0.8s; }
   padding-left: clamp(1.25rem, 3vw, 3rem);
   border-left: 1px solid var(--night-rule);
 }
+.windex__group + .windex__group { margin-top: 3rem; }
 
 .windex__head {
   display: flex;
@@ -3895,3 +3907,32 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
 .dv .sw-rounds .sw-phones { margin-top: 0.75rem; }
 .dv #iteration > .dv-h3 + p { margin-top: 0.6rem; max-width: 68ch; }
 .dv #iteration > p + .sw-compare { margin-top: 1.5rem; }
+
+/* ---------------------------------------------------------------
+   TAN90: portals, the order flow, the POD checklist
+--------------------------------------------------------------- */
+.dv .t9-problems { max-width: 64ch; }
+.dv .t9-note { margin-top: 1.25rem; max-width: 64ch; }
+.t9-portals { list-style: none; padding: 0; margin: 0 0 clamp(2rem, 4vw, 2.75rem); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem var(--col-gap); max-width: 980px; }
+.t9-portals li { display: grid; gap: 0.35rem; align-content: start; padding-top: 0.9rem; border-top: 2px solid var(--ink); }
+.dv .t9-portals__role { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--graphite); }
+.dv .t9-portals .dv-h3 { margin: 0; }
+.dv .t9-portals li > p:last-child { font-size: 0.92rem; line-height: 1.45; color: var(--graphite); }
+.dv .t9-flow .cp-flow__name, .t9-flow .cp-flow__who { white-space: normal; }
+.t9-pod { list-style: none; padding: 0; margin: 0 0 clamp(1.75rem, 3.5vw, 2.5rem); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem var(--col-gap); max-width: 980px; counter-reset: t9pod; }
+.t9-pod li { counter-increment: t9pod; display: grid; gap: 0.3rem; align-content: start; padding-top: 0.9rem; border-top: 2px solid var(--ink); font-size: 0.92rem; line-height: 1.45; color: var(--graphite); }
+.t9-pod li::before { content: counter(t9pod, decimal-leading-zero); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.04em; color: var(--graphite); }
+.t9-pod strong { display: block; font-size: 1rem; font-weight: 600; color: var(--ink); }
+.t9-grid { max-width: 980px; }
+.t9-grid figure { display: grid; gap: 0.6rem; margin: 0; }
+
+@media (max-width: 1100px) {
+  .t9-portals { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .t9-pod { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .t9-grid.dv-compare { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 420px) {
+  .t9-portals, .t9-pod { grid-template-columns: minmax(0, 1fr); }
+}

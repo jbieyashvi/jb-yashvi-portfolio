@@ -14,6 +14,8 @@ const covers = [
   ['rider-pickup-delay', 'public/work/rider-pickup-delay/cover-1800.webp', null],
   ['tan90', 'public/work/covers/home/tan90-1200.webp', null],
   // the home cover (dashboard beside a token card), trimmed from 16:10 to 3:2
+  // the home cover (three phones), trimmed from 4:3 to 3:2
+  ['shipway', 'public/work/covers/home/shipway.png', { left: 0, top: 40, width: 1440, height: 960 }],
   ['compass', 'public/work/covers/home/compass.png', { left: 50, top: 0, width: 1500, height: 1000 }],
 ]
 for (const [name, src, box] of covers) {
