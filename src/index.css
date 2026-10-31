@@ -197,8 +197,8 @@ section:focus { outline: none; }
    each section that has its own surface colour: blue lines on white and pale blue, white lines
    on deep blue. Being a background it never takes space or clicks. Images, panels, the nav and
    the viewers keep their solid surfaces on top of it. Vertical lines are centred, so they line
-   up from section to section. */
-body, .hero, .work, .about, .contact, .footer, .phead--dark {
+   up from section to section. Project pages keep it in their header only (see below). */
+body, .hero, .work, .about, .contact, .footer, .phead, .dv-top {
   --g-minor: rgb(7 55 123 / 0.05);
   --g-major: rgb(7 55 123 / 0.075);
   --g-plus: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cpath d='M120 114.5v11M114.5 120h11' stroke='%2307377b' stroke-opacity='.22' stroke-width='1.25'/%3E%3C/svg%3E");
@@ -230,7 +230,7 @@ body, .hero, .work, .about, .contact, .footer, .phead--dark {
   --g-plus: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cpath d='M120 114.5v11M114.5 120h11' stroke='%23fff' stroke-opacity='.2' stroke-width='1.25'/%3E%3C/svg%3E");
 }
 /* dark theme: the paper sections' grid in faint white, a touch stronger in the hero */
-[data-theme='dark'] :is(body, .about) {
+[data-theme='dark'] :is(body, .about, .phead, .dv-top) {
   --g-minor: rgb(255 255 255 / 0.028);
   --g-major: rgb(255 255 255 / 0.045);
   --g-plus: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cpath d='M120 114.5v11M114.5 120h11' stroke='%23fff' stroke-opacity='.16' stroke-width='1.25'/%3E%3C/svg%3E");
@@ -257,6 +257,10 @@ body, .hero, .work, .about, .contact, .footer, .phead--dark {
   --g-major: rgb(255 255 255 / 0.011);
   --g-plus: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cpath d='M120 114.5v11M114.5 120h11' stroke='%23fff' stroke-opacity='.035' stroke-width='1.25'/%3E%3C/svg%3E");
 }
+/* Project pages: the grid stays in the header, and the reading part below it is plain paper,
+   so it never runs through the copy or the screens */
+main > article:not(.gallery-page) { background-color: var(--paper); }
+
 /* Contact runs into the footer: it ends its grid on that edge where the footer starts its own */
 .contact { --gy: 100%; }
 
@@ -3026,10 +3030,10 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
   .hero__tag--tools { display: none; }
   /* the canvas grid, simplified: larger plain cells, no major lines or plus marks */
   :root { --cell: 56px; }
-  :is(body, .hero, .work, .about, .contact, .footer, .phead--dark) { --g-major: transparent; --g-plus: none; }
-  :is(body, .about) { --g-minor: rgb(7 55 123 / 0.035); }
+  :is(body, .hero, .work, .about, .contact, .footer, .phead, .dv-top) { --g-major: transparent; --g-plus: none; }
+  :is(body, .about, .phead, .dv-top) { --g-minor: rgb(7 55 123 / 0.035); }
   .hero { --g-minor: rgb(7 55 123 / 0.045); }
-  [data-theme='dark'] :is(body, .about) { --g-minor: rgb(255 255 255 / 0.02); }
+  [data-theme='dark'] :is(body, .about, .phead, .dv-top) { --g-minor: rgb(255 255 255 / 0.02); }
   [data-theme='dark'] .hero { --g-minor: rgb(255 255 255 / 0.03); }
   [data-theme='dark'] :is(.contact, .footer, .phead--dark) { --g-minor: rgb(255 255 255 / 0.02); }
   [data-theme='dark'] .work { --g-minor: rgb(255 255 255 / 0.009); }
