@@ -953,21 +953,54 @@ html.has-intro { --in: 0.8s; }
   letter-spacing: -0.02em;
 }
 
-/* featured: three large cards above the index; one column on phones */
+/* featured: one project per row, a medium image beside its text, sides alternating; image
+   over text on phones */
 .wfeat {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(1.25rem, 2.5vw, 2rem);
+  gap: clamp(3rem, 6vw, 5.5rem);
   margin-bottom: clamp(3rem, 6vw, 5rem);
 }
-.wcard { display: grid; gap: 0.5rem; align-content: start; color: var(--on-night); text-decoration: none; }
+.wcard {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  column-gap: clamp(1.5rem, 4.5vw, 4.5rem);
+  color: var(--on-night);
+  text-decoration: none;
+}
+.wfeat > li:nth-child(even) .wcard__media { order: 2; }
+.wcard__text { display: grid; gap: 0.6rem; justify-items: start; }
+.wcard__num { color: var(--night-text); font-size: 0.875rem; font-variant-numeric: tabular-nums; }
+.wcard__stat {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--night-rule);
+}
+.wcard__value { font-size: clamp(2rem, 3.4vw, 3rem); line-height: 1; letter-spacing: -0.02em; }
+.wcard__label { color: var(--night-text); font-size: 0.95rem; }
+.wcard__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: 0.7rem 1.1rem;
+  border: 1px solid var(--night-rule);
+  font-size: 0.95rem;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+@media (hover: hover) {
+  .wcard:hover .wcard__cta { background: #fff; color: var(--brand); border-color: #fff; }
+}
+.wcard:focus-visible .wcard__cta { background: #fff; color: var(--brand); border-color: #fff; }
 .wcard:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
 .wcard__media {
   position: relative;
   display: block;
   aspect-ratio: 3 / 2;
   overflow: hidden;
-  margin-bottom: 0.5rem;
   border: 1px solid var(--night-rule);
   background: var(--cover-mat, var(--pale));
 }
@@ -985,8 +1018,8 @@ html.has-intro { --in: 0.8s; }
 .wcard--tan90 { --cover-mat: #f9fbff; }
 .wcard--tan90 .wcard__media img { object-fit: contain; }
 .wcard__kind { color: var(--night-text); font-size: 0.8rem; letter-spacing: 0.04em; text-transform: uppercase; }
-.wcard__name { font-size: clamp(1.5rem, 2.2vw, 2rem); letter-spacing: -0.01em; line-height: 1.1; }
-.wcard__summary { color: var(--night-text); font-size: 0.95rem; line-height: 1.5; max-width: 42ch; }
+.wcard__name { font-size: clamp(1.75rem, 2.8vw, 2.5rem); letter-spacing: -0.015em; line-height: 1.08; }
+.wcard__summary { color: var(--night-text); font-size: 1rem; line-height: 1.55; max-width: 40ch; }
 @media (hover: hover) {
   .wcard:hover .wcard__media img { transform: scale(1.03); }
   .wcard:hover .wrow__arrow--page { transform: translateX(4px); }
@@ -995,6 +1028,14 @@ html.has-intro { --in: 0.8s; }
 @media (prefers-reduced-motion: reduce) {
   .wcard .wcard__media img, .wcard .wrow__arrow { transform: none !important; }
 }
+
+/* the rest of the work waits behind one button, so the featured three lead */
+.windex__toggle { display: flex; justify-content: center; }
+.windex__toggle .btn { gap: 0.6rem; }
+.windex__chev { display: inline-block; transition: transform 0.3s var(--ease); }
+.windex__toggle [aria-expanded='true'] .windex__chev { transform: rotate(180deg); }
+.windex__more-work { margin-top: clamp(2.5rem, 5vw, 4rem); }
+.windex__more-work[hidden] { display: none; }
 
 /* two equal columns with a hairline between them; stacked, client first, on phones */
 .windex__cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
@@ -1101,7 +1142,8 @@ html.has-intro { --in: 0.8s; }
   .windex__col:first-child { padding-right: 0; }
   .windex__col + .windex__col { margin-top: 3rem; padding-left: 0; border-left: 0; }
   .wrow { grid-template-columns: 6.5rem minmax(0, 1fr) auto; }
-  .wfeat { grid-template-columns: minmax(0, 1fr); }
+  .wcard, .wfeat > li:nth-child(even) .wcard { grid-template-columns: minmax(0, 1fr); row-gap: 1.25rem; }
+  .wfeat > li:nth-child(even) .wcard__media { order: 0; }
 }
 
 /* ---------- How I work: four steps in one connected row ---------- */

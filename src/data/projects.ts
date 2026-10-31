@@ -207,28 +207,39 @@ export const getProject = (slug: string) => projects.find((p) => p.slug === slug
 
 /** Shown first in Selected Work as large cards, and left out of the index below them. Covers
  *  live in public/work/featured/ as `${slug}-640` / `-1200`, .avif and .webp (scripts/featured-covers.mjs).
- *  `loop`: a short muted screen recording, `${slug}-loop.mp4` / `.webm`, played over the cover on hover. */
-export interface FeaturedProject { slug: string; name: string; kind: string; summary: string; loop?: boolean }
+ *  `loop`: a short muted screen recording, `${slug}-loop.mp4` / `.webm`, played over the cover on hover.
+ *  `highlight`: the one proof point shown large on the card, a short value and what it counts. */
+export interface FeaturedProject {
+  slug: string
+  name: string
+  kind: string
+  summary: string
+  highlight: { value: string; label: string }
+  loop?: boolean
+}
 
 export const featuredProjects: FeaturedProject[] = [
   {
     slug: 'shipway',
     name: 'Shipway',
-    kind: 'Client · Android app · Live, 10K+ downloads',
+    kind: 'Client · Android app',
+    highlight: { value: '10K+', label: 'downloads on Google Play' },
     loop: true,
-    summary: 'A desktop shipping platform redesigned as an Android app: orders, couriers, pickups and tracking, now at 10K+ downloads.',
+    summary: 'A desktop shipping platform redesigned as an Android app: orders, couriers, pickups and tracking.',
   },
   {
     slug: 'compass',
     name: 'Compass Group — CMP Autobot',
-    kind: 'Client · B2B web tool · In daily use',
+    kind: 'Client · B2B web tool',
+    highlight: { value: 'Daily', label: 'in use by kitchen operators' },
     loop: true,
     summary: 'A worklist where kitchen operators check AI-suggested ingredient matches and confirm, reject or fix them, hundreds at a time.',
   },
   {
     slug: 'drive-sharing',
     name: 'Google Drive access',
-    kind: 'Personal study · Web prototype · Tested with 3 people',
+    kind: 'Personal study · Web prototype',
+    highlight: { value: '3', label: 'people tested the prototype' },
     summary: 'A guided way to restrict a selected file, preserve team access, and review the consequences.',
   },
 ]
