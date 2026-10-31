@@ -13,6 +13,7 @@ import Iica from './pages/Iica'
 import Retina from './pages/Retina'
 import Flowtech from './pages/Flowtech'
 import Compass from './pages/Compass'
+import Shipway from './pages/Shipway'
 import DriveSharing from './pages/DriveSharing'
 import RiderPickupDelay from './pages/RiderPickupDelay'
 import PersonalProject from './pages/PersonalProject'
@@ -202,6 +203,7 @@ export default function App() {
           <Route path="/work/retina" element={<Retina />} />
           <Route path="/work/flowtech" element={<Flowtech />} />
           <Route path="/work/compass" element={<Compass />} />
+          <Route path="/work/shipway" element={<Shipway />} />
           <Route path="/work/drive-sharing" element={<DriveSharing />} />
           <Route path="/work/rider-pickup-delay" element={<RiderPickupDelay />} />
           {(['gema', 'zensenta', 'relay'] as const).map((slug) => (

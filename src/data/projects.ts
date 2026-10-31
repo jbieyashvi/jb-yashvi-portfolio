@@ -76,6 +76,18 @@ export const projects: Project[] = [
     coverSize: [1279, 853],
   },
   {
+    slug: 'shipway',
+    name: 'Shipway',
+    track: 'designed',
+    type: 'Shipping app for Android',
+    summary:
+      'Shipway by Unicommerce had a desktop shipping platform. Through Heizen, I designed its Android app for managing orders, assigning couriers and tracking shipments.',
+    contribution: 'Mobile product design, then a post-launch revision of the order cards. Launched on Android.',
+    cover: '/work/covers/home/shipway',
+    coverAlt: 'Three phones showing the Shipway app: the Orders list, a Track Order timeline and the Pickup tab of manifests.',
+    coverSize: [1440, 1080],
+  },
+  {
     slug: 'medurun',
     name: 'Medurun',
     track: 'ai',
