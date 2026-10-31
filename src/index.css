@@ -1167,6 +1167,197 @@ html.has-intro { --in: 0.8s; }
   .wmore__strip > li:nth-child(5n + 3) .wtile { --w: 80vw; }
 }
 
+/* ---------- How I got here: a story read in by scrolling ---------- */
+
+/* the section is taller than the screen and its inner part holds still (sticky) while the
+   words are read in; --k (words read so far) comes from StoryScroll on every scroll frame */
+.story {
+  --k: 0;
+  --mark-sun: #ffe58f;
+  --mark-sky: #c7e3ff;
+  --mark-rose: #ffd0c8;
+  --mark-lilac: #e2d6ff;
+  position: relative;
+  /* 80svh of reading, then a screen's worth for Selected Work to slide over it */
+  height: calc(280svh - var(--nav-h));
+  background: var(--paper);
+}
+[data-theme='dark'] .story {
+  --mark-sun: rgb(255 214 90 / 0.3);
+  --mark-sky: rgb(110 170 255 / 0.3);
+  --mark-rose: rgb(255 130 110 / 0.3);
+  --mark-lilac: rgb(170 140 255 / 0.32);
+}
+.story__pin {
+  position: sticky;
+  top: var(--nav-h);
+  display: flex;
+  align-items: center;
+  height: calc(100svh - var(--nav-h));
+  overflow: hidden;
+  overflow: clip;
+}
+/* as Selected Work covers it, the held story sinks back a little */
+.story__pin > * {
+  opacity: calc(1 - var(--cover, 0) * 0.6);
+  scale: calc(1 - var(--cover, 0) * 0.06);
+}
+/* Selected Work comes up over the story as one sheet */
+.story + .work {
+  z-index: 1;
+  margin-top: calc(var(--nav-h) - 100svh);
+  box-shadow: 0 -24px 60px -20px rgb(0 0 0 / 0.35);
+}
+.story__pin .wrap {
+  text-align: center;
+  opacity: calc(var(--fade, 1) * (1 - var(--cover, 0) * 0.6));
+  transform: translateY(calc(var(--lead, 0) * -0.5px));
+}
+.story__kicker {
+  margin-bottom: clamp(1.75rem, 3vw, 2.5rem);
+  color: var(--graphite);
+  font-size: clamp(0.875rem, 1vw, 1rem);
+  font-weight: 500;
+}
+.story__text {
+  max-width: 19em;
+  margin-inline: auto;
+  font-size: clamp(1.5rem, 3vw, 3rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+/* each word turns from grey to ink once the reading reaches it */
+.story__w {
+  position: relative;
+  opacity: clamp(0.16, calc(var(--k) - var(--i)), 1);
+}
+/* the marker sweeps in under a phrase as its words are read */
+.story__mark {
+  padding-inline: 0.06em;
+  background: linear-gradient(var(--mark), var(--mark)) no-repeat 0 62% / calc(clamp(0, (var(--k) - var(--s)) / var(--len), 1) * 100%) 72%;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.story__mark--sun { --mark: var(--mark-sun); }
+.story__mark--sky { --mark: var(--mark-sky); }
+.story__mark--rose { --mark: var(--mark-rose); }
+.story__mark--lilac { --mark: var(--mark-lilac); }
+/* the doodle draws itself once its phrase is read */
+.story__doodle {
+  position: absolute;
+  overflow: visible;
+  fill: none;
+  stroke: var(--ink);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: clamp(0, calc(1 - (var(--k) - var(--e)) / 2.5), 1);
+  pointer-events: none;
+}
+.story__doodle--house { right: -0.75em; top: -0.55em; width: 0.7em; height: 0.6em; stroke-width: 1.6; }
+.story__doodle--circle { inset: -0.12em -0.3em -0.08em -0.25em; width: calc(100% + 0.55em); height: calc(100% + 0.2em); stroke-width: 1.3; }
+.story__doodle--under { left: -0.05em; right: -0.1em; bottom: -0.16em; width: calc(100% + 0.15em); height: 0.24em; stroke-width: 1.6; }
+.story__doodle--stars { right: -1.1em; top: -0.15em; width: 0.95em; height: 0.72em; stroke: var(--tool-on); stroke-width: 1.5; }
+
+/* the side cards, pinned around the story like a FigJam board; each one rises in, settles at
+   its tilt and gets its tape once its phrase is read (--s: the phrase's first word) */
+.story__cards { position: absolute; inset: 0; pointer-events: none; }
+.scard {
+  --t: clamp(0, calc((var(--k) - var(--s)) / 1.6), 1);
+  position: absolute;
+  width: clamp(150px, 15vw, 230px);
+  padding: 8px 8px 10px;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  background: var(--paper);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.05), 0 18px 36px -18px rgb(0 0 0 / 0.28);
+  opacity: var(--t);
+  transform: translateY(calc((1 - var(--t)) * 48px)) rotate(calc(var(--r) * var(--t))) scale(calc(0.9 + var(--t) * 0.1));
+}
+.scard img, .scard__plan { display: block; width: 100%; height: auto; border-radius: 6px; }
+.scard figcaption { margin-top: 0.5rem; color: var(--graphite); font-size: 0.75rem; line-height: 1.3; }
+.scard__tape {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 64px;
+  height: 20px;
+  margin-left: -32px;
+  border-radius: 2px;
+  background: var(--tape);
+  opacity: 0.9;
+  transform: rotate(-4deg);
+}
+.scard__tape--sun { --tape: var(--mark-sun); }
+.scard__tape--sky { --tape: var(--mark-sky); }
+.scard__tape--rose { --tape: var(--mark-rose); }
+/* the blueprint: a floor plan that draws itself on blue paper */
+.scard__plan { background: #24446a; }
+.scard__plan path {
+  fill: none;
+  stroke: #f2f5f8;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: clamp(0, calc(1 - (var(--k) - var(--s)) / 4), 1);
+}
+.scard--plan { --r: -6deg; left: max(var(--gutter), 4%); top: 12%; }
+.scard--compass { --r: 5deg; right: max(var(--gutter), 4%); top: 10%; width: clamp(170px, 17vw, 260px); }
+.scard--shipway { --r: 4deg; left: max(var(--gutter), 7%); bottom: 9%; }
+/* the tools: three stickers, no card behind them */
+.scard--tools {
+  --r: -3deg;
+  right: max(var(--gutter), 7%);
+  bottom: 13%;
+  display: grid;
+  justify-items: start;
+  gap: 0.5rem;
+  width: auto;
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  list-style: none;
+}
+.stool {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.95rem 0.5rem 0.7rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--paper);
+  box-shadow: 0 10px 22px -14px rgb(0 0 0 / 0.35);
+  font-size: clamp(0.875rem, 1.1vw, 1.0625rem);
+  font-weight: 500;
+}
+.stool::before { content: ''; width: 0.7em; height: 0.7em; border-radius: 50%; background: var(--dot); }
+.stool--figma { --dot: #a259ff; transform: rotate(-4deg); }
+.stool--claude { --dot: #d97757; margin-left: 1.5rem; transform: rotate(3deg); }
+.stool--codex { --dot: var(--ink); margin-left: 0.5rem; transform: rotate(-2deg); }
+
+/* narrower screens: the cards move above and below the story, smaller */
+@media (max-width: 1100px) {
+  .scard { width: clamp(108px, 26vw, 170px); padding: 6px 6px 8px; }
+  .scard figcaption { font-size: 0.6875rem; }
+  .scard--plan { top: 4%; left: var(--gutter); }
+  .scard--compass { top: 6%; right: var(--gutter); width: clamp(120px, 30vw, 190px); }
+  .scard--shipway { bottom: 5%; left: var(--gutter); }
+  .scard--tools { bottom: 7%; right: var(--gutter); width: auto; }
+  .stool { font-size: 0.8125rem; padding: 0.4rem 0.75rem 0.4rem 0.55rem; }
+}
+
+@media (max-width: 760px) {
+  .story { height: calc(250svh - var(--nav-h)); }
+  .story__text { line-height: 1.24; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .story { height: auto; }
+  .story__pin { position: static; height: auto; padding-block: clamp(3.5rem, 8vw, 6rem); }
+  .story + .work { margin-top: 0; }
+}
+
 /* ---------- How I work: four steps in one connected row ---------- */
 
 .process { padding-block: clamp(3.5rem, 7vw, 6rem); }

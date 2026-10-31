@@ -4,6 +4,7 @@ import HowIWork from '../components/HowIWork'
 import IdeasInMotion from '../components/IdeasInMotion'
 import Journey from '../components/Journey'
 import OutsideTeaser from '../components/OutsideTeaser'
+import StoryScroll from '../components/StoryScroll'
 import useTitle from '../components/useTitle'
 import WorkShowcase from '../components/WorkShowcase'
 import { contact } from '../data/projects'
@@ -54,6 +55,8 @@ export default function Home() {
   return (
     <>
       <HeroCanvas />
+
+      <StoryScroll />
 
       <section id="work" className="work" aria-labelledby="work-title" tabIndex={-1}>
         <WorkShowcase />
