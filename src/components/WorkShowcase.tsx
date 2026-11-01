@@ -9,7 +9,7 @@ const FEATURED = '/work/featured'
 type Group = (typeof moreProjects)[number]['group']
 type Tile = (typeof moreProjects)[number] & { num: number }
 
-// numbered on from the featured three
+// numbered on from the featured projects
 const tiles: Tile[] = moreProjects.map((t, i) => ({ ...t, num: featuredProjects.length + i + 1 }))
 
 const FILTERS: { key: Group | 'all'; label: string }[] = [
@@ -20,8 +20,8 @@ const FILTERS: { key: Group | 'all'; label: string }[] = [
 ]
 
 /**
- * Selected work: the three featured projects one per row, image and text alternating sides, so
- * they lead. The rest follow as one horizontal strip of tiles in mixed sizes, each a big number
+ * Selected work: the first two featured projects one per row, image and text alternating sides, so
+ * they lead; the rest pair up two to a row, image over text. The rest follow as one horizontal strip of tiles in mixed sizes, each a big number
  * with the name under it, a line above that tracks the scroll, and filters below. Every tile is
  * one link to the project's page: a case study, or for a personal project its PDF page.
  */
@@ -159,10 +159,12 @@ function FeaturedCard({ project: p, index }: { project: FeaturedProject; index: 
           <span className="wcard__kind">{p.kind}</span>
           <span className="wcard__name">{p.name}</span>
           <span className="wcard__summary">{p.summary}</span>
-          <span className="wcard__stat">
-            <span className="wcard__value">{p.highlight.value}</span>
-            <span className="wcard__label">{p.highlight.label}</span>
-          </span>
+          {p.highlight && (
+            <span className="wcard__stat">
+              <span className="wcard__value">{p.highlight.value}</span>
+              <span className="wcard__label">{p.highlight.label}</span>
+            </span>
+          )}
           <span className="wcard__cta" aria-hidden="true">
             Read case study <span className="wrow__arrow wrow__arrow--page">→</span>
           </span>

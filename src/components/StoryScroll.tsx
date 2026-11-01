@@ -122,11 +122,10 @@ export default function StoryScroll() {
 
         {/* the side cards: each one is pinned up as its phrase is read */}
         <div className="story__cards" aria-hidden="true">
-          <figure className="scard scard--plan" style={at('house')}>
+          <figure className="scard scard--mnit" style={at('house')}>
             <span className="scard__tape scard__tape--sun" />
-            <svg className="scard__plan" viewBox="0 0 200 130">
-              <path pathLength={1} d="M10 10 H190 V120 H10 Z M82 10 V58 M82 78 V120 M10 66 H58 M106 66 H190 M142 66 V120 M58 66 A24 24 0 0 1 82 90" />
-            </svg>
+            {/* holding up the thesis on campus; the roll number on its cover is blurred */}
+            <img src="/story/mnit-thesis-460.webp" srcSet="/story/mnit-thesis-460.webp 460w, /story/mnit-thesis-920.webp 920w" sizes="230px" width={460} height={575} alt="" loading="lazy" decoding="async" />
             <figcaption>B.Arch · MNIT Jaipur · 2025</figcaption>
           </figure>
           <figure className="scard scard--compass" style={at('circle')}>

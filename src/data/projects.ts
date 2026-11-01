@@ -207,17 +207,18 @@ export const getProject = (slug: string) => projects.find((p) => p.slug === slug
 
 /** Appended to home cover URLs. Covers keep their file names and browsers keep images for a
  *  while, so bump this whenever a cover image is replaced or visitors keep seeing the old one. */
-export const COVER_V = '?v=2'
+export const COVER_V = '?v=3'
 
 /** Shown first in Selected Work as large cards, and left out of the index below them. Covers
  *  live in public/work/featured/ as `${slug}-640` / `-1200`, .avif and .webp (scripts/featured-covers.mjs).
- *  `highlight`: the one proof point shown large on the card, a short value and what it counts. */
+ *  `highlight`: the one proof point shown large on the card, a short value and what it counts;
+ *  left out when there's no proof point yet. */
 export interface FeaturedProject {
   slug: string
   name: string
   kind: string
   summary: string
-  highlight: { value: string; label: string }
+  highlight?: { value: string; label: string }
 }
 
 export const featuredProjects: FeaturedProject[] = [
@@ -242,6 +243,12 @@ export const featuredProjects: FeaturedProject[] = [
     highlight: { value: '3', label: 'people tested the prototype' },
     summary: 'A guided way to restrict a selected file, preserve team access, and review the consequences.',
   },
+  {
+    slug: 'wavo',
+    name: 'WAVO',
+    kind: 'Independent concept',
+    summary: 'Hourly electric scooty rentals',
+  },
 ]
 
 /** The client projects visitors are shown, in order: Selected Work, résumé links and the
@@ -254,7 +261,7 @@ export const listedPersonalProjects = personalProjects.filter((p) => p.listed !=
 
 const isFeatured = (slug: string) => featuredProjects.some((f) => f.slug === slug)
 
-/** Everything after the featured three, in the order of the More projects strip: client, then
+/** Everything after the featured projects, in the order of the More projects strip: client, then
  *  built with AI, then personal */
 export const moreProjects: { slug: string; name: string; meta: string; group: 'client' | 'ai' | 'personal'; cover: string }[] = [
   ...clientProjects.filter((p) => !isFeatured(p.slug) && p.track !== 'ai').map((p) => ({ slug: p.slug, name: p.name, meta: p.tagline, group: 'client' as const, cover: p.cover })),
@@ -264,7 +271,7 @@ export const moreProjects: { slug: string; name: string; meta: string; group: 'c
 ]
 
 /** Every project visitors are shown, as one Next-project loop in home-page order: the featured
- *  three, then the More projects strip, then back to the first featured project. */
+ *  projects, then the More projects strip, then back to the first featured project. */
 export const projectSequence: { slug: string; name: string }[] = [...featuredProjects, ...moreProjects].map(({ slug, name }) => ({ slug, name }))
 
 /** The project after `slug` in projectSequence, wrapping to the start. An unlisted client page

@@ -19,6 +19,8 @@ const covers = [
   ['shipway', 'public/work/covers/home/shipway-promo.png', null],
   // the real dashboard on a laptop against a sunlit wall, rendered from an HTML layout
   ['compass', 'public/work/covers/home/compass-laptop.png', null],
+  // the WAVO prototype's Welcome screen on an iPhone held up against the sky (free MOCKUPASIA mockup, sky extended at the sides)
+  ['wavo', 'public/work/wavo/cover.png', null],
 ]
 for (const [name, src, box] of covers) {
   const base = box ? sharp(src).extract(box) : sharp(src)

@@ -17,6 +17,7 @@ import Compass from './pages/Compass'
 import Shipway from './pages/Shipway'
 import Tan90 from './pages/Tan90'
 import DriveSharing from './pages/DriveSharing'
+import Wavo from './pages/Wavo'
 import RiderPickupDelay from './pages/RiderPickupDelay'
 import PersonalProject from './pages/PersonalProject'
 import Gallery from './pages/Gallery'
@@ -212,6 +213,7 @@ export default function App() {
           <Route path="/work/compass" element={<Compass />} />
           <Route path="/work/shipway" element={<Shipway />} />
           <Route path="/work/drive-sharing" element={<DriveSharing />} />
+          <Route path="/work/wavo" element={<Wavo />} />
           <Route path="/work/rider-pickup-delay" element={<RiderPickupDelay />} />
           {(['gema', 'zensenta', 'relay'] as const).map((slug) => (
             <Route key={slug} path={`/work/${slug}`} element={<PersonalProject slug={slug} />} />
