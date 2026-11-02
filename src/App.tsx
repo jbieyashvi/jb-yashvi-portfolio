@@ -13,7 +13,6 @@ import { lazyPage } from './components/lazyPage'
 // every page but the homepage loads its code separately (see lazyPage)
 const CaseStudyPage = lazyPage(['/work/nutrio'], () => import('./pages/CaseStudyPage'))
 const Medurun = lazyPage(['/work/medurun'], () => import('./pages/Medurun'))
-const Iica = lazyPage(['/work/iica'], () => import('./pages/Iica'))
 const Retina = lazyPage(['/work/retina'], () => import('./pages/Retina'))
 const Flowtech = lazyPage(['/work/flowtech'], () => import('./pages/Flowtech'))
 const Compass = lazyPage(['/work/compass'], () => import('./pages/Compass'))
@@ -23,7 +22,7 @@ const Moss = lazyPage(['/work/moss'], () => import('./pages/Moss'))
 const DriveSharing = lazyPage(['/work/drive-sharing'], () => import('./pages/DriveSharing'))
 const Wavo = lazyPage(['/work/wavo'], () => import('./pages/Wavo'))
 const RiderPickupDelay = lazyPage(['/work/rider-pickup-delay'], () => import('./pages/RiderPickupDelay'))
-const PersonalProject = lazyPage(['/work/gema', '/work/zensenta', '/work/relay'], () => import('./pages/PersonalProject'))
+const PersonalProject = lazyPage(['/work/zensenta'], () => import('./pages/PersonalProject'))
 const Gallery = lazyPage(['/gallery'], () => import('./pages/Gallery'))
 const NotFound = lazyPage(['*'], () => import('./pages/NotFound'))
 
@@ -213,7 +212,6 @@ export default function App() {
             <Route path="/work/tan90" element={<Tan90 />} />
             <Route path="/work/moss" element={<Moss />} />
             <Route path="/work/medurun" element={<Medurun />} />
-            <Route path="/work/iica" element={<Iica />} />
             <Route path="/work/retina" element={<Retina />} />
             <Route path="/work/flowtech" element={<Flowtech />} />
             <Route path="/work/compass" element={<Compass />} />
@@ -221,8 +219,10 @@ export default function App() {
             <Route path="/work/drive-sharing" element={<DriveSharing />} />
             <Route path="/work/wavo" element={<Wavo />} />
             <Route path="/work/rider-pickup-delay" element={<RiderPickupDelay />} />
-            {(['gema', 'zensenta', 'relay'] as const).map((slug) => (
-              <Route key={slug} path={`/work/${slug}`} element={<PersonalProject slug={slug} />} />
+            <Route path="/work/zensenta" element={<PersonalProject slug="zensenta" />} />
+            {/* projects taken off the portfolio; old links land on Selected Work */}
+            {['iica', 'gema', 'relay'].map((slug) => (
+              <Route key={slug} path={`/work/${slug}`} element={<Navigate to="/#work" replace />} />
             ))}
             {/* the Playground page became the Ideas in motion section; old links land there */}
             <Route path="/playground" element={<Navigate to="/#ideas" replace />} />

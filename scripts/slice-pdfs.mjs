@@ -13,7 +13,7 @@ sharp.concurrency(2)
 const personal = (id) => ({ id, pdf: `public/work/personal/${id}.pdf`, out: `public/work/personal/${id}` })
 const cases = [
   { id: 'nutrio', pdf: 'public/case-studies/nutrio-case-study.pdf', out: 'public/case-studies/nutrio' },
-  ...['gema', 'roam', 'zensenta', 'influish', 'relay'].map(personal),
+  ...['roam', 'zensenta', 'influish'].map(personal),
 ]
 const SLICE = 1600 // px tall per slice at full width (2000px)
 const MANIFEST = 'src/data/caseSlices.json'

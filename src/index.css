@@ -1201,10 +1201,8 @@ html.has-intro:not(.intro-done) .boot { display: block; position: fixed; inset: 
   background: var(--cover-mat, var(--pale));
 }
 .wtile__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s var(--ease); }
-.wtile--gema .wtile__media img { object-position: 25% center; }
 .wtile--nutrio { --cover-mat: #b1b0ac; }
 .wtile--medurun { --cover-mat: #cfbdb3; }
-.wtile--iica { --cover-mat: #c2c1c1; }
 .wtile--retina { --cover-mat: #b5afa8; }
 .wtile--flowtech { --cover-mat: #554f43; }
 @media (hover: hover) {
@@ -3053,7 +3051,7 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
 }
 .dev-phone img { border-radius: calc(var(--pw) * 0.12); }
 
-/* IICA: three screens, the middle one larger and raised */
+/* three screens: the middle one larger and raised */
 .mock--n3 { --u: min(1cqh, 0.79cqw); }
 .mock--n3 .dev-phone { --ph: 72; }
 .mock--n3 .dev-phone:nth-child(1) { translate: 0 calc(var(--u) * 8); }

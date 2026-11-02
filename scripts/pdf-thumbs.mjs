@@ -10,7 +10,7 @@ import { join } from 'node:path'
 
 const DIR = 'public/work/personal'
 const DPI = 144
-const CROPS = { gema: 0, roam: 350, zensenta: 0, influish: 3000, relay: 0 }
+const CROPS = { roam: 350, zensenta: 0, influish: 3000 }
 
 const tmp = mkdtempSync(join(tmpdir(), 'pdf-thumbs-'))
 for (const [name, top] of Object.entries(CROPS)) {

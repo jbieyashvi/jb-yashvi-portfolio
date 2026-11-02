@@ -144,26 +144,6 @@ export const projects: Project[] = [
     },
   },
   {
-    slug: 'iica',
-    name: 'IICA',
-    track: 'ai',
-    type: 'Creator collaboration mobile app',
-    tagline: 'Mobile app · Interactive prototype',
-    summary: 'A mobile app for creators, artists and influencers: discovery, profiles, collaboration, events, classes and shopping.',
-    contribution: 'Built the app’s interactive prototype fully with AI.',
-    cover: '/work/covers/home/iica',
-    coverAlt: 'A phone held in a hand showing the IICA home screen.',
-    coverSize: [1449, 1085],
-    mockup: {
-      device: 'phones',
-      screens: [
-        { src: '/work/iica/home.webp', alt: 'IICA home screen with a creator banner, artist spotlight and quick actions.', w: 780, h: 1688 },
-        { src: '/work/iica/profile.webp', alt: 'Artist profile for Ananya Rao with a Request Collaboration button.', w: 780, h: 1688 },
-        { src: '/work/iica/matches.webp', alt: 'Swipeable match card for a dancer, marked 92% match.', w: 780, h: 1688 },
-      ],
-    },
-  },
-  {
     slug: 'retina',
     showcased: false,
     name: 'Retina.ai',
@@ -225,9 +205,7 @@ export interface PersonalProject {
 export const personalProjects: PersonalProject[] = [
   { slug: 'drive-sharing', name: 'Google Drive access', subtitle: 'Keep a few files private' },
   { slug: 'rider-pickup-delay', name: 'Rider pickup delays', subtitle: 'Pickup records and delay review' },
-  { slug: 'gema', name: 'GEMA', subtitle: 'Care between appointments' },
   { slug: 'zensenta', name: 'Zensenta', subtitle: 'Clinical workspace', listed: false },
-  { slug: 'relay', name: 'Relay', subtitle: 'Clearer handoff from Sales to CS' },
 ]
 
 export const getProject = (slug: string) => projects.find((p) => p.slug === slug)!

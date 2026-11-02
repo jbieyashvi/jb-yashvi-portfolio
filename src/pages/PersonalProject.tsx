@@ -6,7 +6,7 @@ import NextProject from '../components/NextProject'
 import useTitle from '../components/useTitle'
 import { pdfMid } from '../components/srcset'
 
-type Slug = 'gema' | 'zensenta' | 'relay'
+type Slug = 'zensenta'
 
 /**
  * A personal project is its PDF: the page shows only the name and every page of the original
