@@ -120,6 +120,7 @@ function TileCard({ tile: t }: { tile: Tile }) {
               decoding="async"
             />
           </picture>
+          {t.badge && <span className="wtile__badge">{t.badge}</span>}
         </span>
         <span className="wtile__cap">
           <span className="wtile__num">{pad(t.num)}.</span>

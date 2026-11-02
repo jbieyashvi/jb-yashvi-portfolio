@@ -19,6 +19,8 @@ export interface Project {
   showcased?: boolean
   /** Selected Work row label, type · proof (the group heading gives the context) */
   tagline: string
+  /** A short label shown on the project's More projects tile */
+  badge?: string
 }
 
 /** A real screenshot at its natural pixel size */
@@ -54,6 +56,31 @@ export const projects: Project[] = [
     cover: '/work/covers/home/tan90',
     coverAlt: 'A laptop held up against the sky, showing the Tan90 admin dashboard.',
     coverSize: [1800, 1200],
+  },
+  {
+    slug: 'moss',
+    name: 'Moss',
+    track: 'designed',
+    type: 'Landing page design',
+    tagline: 'Landing page · Backed by Y Combinator',
+    badge: 'Y Combinator · 2025',
+    summary:
+      'Moss, by InferEdge, is an on-device search engine for AI apps and agents. I designed its landing page; the company was later backed by Y Combinator in 2025.',
+    contribution: 'Landing page design in Figma.',
+    cover: '/work/covers/home/moss',
+    coverAlt: 'A laptop on a white bench showing the Moss landing page: Next-gen AI search for agents.',
+    coverSize: [1800, 1200],
+    mockup: {
+      device: 'laptop',
+      screens: [
+        {
+          src: '/work/moss/hero-1800.webp',
+          alt: 'The Moss landing page hero on a laptop: the headline Next-gen AI search for agents, Get Early Access and Try Demo buttons, and a card for the on-device semantic search SDK with an npm install command.',
+          w: 1800,
+          h: 1125,
+        },
+      ],
+    },
   },  {
     slug: 'nutrio',
     name: 'NUTRIO',
@@ -263,8 +290,8 @@ const isFeatured = (slug: string) => featuredProjects.some((f) => f.slug === slu
 
 /** Everything after the featured projects, in the order of the More projects strip: client, then
  *  built with AI, then personal */
-export const moreProjects: { slug: string; name: string; meta: string; group: 'client' | 'ai' | 'personal'; cover: string }[] = [
-  ...clientProjects.filter((p) => !isFeatured(p.slug) && p.track !== 'ai').map((p) => ({ slug: p.slug, name: p.name, meta: p.tagline, group: 'client' as const, cover: p.cover })),
+export const moreProjects: { slug: string; name: string; meta: string; group: 'client' | 'ai' | 'personal'; cover: string; badge?: string }[] = [
+  ...clientProjects.filter((p) => !isFeatured(p.slug) && p.track !== 'ai').map((p) => ({ slug: p.slug, name: p.name, meta: p.tagline, group: 'client' as const, cover: p.cover, badge: p.badge })),
   ...clientProjects.filter((p) => !isFeatured(p.slug) && p.track === 'ai').map((p) => ({ slug: p.slug, name: p.name, meta: p.tagline, group: 'ai' as const, cover: p.cover })),
   // personal tiles use the 3:2 covers made by scripts/featured-covers.mjs
   ...listedPersonalProjects.filter((p) => !isFeatured(p.slug)).map((p) => ({ slug: p.slug, name: p.name, meta: p.subtitle, group: 'personal' as const, cover: `/work/featured/${p.slug}` })),

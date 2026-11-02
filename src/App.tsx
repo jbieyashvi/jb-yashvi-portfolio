@@ -19,6 +19,7 @@ const Flowtech = lazyPage(['/work/flowtech'], () => import('./pages/Flowtech'))
 const Compass = lazyPage(['/work/compass'], () => import('./pages/Compass'))
 const Shipway = lazyPage(['/work/shipway'], () => import('./pages/Shipway'))
 const Tan90 = lazyPage(['/work/tan90'], () => import('./pages/Tan90'))
+const Moss = lazyPage(['/work/moss'], () => import('./pages/Moss'))
 const DriveSharing = lazyPage(['/work/drive-sharing'], () => import('./pages/DriveSharing'))
 const Wavo = lazyPage(['/work/wavo'], () => import('./pages/Wavo'))
 const RiderPickupDelay = lazyPage(['/work/rider-pickup-delay'], () => import('./pages/RiderPickupDelay'))
@@ -210,6 +211,7 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/work/nutrio" element={<CaseStudyPage slug="nutrio" />} />
             <Route path="/work/tan90" element={<Tan90 />} />
+            <Route path="/work/moss" element={<Moss />} />
             <Route path="/work/medurun" element={<Medurun />} />
             <Route path="/work/iica" element={<Iica />} />
             <Route path="/work/retina" element={<Retina />} />

@@ -8,7 +8,6 @@ import loadAhead, { warmUp } from '../components/loadAhead'
 import type { ImageItem } from '../data/images'
 
 const DIR = '/work/wavo'
-const FIGMA = 'https://www.figma.com/design/R6poYtYu01a1FO2FYUG428/wavo?node-id=28-2'
 const FROM_APP = 'WAVO interactive concept, sample data. Simulated payments, locks and checks.'
 
 const sections = [
@@ -378,14 +377,6 @@ export default function Wavo() {
             <div>
               <dt>Sample data</dt>
               <dd>The location, scooties and prices are illustrative. Payments, locks, scans and checks are simulated.</dd>
-            </div>
-            <div>
-              <dt>Design</dt>
-              <dd>
-                <a className="dv-top__try" href={FIGMA} target="_blank" rel="noopener noreferrer">
-                  WAVO in Figma <span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span>
-                </a>
-              </dd>
             </div>
           </dl>
         </div>

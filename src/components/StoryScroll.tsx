@@ -1,11 +1,11 @@
 import { useEffect, useRef, type CSSProperties } from 'react'
 import { COVER_V } from '../data/projects'
 
-type Tone = 'sun' | 'sky' | 'rose' | 'lilac'
-type Doodle = 'house' | 'circle' | 'under' | 'stars'
+type Tone = 'sun' | 'sky' | 'rose' | 'lilac' | 'peach'
+type Doodle = 'house' | 'circle' | 'under' | 'stars' | 'tick'
 type Piece = string | { text: string; tone: Tone; doodle: Doodle }
 
-// every fact here is from the résumé and the journey data
+// every fact here is from the résumé, the journey data and the Moss project
 const story: Piece[] = [
   'I studied',
   { text: 'architecture', tone: 'sun', doodle: 'house' },
@@ -15,6 +15,8 @@ const story: Piece[] = [
   { text: 'product designer', tone: 'rose', doodle: 'under' },
   'at Heizen, prototyping with',
   { text: 'Figma, Claude and Codex.', tone: 'lilac', doodle: 'stars' },
+  'I also designed the landing page for Moss, a startup later',
+  { text: 'backed by Y Combinator.', tone: 'peach', doodle: 'tick' },
 ]
 
 const plain = story.map((p) => (typeof p === 'string' ? p : p.text)).join(' ').replace(/ ,/g, ',')
@@ -36,6 +38,7 @@ const DOODLES: Record<Doodle, { box: string; d: string }> = {
   house: { box: '0 0 30 26', d: 'M3 24 V11 L15 2.5 L27 11 V24 Z M11 24 V16 H19 V24 M3 24 H27' },
   circle: { box: '0 0 100 40', d: 'M54 4 C82 3 98 11 97 21 C96 33 72 38 47 37 C20 36 3 30 4 19 C5 9 25 4 60 6' },
   under: { box: '0 0 100 12', d: 'M2 8 C14 2 24 11 37 6 S61 2 74 7 S91 10 98 4' },
+  tick: { box: '0 0 30 26', d: 'M3 14 L11 22 L27 4' },
   stars: { box: '0 0 40 30', d: 'M12 3 L14 11 L22 13 L14 15 L12 23 L10 15 L2 13 L10 11 Z M31 1 L32.2 5.8 L37 7 L32.2 8.2 L31 13 L29.8 8.2 L25 7 L29.8 5.8 Z' },
 }
 
@@ -137,6 +140,11 @@ export default function StoryScroll() {
             <span className="scard__tape scard__tape--rose" />
             <img src={`/work/featured/shipway-640.webp${COVER_V}`} width={640} height={427} alt="" loading="lazy" decoding="async" />
             <figcaption>Shipway at Heizen</figcaption>
+          </figure>
+          <figure className="scard scard--moss" style={at('tick')}>
+            <span className="scard__tape scard__tape--peach" />
+            <img src={`/work/covers/home/moss-640.webp${COVER_V}`} width={640} height={427} alt="" loading="lazy" decoding="async" />
+            <figcaption><span className="scard__yc">Y</span> Moss · backed by YC, 2025</figcaption>
           </figure>
           <ul className="scard scard--tools" style={at('stars')}>
             <li className="stool stool--figma">Figma</li>

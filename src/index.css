@@ -1278,6 +1278,7 @@ html.has-intro:not(.intro-done) .boot { display: block; position: fixed; inset: 
   --mark-sky: #c7e3ff;
   --mark-rose: #ffd0c8;
   --mark-lilac: #e2d6ff;
+  --mark-peach: #ffd6b8;
   position: relative;
   /* 80svh of reading, then a screen's worth for Selected Work to slide over it */
   height: calc(280svh - var(--nav-h));
@@ -1288,6 +1289,7 @@ html.has-intro:not(.intro-done) .boot { display: block; position: fixed; inset: 
   --mark-sky: rgb(110 170 255 / 0.3);
   --mark-rose: rgb(255 130 110 / 0.3);
   --mark-lilac: rgb(170 140 255 / 0.32);
+  --mark-peach: rgb(242 101 34 / 0.32);
 }
 .story__pin {
   position: sticky;
@@ -1344,6 +1346,7 @@ html.has-intro:not(.intro-done) .boot { display: block; position: fixed; inset: 
 .story__mark--sky { --mark: var(--mark-sky); }
 .story__mark--rose { --mark: var(--mark-rose); }
 .story__mark--lilac { --mark: var(--mark-lilac); }
+.story__mark--peach { --mark: var(--mark-peach); }
 /* the doodle draws itself once its phrase is read */
 .story__doodle {
   position: absolute;
@@ -1359,6 +1362,9 @@ html.has-intro:not(.intro-done) .boot { display: block; position: fixed; inset: 
 .story__doodle--house { right: -0.75em; top: -0.55em; width: 0.7em; height: 0.6em; stroke-width: 1.6; }
 .story__doodle--circle { inset: -0.12em -0.3em -0.08em -0.25em; width: calc(100% + 0.55em); height: calc(100% + 0.2em); stroke-width: 1.3; }
 .story__doodle--under { left: -0.05em; right: -0.1em; bottom: -0.16em; width: calc(100% + 0.15em); height: 0.24em; stroke-width: 1.6; }
+/* room for the stars before the story goes on */
+.story__mark:has(.story__doodle--stars) { margin-right: 0.95em; }
+.story__doodle--tick { right: -0.85em; top: 0.12em; width: 0.7em; height: 0.6em; stroke: #f26522; stroke-width: 2; }
 .story__doodle--stars { right: -1.1em; top: -0.15em; width: 0.95em; height: 0.72em; stroke: var(--tool-on); stroke-width: 1.5; }
 
 /* the side cards, pinned around the story like a FigJam board; each one rises in, settles at
@@ -1393,9 +1399,23 @@ html.has-intro:not(.intro-done) .boot { display: block; position: fixed; inset: 
 .scard__tape--sun { --tape: var(--mark-sun); }
 .scard__tape--sky { --tape: var(--mark-sky); }
 .scard__tape--rose { --tape: var(--mark-rose); }
+.scard__tape--peach { --tape: var(--mark-peach); }
+.scard__yc {
+  display: inline-grid;
+  place-items: center;
+  width: 1.3em;
+  height: 1.3em;
+  margin-right: 0.2em;
+  border-radius: 3px;
+  background: #f26522;
+  color: #fff;
+  font-weight: 700;
+  vertical-align: -0.2em;
+}
 .scard--mnit { --r: -6deg; left: max(var(--gutter), 4%); top: 9%; width: clamp(140px, 13vw, 200px); }
 .scard--compass { --r: 5deg; right: max(var(--gutter), 4%); top: 10%; width: clamp(170px, 17vw, 260px); }
 .scard--shipway { --r: 4deg; left: max(var(--gutter), 7%); bottom: 9%; }
+.scard--moss { --r: -4deg; right: max(var(--gutter), 2%); top: 40%; width: clamp(140px, 12vw, 190px); }
 /* the tools: three stickers, no card behind them */
 .scard--tools {
   --r: -3deg;
@@ -1436,6 +1456,8 @@ html.has-intro:not(.intro-done) .boot { display: block; position: fixed; inset: 
   .scard--compass { top: 6%; right: var(--gutter); width: clamp(120px, 30vw, 190px); }
   .scard--shipway { bottom: 5%; left: var(--gutter); }
   .scard--tools { bottom: 7%; right: var(--gutter); width: auto; }
+  /* no room for a fifth card here; the story's line carries Moss */
+  .scard--moss { display: none; }
   .stool { font-size: 0.8125rem; padding: 0.4rem 0.75rem 0.4rem 0.55rem; }
 }
 
@@ -4802,3 +4824,59 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
 @media (max-width: 420px) {
   .t9-portals, .t9-pod { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Moss: the YC badge on its tile and page, and the full landing page in a browser frame */
+.wtile__media { position: relative; }
+.wtile__badge {
+  position: absolute;
+  top: 0.7rem;
+  left: 0.7rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  background: #f26522;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+}
+.yc-badge,
+.phead__intro > .yc-badge {
+  display: inline-flex;
+  width: fit-content;
+  justify-self: start;
+  align-self: flex-start;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0 0 1rem;
+  padding: 0.3rem 0.8rem 0.3rem 0.3rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.yc-badge__mark {
+  display: inline-grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 4px;
+  background: #f26522;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+.lp-note { max-width: 44rem; margin: 0 0 2rem; color: var(--graphite); }
+.lp-frame {
+  max-width: 1000px;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 24px 60px -30px rgba(0, 0, 0, 0.35);
+}
+.lp-frame__bar { display: flex; gap: 7px; align-items: center; height: 34px; padding: 0 14px; background: #f2f3ef; border-bottom: 1px solid var(--rule); }
+.lp-frame__bar i { width: 10px; height: 10px; border-radius: 50%; background: #d4d6cf; }
+.lp-frame img { display: block; width: 100%; height: auto; }
