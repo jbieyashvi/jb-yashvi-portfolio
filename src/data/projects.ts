@@ -52,8 +52,8 @@ export const projects: Project[] = [
       'A cold-chain logistics platform, from orders and inventory to delivery. I designed its four portals: admin, warehouse, delivery and customer.',
     contribution: 'Product design across all four portals, from order management to POD approval, through design handoff.',
     cover: '/work/covers/home/tan90',
-    coverAlt: 'A tablet with a keyboard showing the Tan90 admin dashboard.',
-    coverSize: [1279, 853],
+    coverAlt: 'A laptop held up against the sky, showing the Tan90 admin dashboard.',
+    coverSize: [1800, 1200],
   },  {
     slug: 'nutrio',
     name: 'NUTRIO',
@@ -207,7 +207,7 @@ export const getProject = (slug: string) => projects.find((p) => p.slug === slug
 
 /** Appended to home cover URLs. Covers keep their file names and browsers keep images for a
  *  while, so bump this whenever a cover image is replaced or visitors keep seeing the old one. */
-export const COVER_V = '?v=3'
+export const COVER_V = '?v=5'
 
 /** Shown first in Selected Work as large cards, and left out of the index below them. Covers
  *  live in public/work/featured/ as `${slug}-640` / `-1200`, .avif and .webp (scripts/featured-covers.mjs).

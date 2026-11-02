@@ -1117,8 +1117,6 @@ html.has-intro:not(.intro-done) .boot { display: block; position: fixed; inset: 
   background: var(--cover-mat, var(--pale));
 }
 .wcard__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s var(--ease); }
-.wcard--tan90 { --cover-mat: #f9fbff; }
-.wcard--tan90 .wcard__media img { object-fit: contain; }
 .wcard__kind { color: var(--night-text); font-size: 0.8rem; letter-spacing: 0.04em; text-transform: uppercase; }
 .wcard__name { font-size: clamp(1.75rem, 2.8vw, 2.5rem); letter-spacing: -0.015em; line-height: 1.08; }
 .wcard__summary { color: var(--night-text); font-size: 1rem; line-height: 1.55; max-width: 40ch; }
@@ -1203,8 +1201,6 @@ html.has-intro:not(.intro-done) .boot { display: block; position: fixed; inset: 
   background: var(--cover-mat, var(--pale));
 }
 .wtile__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s var(--ease); }
-.wtile--tan90 { --cover-mat: #f9fbff; }
-.wtile--tan90 .wtile__media img { object-fit: contain; }
 .wtile--gema .wtile__media img { object-position: 25% center; }
 .wtile--nutrio { --cover-mat: #b1b0ac; }
 .wtile--medurun { --cover-mat: #cfbdb3; }

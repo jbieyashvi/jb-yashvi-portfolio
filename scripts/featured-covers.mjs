@@ -6,18 +6,19 @@ import { mkdirSync } from 'node:fs'
 const out = 'public/work/featured'
 mkdirSync(out, { recursive: true })
 const covers = [
-  // the prototype's share dialog, centred
-  ['drive-sharing', 'public/work/drive-sharing/overview-share-dialog-1800.webp', { left: 56, top: 0, width: 1688, height: 1125 }],
+  // the prototype's share dialog on a laptop on a tiled ledge (screen fitted onto a stock photo)
+  ['drive-sharing', 'public/work/drive-sharing/cover.png', null],
   // GEMA's first PDF page: headline and phone, above the rock
   ['gema', 'public/work/personal/gema/01-2000.webp', { left: 0, top: 0, width: 2000, height: 1333 }],
   // three prototype screens on a warm ground, made from the case study's own screenshots
   ['rider-pickup-delay', 'public/work/rider-pickup-delay/cover-1800.webp', null],
+  // the real admin dashboard on a laptop held up against the sky (screen fitted onto a stock photo)
   ['tan90', 'public/work/covers/home/tan90-1200.webp', null],
   // Relay's first PDF page: the monitor on the desk, above the caption band
   ['relay', 'public/work/personal/relay/01-2000.webp', { left: 0, top: 100, width: 2000, height: 1333 }],
-  // app-store style cards around the real app screens, rendered from an HTML layout
-  ['shipway', 'public/work/covers/home/shipway-promo.png', null],
-  // the real dashboard on a laptop against a sunlit wall, rendered from an HTML layout
+  // the real Orders and Track Order screens on two iPhones against the sky (screens fitted onto a stock photo, sky extended at the sides)
+  ['shipway', 'public/work/shipway/cover.png', null],
+  // the real dashboard on a laptop on someone's lap (screen fitted onto a stock photo)
   ['compass', 'public/work/covers/home/compass-laptop.png', null],
   // the WAVO prototype's Welcome screen on an iPhone held up against the sky (free MOCKUPASIA mockup, sky extended at the sides)
   ['wavo', 'public/work/wavo/cover.png', null],
