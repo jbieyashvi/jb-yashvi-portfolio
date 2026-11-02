@@ -8,8 +8,8 @@ mkdirSync(out, { recursive: true })
 const covers = [
   // the prototype's share dialog on a laptop on a tiled ledge (screen fitted onto a stock photo)
   ['drive-sharing', 'public/work/drive-sharing/cover.png', null],
-  // three prototype screens on a warm ground, made from the case study's own screenshots
-  ['rider-pickup-delay', 'public/work/rider-pickup-delay/cover-1800.webp', null],
+  // the prototype's Pickup status screen on an iPhone leaning on concrete steps (screen fitted onto a design-inspiration photo)
+  ['rider-pickup-delay', 'public/work/rider-pickup-delay/cover-phone.webp', null],
   // the real admin dashboard on a laptop held up against the sky (screen fitted onto a stock photo)
   ['tan90', 'public/work/covers/home/tan90-1200.webp', null],
   // the real Orders and Track Order screens on two iPhones against the sky (screens fitted onto a stock photo, sky extended at the sides)
