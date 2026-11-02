@@ -1,6 +1,7 @@
 import { useLightbox } from './Lightbox'
 import type { ImageItem } from '../data/images'
 import loadAhead from './loadAhead'
+import { mid } from './srcset'
 
 const FROM_PDF = 'From the NUTRIO case study PDF'
 
@@ -177,7 +178,7 @@ export default function NutrioStory() {
               <button type="button" className="ds__zoom" onClick={() => open(i)} aria-label={`Enlarge: ${s.caption}`}>
                 <img
                   src={`${s.src}-1800.webp`}
-                  srcSet={`${s.src}-800.webp 800w, ${s.src}-1800.webp 1800w`}
+                  srcSet={`${s.src}-800.webp 800w, ${mid(s.src, 1800)}${s.src}-1800.webp 1800w`}
                   sizes="(max-width: 1100px) 100vw, 60vw"
                   width={s.w}
                   height={s.h}

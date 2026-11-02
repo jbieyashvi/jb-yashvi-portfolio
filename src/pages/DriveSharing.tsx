@@ -5,8 +5,9 @@ import External from '../components/External'
 import NextProject from '../components/NextProject'
 import { useLightbox } from '../components/Lightbox'
 import useTitle from '../components/useTitle'
-import loadAhead from '../components/loadAhead'
+import loadAhead, { warmUp } from '../components/loadAhead'
 import type { ImageItem } from '../data/images'
+import { mid } from '../components/srcset'
 
 const PROTO = 'https://jbieyashvi.github.io/drive-sharing-study-prototype/'
 const DIR = '/work/drive-sharing'
@@ -183,7 +184,7 @@ function Screen({ slug, open, marks = [], size = 'md', sizes = '(max-width: 760p
       <button type="button" className="dv-screen__zoom" onClick={() => open(order.indexOf(target))} aria-label={`Enlarge: ${item.caption}`}>
         <img
           src={`${src}-1800.webp`}
-          srcSet={`${src}-800.webp 800w, ${src}-1800.webp ${w}w`}
+          srcSet={`${src}-800.webp 800w, ${mid(src, w)}${src}-1800.webp ${w}w`}
           sizes={sizes}
           width={w}
           height={h}
@@ -218,7 +219,7 @@ function Notebook({ slug, open, tag, early, sizes = '(max-width: 760px) 100vw, 3
       <button type="button" className="dv-paper__zoom" onClick={() => open(order.length + noteOrder.indexOf(slug))} aria-label={`Enlarge the whole page: ${note.caption}`}>
         <img
           src={`${src}-1800.webp`}
-          srcSet={`${src}-800.webp 800w, ${src}-1800.webp ${note.w}w`}
+          srcSet={`${src}-800.webp 800w, ${mid(src, note.w)}${src}-1800.webp ${note.w}w`}
           sizes={sizes}
           width={note.w}
           height={note.h}
@@ -507,7 +508,7 @@ const restoreKey = [
 function More({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <details className="dv-more">
-      <summary>{title}</summary>
+      <summary onPointerEnter={warmUp} onFocus={warmUp}>{title}</summary>
       <div className="dv-more__body">{children}</div>
     </details>
   )

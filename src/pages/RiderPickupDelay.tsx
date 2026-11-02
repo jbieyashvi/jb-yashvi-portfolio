@@ -6,6 +6,7 @@ import { useLightbox } from '../components/Lightbox'
 import useTitle from '../components/useTitle'
 import loadAhead from '../components/loadAhead'
 import type { ImageItem } from '../data/images'
+import { mid } from '../components/srcset'
 
 const PROTO = 'https://jbieyashvi.github.io/rider-pickup-delay-concept/'
 const PLAY = 'https://play.google.com/store/apps/details?id=in.swiggy.deliveryapp'
@@ -150,7 +151,7 @@ function Mounted({ slug, open, tag, w, h, alt, caption }: {
       <button type="button" className="dv-paper__zoom" onClick={() => open(at(slug))} aria-label={`Enlarge: ${caption}`}>
         <img
           src={`${DIR}/${slug}-1800.webp`}
-          srcSet={`${DIR}/${slug}-800.webp ${w === h ? 800 : 540}w, ${DIR}/${slug}-1800.webp ${w}w`}
+          srcSet={`${DIR}/${slug}-800.webp ${w === h ? 800 : 540}w, ${mid(`${DIR}/${slug}`, w)}${DIR}/${slug}-1800.webp ${w}w`}
           sizes="(max-width: 560px) 100vw, 300px"
           width={w}
           height={h}

@@ -3,8 +3,9 @@ import CaseSidebar from '../components/CaseSidebar'
 import NextProject from '../components/NextProject'
 import { useLightbox } from '../components/Lightbox'
 import useTitle from '../components/useTitle'
-import loadAhead from '../components/loadAhead'
+import loadAhead, { warmUp } from '../components/loadAhead'
 import type { ImageItem } from '../data/images'
+import { mid } from '../components/srcset'
 
 const DIR = '/work/tan90'
 
@@ -129,7 +130,7 @@ function Screen({ slug, open, sizes = DESK_SIZES, eager }: {
       <button type="button" className="dv-screen__zoom sw-zoom" onClick={() => open(order.indexOf(slug))} aria-label={`Enlarge: ${shot.caption}`}>
         <img
           src={`${src}-1800.webp`}
-          srcSet={shot.small < shot.w ? `${src}-800.webp ${shot.small}w, ${src}-1800.webp ${shot.w}w` : undefined}
+          srcSet={shot.small < shot.w ? `${src}-800.webp ${shot.small}w, ${mid(src, shot.w)}${src}-1800.webp ${shot.w}w` : undefined}
           sizes={shot.small < shot.w ? sizes : undefined}
           width={shot.w}
           height={shot.h}
@@ -173,7 +174,7 @@ function WithZoom({ wide, zoom, open }: { wide: Shot; zoom: Shot; open: (i: numb
 function More({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <details className="dv-more">
-      <summary>{title}</summary>
+      <summary onPointerEnter={warmUp} onFocus={warmUp}>{title}</summary>
       <div className="dv-more__body">{children}</div>
     </details>
   )

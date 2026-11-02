@@ -1,6 +1,7 @@
 import { useEffect, useRef, type CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
 import { artKinds, artPreview } from '../data/art'
+import { mid } from './srcset'
 
 const MOTION_QUERY = '(prefers-reduced-motion: no-preference)'
 const WIDE_QUERY = '(min-width: 761px)'
@@ -82,7 +83,7 @@ export default function OutsideTeaser() {
               <span className="teaser__mask">
                 <img
                   src={`${item.src}-800.webp`}
-                  srcSet={`${item.src}-800.webp 800w, ${item.src}-1800.webp ${item.w}w`}
+                  srcSet={`${item.src}-800.webp 800w, ${mid(item.src, item.w)}${item.src}-1800.webp ${item.w}w`}
                   sizes={i ? '(max-width: 760px) 44vw, 22vw' : '(max-width: 760px) 54vw, 32vw'}
                   width={item.w}
                   height={item.h}

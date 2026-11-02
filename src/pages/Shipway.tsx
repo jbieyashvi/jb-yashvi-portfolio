@@ -7,6 +7,7 @@ import { useLightbox } from '../components/Lightbox'
 import useTitle from '../components/useTitle'
 import loadAhead from '../components/loadAhead'
 import type { ImageItem } from '../data/images'
+import { mid } from '../components/srcset'
 
 const PLAY = 'https://play.google.com/store/apps/details?id=com.shipway.app&hl=en_IN'
 const DIR = '/work/shipway'
@@ -197,7 +198,7 @@ function Screen({ slug, open, sizes = PHONE_SIZES, eager }: {
       <button type="button" className="dv-screen__zoom sw-zoom" onClick={() => open(order.indexOf(slug))} aria-label={`Enlarge: ${shot.caption}`}>
         <img
           src={`${src}-1800.webp`}
-          srcSet={`${src}-800.webp ${shot.small}w, ${src}-1800.webp ${shot.w}w`}
+          srcSet={`${src}-800.webp ${shot.small}w, ${mid(src, shot.w)}${src}-1800.webp ${shot.w}w`}
           sizes={sizes}
           width={shot.w}
           height={shot.h}

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
 import { art, artKinds, type ArtItem, type ArtKind } from '../data/art'
 import { useLightbox } from './Lightbox'
+import { mid } from './srcset'
 
 /** every piece in its original colour here, including the photos shown in grayscale elsewhere */
 const pieces = art.map((i) => ({ ...i, mono: false }))
@@ -199,7 +200,7 @@ function Fig({ item, open, className, sizes, speed, zoom, delay = 0, onHot }: Fi
         <span className="jr-mask">
           <img
             src={`${item.src}-800.webp`}
-            srcSet={`${item.src}-800.webp 800w, ${item.src}-1800.webp ${item.w}w`}
+            srcSet={`${item.src}-800.webp 800w, ${mid(item.src, item.w)}${item.src}-1800.webp ${item.w}w`}
             sizes={sizes}
             width={item.w}
             height={item.h}

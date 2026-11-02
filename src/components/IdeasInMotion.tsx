@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react'
 import { playgroundRows } from '../data/playground'
 import { useLightbox } from './Lightbox'
+import { mid } from './srcset'
 
 /** pixels per second; both rows travel at the same speed */
 const SPEED = 32
@@ -216,7 +217,7 @@ export default function IdeasInMotion() {
                       >
                         <img
                           src={`${item.src}-800.webp`}
-                          srcSet={`${item.src}-800.webp 800w, ${item.src}-1800.webp ${item.w}w`}
+                          srcSet={`${item.src}-800.webp 800w, ${mid(item.src, item.w)}${item.src}-1800.webp ${item.w}w`}
                           sizes={`${Math.round((item.preview ?? item.w / item.h) * 266)}px`}
                           width={item.w}
                           height={item.h}

@@ -5,8 +5,9 @@ import External from '../components/External'
 import NextProject from '../components/NextProject'
 import { useLightbox } from '../components/Lightbox'
 import useTitle from '../components/useTitle'
-import loadAhead from '../components/loadAhead'
+import loadAhead, { warmUp } from '../components/loadAhead'
 import type { ImageItem } from '../data/images'
+import { mid } from '../components/srcset'
 
 const LIVE = 'https://compass-mapperv2.vercel.app/worklist'
 const PDF = `${import.meta.env.BASE_URL}work/compass/cmp-autobot-design-system.pdf`
@@ -274,7 +275,7 @@ function Screen({ slug, open, size = 'full', sizes = '(max-width: 760px) 100vw, 
       <button type="button" className="dv-screen__zoom" onClick={() => open(order.indexOf(slug))} aria-label={`Enlarge: ${shot.caption}`}>
         <img
           src={`${src}-1800.webp`}
-          srcSet={`${src}-800.webp 800w, ${src}-1800.webp ${shot.w}w`}
+          srcSet={`${src}-800.webp 800w, ${mid(src, shot.w)}${src}-1800.webp ${shot.w}w`}
           sizes={sizes}
           width={shot.w}
           height={shot.h}
@@ -511,7 +512,7 @@ const library = ['pdf-brand', 'pdf-type', 'pdf-spacing', 'pdf-buttons', 'pdf-tog
 function More({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <details className="dv-more">
-      <summary>{title}</summary>
+      <summary onPointerEnter={warmUp} onFocus={warmUp}>{title}</summary>
       <div className="dv-more__body">{children}</div>
     </details>
   )

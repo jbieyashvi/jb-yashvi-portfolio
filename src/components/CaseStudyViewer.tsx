@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import slices from '../data/caseSlices.json'
 import loadAhead from './loadAhead'
+import { pdfMid } from './srcset'
 
 interface Props {
   id: 'nutrio'
@@ -40,7 +41,7 @@ export default function CaseStudyViewer({ id, name, pdf, pdfSize, lead = false }
   const img = (p: (typeof parts)[number], sizes: string, eager = false, high = false) => (
     <img
       src={`${p.src}-1000.webp`}
-      srcSet={`${p.src}-1000.webp 1000w, ${p.src}-2000.webp 2000w`}
+      srcSet={`${p.src}-1000.webp 1000w, ${pdfMid(p.src, p.w)}${p.src}-2000.webp 2000w`}
       sizes={sizes}
       width={p.w}
       height={p.h}

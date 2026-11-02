@@ -4,6 +4,7 @@ import { personalProjects } from '../data/projects'
 import loadAhead from '../components/loadAhead'
 import NextProject from '../components/NextProject'
 import useTitle from '../components/useTitle'
+import { pdfMid } from '../components/srcset'
 
 type Slug = 'gema' | 'zensenta' | 'relay'
 
@@ -31,7 +32,7 @@ export default function PersonalProject({ slug }: { slug: Slug }) {
           <div key={p.src} className="pdoc__part" style={{ aspectRatio: `${p.w} / ${p.h}` }}>
             <img
               src={`${p.src}-1000.webp`}
-              srcSet={`${p.src}-1000.webp 1000w, ${p.src}-2000.webp 2000w`}
+              srcSet={`${p.src}-1000.webp 1000w, ${pdfMid(p.src, p.w)}${p.src}-2000.webp 2000w`}
               sizes="(min-width: 1328px) 1280px, 100vw"
               width={p.w}
               height={p.h}

@@ -43,3 +43,12 @@ export default function loadAhead(img: HTMLImageElement | null) {
     o.unobserve(img)
   }
 }
+
+/**
+ * For a closed <details>: its images cannot load until it opens, so start them as soon as a
+ * pointer comes over the summary or it takes focus, a moment before the click.
+ * Usage: <summary onPointerEnter={warmUp} onFocus={warmUp}>
+ */
+export function warmUp(e: { currentTarget: HTMLElement }) {
+  e.currentTarget.parentElement?.querySelectorAll<HTMLImageElement>('img[loading="lazy"]').forEach((img) => { img.loading = 'eager' })
+}
