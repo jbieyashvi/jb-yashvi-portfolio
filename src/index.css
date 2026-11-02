@@ -1346,7 +1346,6 @@ html.has-intro:not(.intro-done) .boot { display: block; position: fixed; inset: 
 .story__mark--sky { --mark: var(--mark-sky); }
 .story__mark--rose { --mark: var(--mark-rose); }
 .story__mark--lilac { --mark: var(--mark-lilac); }
-.story__mark--peach { --mark: var(--mark-peach); }
 /* the doodle draws itself once its phrase is read */
 .story__doodle {
   position: absolute;
@@ -1359,12 +1358,39 @@ html.has-intro:not(.intro-done) .boot { display: block; position: fixed; inset: 
   stroke-dashoffset: clamp(0, calc(1 - (var(--k) - var(--e)) / 2.5), 1);
   pointer-events: none;
 }
-.story__doodle--house { right: -0.75em; top: -0.55em; width: 0.7em; height: 0.6em; stroke-width: 1.6; }
+/* the 3D avatar over "architecture": pops up once the word is read, then bobs and sways */
+.story__me {
+  --a: clamp(0, calc((var(--k) - var(--e)) / 2.5), 1);
+  position: absolute;
+  right: -0.95em;
+  top: -0.95em;
+  width: 0.9em;
+  height: 0.9em;
+  opacity: var(--a);
+  transform: translateY(calc((1 - var(--a)) * 0.3em)) scale(calc(0.4 + var(--a) * 0.6));
+  pointer-events: none;
+}
+.story__me img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 2px var(--paper), 0 0.06em 0.18em rgb(0 0 0 / 0.18);
+  transform-origin: 50% 90%;
+  animation: me-sway 3.2s ease-in-out infinite alternate;
+}
+@keyframes me-sway {
+  from { transform: translateY(0.02em) rotate(-7deg); }
+  to { transform: translateY(-0.07em) rotate(7deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .story__me img { animation: none; }
+}
 .story__doodle--circle { inset: -0.12em -0.3em -0.08em -0.25em; width: calc(100% + 0.55em); height: calc(100% + 0.2em); stroke-width: 1.3; }
 .story__doodle--under { left: -0.05em; right: -0.1em; bottom: -0.16em; width: calc(100% + 0.15em); height: 0.24em; stroke-width: 1.6; }
 /* room for the stars before the story goes on */
 .story__mark:has(.story__doodle--stars) { margin-right: 0.95em; }
-.story__doodle--tick { right: -0.85em; top: 0.12em; width: 0.7em; height: 0.6em; stroke: #f26522; stroke-width: 2; }
 .story__doodle--stars { right: -1.1em; top: -0.15em; width: 0.95em; height: 0.72em; stroke: var(--tool-on); stroke-width: 1.5; }
 
 /* the side cards, pinned around the story like a FigJam board; each one rises in, settles at

@@ -1,22 +1,20 @@
 import { useEffect, useRef, type CSSProperties } from 'react'
 import { COVER_V } from '../data/projects'
 
-type Tone = 'sun' | 'sky' | 'rose' | 'lilac' | 'peach'
-type Doodle = 'house' | 'circle' | 'under' | 'stars' | 'tick'
+type Tone = 'sun' | 'sky' | 'rose' | 'lilac'
+type Doodle = 'me' | 'circle' | 'under' | 'stars'
 type Piece = string | { text: string; tone: Tone; doodle: Doodle }
 
 // every fact here is from the résumé, the journey data and the Moss project
 const story: Piece[] = [
   'I studied',
-  { text: 'architecture', tone: 'sun', doodle: 'house' },
+  { text: 'architecture', tone: 'sun', doodle: 'me' },
   'at MNIT Jaipur, then moved into',
   { text: 'product design.', tone: 'sky', doodle: 'circle' },
   'Now I’m a',
   { text: 'product designer', tone: 'rose', doodle: 'under' },
   'at Heizen, prototyping with',
   { text: 'Figma, Claude and Codex.', tone: 'lilac', doodle: 'stars' },
-  'I also designed the landing page for Moss, a startup later',
-  { text: 'backed by Y Combinator.', tone: 'peach', doodle: 'tick' },
 ]
 
 const plain = story.map((p) => (typeof p === 'string' ? p : p.text)).join(' ').replace(/ ,/g, ',')
@@ -34,12 +32,20 @@ const TOTAL = count
 const startOf = (d: Doodle) => runs.find((r) => r.mark?.doodle === d)?.mark?.start ?? 0
 const at = (d: Doodle) => ({ '--s': startOf(d) }) as CSSProperties
 
-const DOODLES: Record<Doodle, { box: string; d: string }> = {
-  house: { box: '0 0 30 26', d: 'M3 24 V11 L15 2.5 L27 11 V24 Z M11 24 V16 H19 V24 M3 24 H27' },
+// architecture gets a small 3D avatar instead of a drawn doodle (see Me)
+const DOODLES: Record<Exclude<Doodle, 'me'>, { box: string; d: string }> = {
   circle: { box: '0 0 100 40', d: 'M54 4 C82 3 98 11 97 21 C96 33 72 38 47 37 C20 36 3 30 4 19 C5 9 25 4 60 6' },
   under: { box: '0 0 100 12', d: 'M2 8 C14 2 24 11 37 6 S61 2 74 7 S91 10 98 4' },
-  tick: { box: '0 0 30 26', d: 'M3 14 L11 22 L27 4' },
   stars: { box: '0 0 40 30', d: 'M12 3 L14 11 L22 13 L14 15 L12 23 L10 15 L2 13 L10 11 Z M31 1 L32.2 5.8 L37 7 L32.2 8.2 L31 13 L29.8 8.2 L25 7 L29.8 5.8 Z' },
+}
+
+/** a small 3D avatar of me that pops up once its phrase is read, then sways gently */
+function Me({ e }: { e: number }) {
+  return (
+    <span className="story__me" style={{ '--e': e } as CSSProperties}>
+      <img src="/story/me-128.webp" srcSet="/story/me-128.webp 128w, /story/me-256.webp 256w" sizes="64px" width={128} height={128} alt="" decoding="async" />
+    </span>
+  )
 }
 
 /**
@@ -102,7 +108,8 @@ export default function StoryScroll() {
                   {k > 0 || (n > 0 && !r.mark && !w.glue) ? ' ' : ''}
                   <span className="story__w" style={{ '--i': w.i } as CSSProperties}>
                     {w.text}
-                    {r.mark && k === r.words.length - 1 && (
+                    {r.mark && k === r.words.length - 1 && r.mark.doodle === 'me' && <Me e={r.mark.start + r.mark.len} />}
+                    {r.mark && k === r.words.length - 1 && r.mark.doodle !== 'me' && (
                       <svg className={`story__doodle story__doodle--${r.mark.doodle}`} style={{ '--e': r.mark.start + r.mark.len } as CSSProperties} viewBox={DOODLES[r.mark.doodle].box} preserveAspectRatio={r.mark.doodle === 'circle' || r.mark.doodle === 'under' ? 'none' : undefined}>
                         <path d={DOODLES[r.mark.doodle].d} pathLength={1} />
                       </svg>
@@ -125,7 +132,7 @@ export default function StoryScroll() {
 
         {/* the side cards: each one is pinned up as its phrase is read */}
         <div className="story__cards" aria-hidden="true">
-          <figure className="scard scard--mnit" style={at('house')}>
+          <figure className="scard scard--mnit" style={at('me')}>
             <span className="scard__tape scard__tape--sun" />
             {/* holding up the thesis on campus; the roll number on its cover is blurred */}
             <img src="/story/mnit-thesis-460.webp" srcSet="/story/mnit-thesis-460.webp 460w, /story/mnit-thesis-920.webp 920w" sizes="230px" width={460} height={575} alt="" loading="lazy" decoding="async" />
@@ -141,7 +148,7 @@ export default function StoryScroll() {
             <img src={`/work/featured/shipway-640.webp${COVER_V}`} width={640} height={427} alt="" loading="lazy" decoding="async" />
             <figcaption>Shipway at Heizen</figcaption>
           </figure>
-          <figure className="scard scard--moss" style={at('tick')}>
+          <figure className="scard scard--moss" style={at('stars')}>
             <span className="scard__tape scard__tape--peach" />
             <img src={`/work/covers/home/moss-640.webp${COVER_V}`} width={640} height={427} alt="" loading="lazy" decoding="async" />
             <figcaption><span className="scard__yc">Y</span> Moss · backed by YC, 2025</figcaption>
