@@ -19,8 +19,9 @@
     </script>
     <!-- Branded intro: only on the first homepage load in this tab session, never with a
          #hash, on another page, after a reload or with reduced motion. Decided before first
-         paint (so it sits before the stylesheets); if the app never mounts, the failsafe
-         ends the intro state. -->
+         paint (so it sits before the stylesheets). The name below is plain HTML, so it shows
+         from the first paint while the app's code downloads; the app lifts the panel when it
+         mounts (Intro), and if it never mounts, the failsafe ends the intro state. -->
     <style>html.has-intro:not(.intro-done) { background: #17171a; } html[data-theme="dark"].has-intro:not(.intro-done) { background: #111113; }</style>
     <script>
       (function () {
@@ -31,7 +32,7 @@
           if (!window.matchMedia || matchMedia('(prefers-reduced-motion: reduce)').matches) return
           var root = document.documentElement
           root.classList.add('has-intro')
-          window.__introFailsafe = setTimeout(function () { root.classList.add('intro-done') }, 2500)
+          window.__introFailsafe = setTimeout(function () { root.classList.add('intro-done') }, 9000)
         } catch (e) {}
       })()
     </script>
@@ -41,6 +42,7 @@
     <title>Jb Yashvi, Product Designer</title>
   </head>
   <body>
+    <div class="boot" aria-hidden="true"><p class="boot__name"><span>Jb Yashvi</span></p></div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

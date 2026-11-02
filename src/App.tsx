@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef } from 'react'
+import { Suspense, useEffect, useLayoutEffect, useRef } from 'react'
 import { Navigate, Route, Routes, useLocation, useNavigationType } from 'react-router-dom'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
@@ -8,20 +8,23 @@ import RevealManager from './components/RevealManager'
 import { revealAbove, revealThrough } from './components/reveal'
 import { lenis } from './components/smoothScroll'
 import Home from './pages/Home'
-import CaseStudyPage from './pages/CaseStudyPage'
-import Medurun from './pages/Medurun'
-import Iica from './pages/Iica'
-import Retina from './pages/Retina'
-import Flowtech from './pages/Flowtech'
-import Compass from './pages/Compass'
-import Shipway from './pages/Shipway'
-import Tan90 from './pages/Tan90'
-import DriveSharing from './pages/DriveSharing'
-import Wavo from './pages/Wavo'
-import RiderPickupDelay from './pages/RiderPickupDelay'
-import PersonalProject from './pages/PersonalProject'
-import Gallery from './pages/Gallery'
-import NotFound from './pages/NotFound'
+import { lazyPage } from './components/lazyPage'
+
+// every page but the homepage loads its code separately (see lazyPage)
+const CaseStudyPage = lazyPage(['/work/nutrio'], () => import('./pages/CaseStudyPage'))
+const Medurun = lazyPage(['/work/medurun'], () => import('./pages/Medurun'))
+const Iica = lazyPage(['/work/iica'], () => import('./pages/Iica'))
+const Retina = lazyPage(['/work/retina'], () => import('./pages/Retina'))
+const Flowtech = lazyPage(['/work/flowtech'], () => import('./pages/Flowtech'))
+const Compass = lazyPage(['/work/compass'], () => import('./pages/Compass'))
+const Shipway = lazyPage(['/work/shipway'], () => import('./pages/Shipway'))
+const Tan90 = lazyPage(['/work/tan90'], () => import('./pages/Tan90'))
+const DriveSharing = lazyPage(['/work/drive-sharing'], () => import('./pages/DriveSharing'))
+const Wavo = lazyPage(['/work/wavo'], () => import('./pages/Wavo'))
+const RiderPickupDelay = lazyPage(['/work/rider-pickup-delay'], () => import('./pages/RiderPickupDelay'))
+const PersonalProject = lazyPage(['/work/gema', '/work/zensenta', '/work/relay'], () => import('./pages/PersonalProject'))
+const Gallery = lazyPage(['/gallery'], () => import('./pages/Gallery'))
+const NotFound = lazyPage(['*'], () => import('./pages/NotFound'))
 
 const SAVED = 'jb-scroll'
 /** how long a #hash jump keeps its target in place while the layout above it settles */
@@ -202,27 +205,29 @@ export default function App() {
       <RevealManager />
       <Nav />
       <main id="main" tabIndex={-1}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/work/nutrio" element={<CaseStudyPage slug="nutrio" />} />
-          <Route path="/work/tan90" element={<Tan90 />} />
-          <Route path="/work/medurun" element={<Medurun />} />
-          <Route path="/work/iica" element={<Iica />} />
-          <Route path="/work/retina" element={<Retina />} />
-          <Route path="/work/flowtech" element={<Flowtech />} />
-          <Route path="/work/compass" element={<Compass />} />
-          <Route path="/work/shipway" element={<Shipway />} />
-          <Route path="/work/drive-sharing" element={<DriveSharing />} />
-          <Route path="/work/wavo" element={<Wavo />} />
-          <Route path="/work/rider-pickup-delay" element={<RiderPickupDelay />} />
-          {(['gema', 'zensenta', 'relay'] as const).map((slug) => (
-            <Route key={slug} path={`/work/${slug}`} element={<PersonalProject slug={slug} />} />
-          ))}
-          {/* the Playground page became the Ideas in motion section; old links land there */}
-          <Route path="/playground" element={<Navigate to="/#ideas" replace />} />
-          <Route path="/gallery" element={<Gallery />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Suspense fallback={null}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/work/nutrio" element={<CaseStudyPage slug="nutrio" />} />
+            <Route path="/work/tan90" element={<Tan90 />} />
+            <Route path="/work/medurun" element={<Medurun />} />
+            <Route path="/work/iica" element={<Iica />} />
+            <Route path="/work/retina" element={<Retina />} />
+            <Route path="/work/flowtech" element={<Flowtech />} />
+            <Route path="/work/compass" element={<Compass />} />
+            <Route path="/work/shipway" element={<Shipway />} />
+            <Route path="/work/drive-sharing" element={<DriveSharing />} />
+            <Route path="/work/wavo" element={<Wavo />} />
+            <Route path="/work/rider-pickup-delay" element={<RiderPickupDelay />} />
+            {(['gema', 'zensenta', 'relay'] as const).map((slug) => (
+              <Route key={slug} path={`/work/${slug}`} element={<PersonalProject slug={slug} />} />
+            ))}
+            {/* the Playground page became the Ideas in motion section; old links land there */}
+            <Route path="/playground" element={<Navigate to="/#ideas" replace />} />
+            <Route path="/gallery" element={<Gallery />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
       </main>
       <Footer />
     </>

@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { personalProjects, projects } from '../data/projects'
+import { preloadRoute } from './lazyPage'
 
 const COLS = 5
 /** the panel is fully over the screen; navigate underneath it */
 const COVER_MS = 540
 /** the panel has lifted off the new page */
 const DONE_MS = 1250
+/** the longest the covered panel waits for the page's code (it is usually fetched already) */
+const CODE_WAIT_MS = 1200
 /** whatever happens, the overlay is gone by now */
 const FAILSAFE_MS = 2500
 
@@ -56,14 +59,20 @@ export default function ProjectTransition() {
       target.current = url.pathname
       setName(project.name)
       setPhase('cover')
+      // the page's code loads while the panel covers; navigate once both are done (or the
+      // code is slow: the page then appears under the lifting panel as soon as it arrives)
+      const ready = Promise.race([preloadRoute(url.pathname), new Promise((r) => setTimeout(r, CODE_WAIT_MS))])
       later(() => {
-        try {
-          navigate(url.pathname + url.search + url.hash)
-        } catch {
-          // if navigation fails, the panel still lifts off whatever page is showing
-        }
-        setPhase('reveal')
-        later(end, DONE_MS - COVER_MS)
+        ready.then(() => {
+          if (target.current !== url.pathname) return
+          try {
+            navigate(url.pathname + url.search + url.hash)
+          } catch {
+            // if navigation fails, the panel still lifts off whatever page is showing
+          }
+          setPhase('reveal')
+          later(end, DONE_MS - COVER_MS)
+        })
       }, COVER_MS)
       later(end, FAILSAFE_MS)
     }
