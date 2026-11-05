@@ -1,0 +1,31 @@
+export type ImpactStat = { tone: 'sun' | 'sky' | 'rose' | 'lilac' | 'mint'; value: string; label: string }
+
+/**
+ * The closing Impact section of a case study: a few headline numbers or states, each taken from
+ * the page itself, and a line on where they come from and what they don't show.
+ */
+export default function CaseImpact({ title, lede, stats, note }: {
+  title: string
+  lede: React.ReactNode
+  stats: readonly ImpactStat[]
+  note: React.ReactNode
+}) {
+  return (
+    <section id="impact" className="dv-sec cp-impact" aria-labelledby="impact-title" tabIndex={-1}>
+      <header className="dv-head">
+        <p className="dv-kicker">Impact</p>
+        <h2 id="impact-title" className="dv-h2">{title}</h2>
+        <p>{lede}</p>
+      </header>
+      <ul className="cp-glance cp-impact__stats">
+        {stats.map((s) => (
+          <li key={s.value + s.label} className={`cp-glance__card cp-tone--${s.tone}`}>
+            <span className="cp-glance__value">{s.value}</span>
+            <span className="cp-glance__label">{s.label}</span>
+          </li>
+        ))}
+      </ul>
+      <p className="cp-impact__note">{note}</p>
+    </section>
+  )
+}

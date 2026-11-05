@@ -8,22 +8,21 @@ import useTitle from '../components/useTitle'
 import loadAhead, { warmUp } from '../components/loadAhead'
 import type { ImageItem } from '../data/images'
 import { mid } from '../components/srcset'
+import CaseImpact from '../components/CaseImpact'
 
 const PROTO = 'https://jbieyashvi.github.io/drive-sharing-study-prototype/'
 const DIR = '/work/drive-sharing'
 const FROM_PROTO = 'My study prototype: a proposed design, not current Google Drive.'
 
 const sections = [
-  { id: 'overview', label: 'Overview' },
   { id: 'problem', label: 'The problem' },
-  { id: 'research', label: 'Research & insights' },
-  { id: 'direction', label: 'Design direction' },
-  { id: 'ab', label: 'A vs B' },
-  { id: 'solution', label: 'Proposed solution' },
-  { id: 'restore', label: 'Restore access' },
-  { id: 'testing', label: 'Testing & iteration' },
+  { id: 'research', label: 'Research' },
+  { id: 'direction', label: 'Drive’s method' },
+  { id: 'versions', label: 'A, then B' },
+  { id: 'solution', label: 'Version B' },
+  { id: 'restore', label: 'Other parts' },
+  { id: 'impact', label: 'Impact' },
   { id: 'outcome', label: 'Outcome' },
-  { id: 'reflection', label: 'Reflection' },
 ]
 
 /** Every prototype screen the enlarged view steps through, in reading order */
@@ -459,38 +458,51 @@ function Storyboard() {
   )
 }
 
-/** The decisions behind B, shown beside the screens they shaped */
+/** The decisions behind B, shown beside the screens they shaped. None of them is proven yet,
+ *  so each one says what is still to check. */
 const decisions = [
   {
-    decision: 'I added ‘Restrict access to this file…’ as a separate action in the person’s role menu.',
-    why: 'In the walkthroughs, people weren’t sure where to start. I hoped putting it where you already change someone’s access would make it easier to find.',
-    tradeoff: 'Sitting next to roles like Editor, it could look like just another role. I used a divider and clear wording to set it apart.',
+    hard: 'In the walkthroughs, people weren’t sure where to start.',
+    did: 'A separate “Restrict access to this file…” action in the person’s role menu, set apart from the roles by a divider.',
+    why: 'The role menu is where you already change someone’s access, so I hoped people would look there first.',
+    cost: 'Sitting next to roles like Editor, it could still look like just another role.',
     next: 'Whether people find the action without help, and understand what it does.',
   },
   {
-    decision: 'I combined the folder and people choices on one screen.',
-    why: 'One person said A had too many clicks.',
-    tradeoff: 'Fewer screens, but more to read at once.',
-    next: 'Whether people can complete the task without help, and whether it’s actually quicker. The next round should time both versions.',
+    hard: 'One person said Version A had too many clicks.',
+    did: 'The folder and the people on one screen, instead of two.',
+    why: 'Both choices answer the same question: who should still be able to open this file?',
+    cost: 'Fewer screens, but more to read at once.',
+    next: 'Whether it’s actually quicker. I didn’t time either version.',
   },
   {
-    decision: 'I added a review showing the file move, who keeps access and who loses it.',
-    why: 'Moving the file changes who can open it. I wanted that to be clear before anyone saves.',
-    tradeoff: 'One more step before saving.',
-    next: 'Whether people understand the result, and spot someone they unticked by mistake.',
+    hard: 'Moving the file into a limited-access folder changes who can open it.',
+    did: 'A review that lists the file move, who keeps access and who loses it. Nothing is saved until you confirm.',
+    why: 'So a mistake, like unticking the wrong person, can be caught before it happens.',
+    cost: 'One more step before saving.',
+    next: 'Whether people read the review and spot someone they unticked by mistake.',
   },
 ] as const
 
-function Decision({ decision, why, tradeoff, next }: (typeof decisions)[number]) {
+function Why({ hard, did, why, cost, next }: (typeof decisions)[number]) {
   return (
-    <dl className="dv-why">
-      <div><dt>What I did</dt><dd>{decision}</dd></div>
+    <dl className="dv-why cp-why">
+      <div><dt>The difficulty</dt><dd>{hard}</dd></div>
+      <div><dt>What I designed</dt><dd>{did}</dd></div>
       <div><dt>Why</dt><dd>{why}</dd></div>
-      <div><dt>Trade-off</dt><dd>{tradeoff}</dd></div>
-      <div><dt>Still to check</dt><dd>{next}</dd></div>
+      <div><dt>Trade-off</dt><dd>{cost}</dd></div>
+      <div><dt>Not tested yet</dt><dd>{next}</dd></div>
     </dl>
   )
 }
+
+/** My part, kept apart from the AI-assisted build and from what Drive already does */
+const role = [
+  ['Research', 'Interviews and walkthroughs of Google Drive with 3 people, on 26–27 October 2026.'],
+  ['Problem framing', 'Narrowed “removing people” down to keeping one file private.'],
+  ['Flow design', 'Versions A and B of the restrict flow, the review step and sharing the file again.'],
+  ['Testing', 'Both versions with the same 3 people, A first and then B.'],
+] as const
 
 /** Restore: the two screens that carry the idea, then the whole sequence on request */
 const restoreAll = [
@@ -524,6 +536,14 @@ function Head({ id, kicker, title, children }: { id: string; kicker: string; tit
   )
 }
 
+/** Impact: on the design, from the study itself; nothing here is a result for Google */
+const impact = [
+  { tone: 'sky', value: '3 people', label: 'Interviewed, then tested on both versions' },
+  { tone: 'rose', value: '2 → 1', label: 'Screens to choose the folder and people, after testing' },
+  { tone: 'mint', value: '1 of 3', label: 'Finished Version B without help' },
+  { tone: 'sun', value: 'Before saving', label: 'A review shows who keeps and who loses access' },
+] as const
+
 export default function DriveSharing() {
   useTitle('Google Drive access study | Jb Yashvi')
   const { open, lightbox } = useLightbox(items)
@@ -535,7 +555,7 @@ export default function DriveSharing() {
           <Link to="/#work" className="back">
             <span aria-hidden="true">←</span> All work
           </Link>
-          <p className="dv-top__type">Independent product study. Not affiliated with Google.</p>
+          <p className="dv-top__type">Independent product study. Not work for Google, and not affiliated with it.</p>
           <h1 className="dv-top__title">Share the project. Keep a few files private.</h1>
           <p className="dv-top__lede">
             A clearer way to <mark>keep one file private</mark>, <mark>keep access for the rest of the team</mark>, and see
@@ -544,12 +564,13 @@ export default function DriveSharing() {
           <div className="dv-top__grid">
             <dl className="dv-top__meta">
               <div>
-                <dt>My role</dt>
-                <dd>I did the research, framed the problem, designed the flow and tested it with people. I built the prototype with help from Claude Code.</dd>
+                <dt>My part</dt>
+                <dd>Research, problem framing, the flow design and testing.</dd>
               </div>
               <div>
                 <dt>Prototype</dt>
                 <dd>
+                  Built with help from Claude Code. Permissions are simulated.{' '}
                   <a className="dv-top__try" href={PROTO} target="_blank" rel="noopener noreferrer">
                     Try the prototype <span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span>
                   </a>
@@ -557,11 +578,11 @@ export default function DriveSharing() {
               </div>
             </dl>
             <div className="dv-signal">
-              <p className="dv-signal__kind">What I learned and changed</p>
+              <p className="dv-signal__kind">In short</p>
               <p className="dv-signal__text">
-                I spoke with three people and tested the sharing flow. They were unsure what to do next in Drive, and
-                one person felt my first version had too many clicks. I made <mark>a second version</mark> with a
-                restriction action in the role menu and the folder and people choices on one screen.
+                Research made the problem smaller. Testing changed the design: one person felt Version A had too many
+                clicks, so <mark>Version B puts the folder and people choices on one screen</mark>. Three people,
+                mixed results on B, nothing timed.
               </p>
             </div>
           </div>
@@ -575,45 +596,37 @@ export default function DriveSharing() {
           <CaseSidebar sections={sections} />
 
           <div className="dv-main">
-            {/* Overview */}
-            <section id="overview" className="dv-sec dv-sec--first" aria-labelledby="overview-title" tabIndex={-1}>
+            {/* The problem, the words, and my part */}
+            <section id="problem" className="dv-sec dv-sec--first" aria-labelledby="problem-title" tabIndex={-1}>
               <Storyboard />
-              <Head id="overview" kicker="Overview" title="One shared project. One file to keep private.">
-                <p>
-                  I looked at how a project owner could take File A away from Alex, let the rest of the team keep it, and
-                  later share it with Alex again.
-                </p>
-                <p className="dv-head__note">I built it as a working Drive-style web prototype, with simulated permissions.</p>
-              </Head>
-              <figure>
-                <Screen slug="overview-share-dialog" open={open} size="full" sizes="(max-width: 1100px) 100vw, 900px" eager />
-                <figcaption className="dv-cap">
-                  My prototype. Everyone gets File A through the project folder. <span className="dv-tag">Proposed design</span>
-                </figcaption>
-              </figure>
-            </section>
-
-            {/* The problem */}
-            <section id="problem" className="dv-sec" aria-labelledby="problem-title" tabIndex={-1}>
               <Head id="problem" kicker="The problem" title="The project is shared. One file needs to become private.">
                 <p>
-                  Alex can currently open File A through the project folder. The owner wants to remove Alex’s access to
-                  this file while keeping the rest of the project shared.
-                </p>
-                <p className="dv-statement">
-                  When people tried this in Drive as it is today, they weren’t sure how to{' '}
-                  <mark>keep one file private and leave the rest of the project shared</mark>.
+                  A team shares a project folder in Google Drive. The owner wants Alex to stop seeing File A, but keep
+                  everything else in the project.
                 </p>
                 <p>
-                  So I designed a guided flow. It starts from the file’s share settings, lets you pick who keeps access,
-                  and shows you the change before anything is saved.
+                  Alex can open File A because of the folder it sits in. So changing File A’s own sharing isn’t
+                  enough on its own.
                 </p>
               </Head>
-              <p className="dv-context">
-                <span className="dv-evidence__kind">What Drive already has</span>
-                Drive already handles this with limited-access folders. My design builds on that rather
-                than replacing it. <Sources of={['help', 'access', 'sharing']} />
-              </p>
+              <dl className="dv-terms" aria-label="Words used on this page">
+                <div>
+                  <dt>Access from the folder</dt>
+                  <dd>A file can get its access from the folder it’s in. Everyone who can open the folder can open the file.</dd>
+                </div>
+                <div>
+                  <dt>Limited-access folder</dt>
+                  <dd>A Drive folder setting. Only people added to the folder can open it, even if they can open the folder above it.</dd>
+                </div>
+                <div>
+                  <dt>General access: Restricted</dt>
+                  <dd>Only people you’ve added can open something from its link. On its own, it doesn’t remove access that comes from a folder.</dd>
+                </div>
+                <div>
+                  <dt>Alex, File A</dt>
+                  <dd>The example used throughout: one person, one file. Both are made up for the study.</dd>
+                </div>
+              </dl>
               <div className="dv-matrix">
                 <p className="dv-diagram-label" aria-hidden="true">Diagram · who has access now, and the one change</p>
                 <table>
@@ -656,13 +669,39 @@ export default function DriveSharing() {
                     ))}
                   </tbody>
                 </table>
-                <p className="dv-matrix__note">Now Alex can open File A. After the change, Alex loses File A only and keeps the rest of the project.</p>
+                <p className="dv-matrix__note">Alex loses File A only, and keeps the rest of the project.</p>
               </div>
+              <p className="dv-statement">
+                When people tried this in Drive as it is today, they weren’t sure how to{' '}
+                <mark>keep one file private and leave the rest of the project shared</mark>.
+              </p>
+              <figure>
+                <Screen slug="overview-share-dialog" open={open} size="full" sizes="(max-width: 1100px) 100vw, 900px" eager />
+                <figcaption className="dv-cap">
+                  File A’s share dialog in my prototype. Everyone gets File A through the project folder.{' '}
+                  <span className="dv-tag">Proposed design</span>
+                </figcaption>
+              </figure>
+              <h3 className="dv-h3 cp-gap">What I did</h3>
+              <ol className="cp-role">
+                {role.map(([title, body], i) => (
+                  <li key={title} className="cp-role__card">
+                    <span className="cp-role__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                    <h3>{title}</h3>
+                    <p>{body}</p>
+                  </li>
+                ))}
+              </ol>
+              <p className="cp-role__not">
+                <strong>Built with AI help:</strong> the working prototype, coded with Claude Code from my designs.{' '}
+                <strong>Not mine:</strong> limited-access folders, which Drive already has. This study wasn’t done for
+                Google.
+              </p>
             </section>
 
-            {/* Research & insights */}
+            {/* Research narrowed the problem */}
             <section id="research" className="dv-sec" aria-labelledby="research-title" tabIndex={-1}>
-              <Head id="research" kicker="Research & insights" title="I started with removing people. The problem got smaller." />
+              <Head id="research" kicker="Research" title="I started with removing people. The problem got smaller." />
               <dl className="dv-facts" aria-label="Research summary">
                 <div>
                   <dt>Dates</dt>
@@ -675,10 +714,6 @@ export default function DriveSharing() {
                 <div>
                   <dt>Activities</dt>
                   <dd>Interviews, walkthroughs of Google Drive as it is today, and testing my prototype</dd>
-                </div>
-                <div>
-                  <dt>Versions</dt>
-                  <dd>All three tried Version A. They tried Version B after that.</dd>
                 </div>
               </dl>
 
@@ -700,35 +735,34 @@ export default function DriveSharing() {
                 </li>
               </ol>
 
-              <div className="dv-notebook">
-                <p className="dv-diagram-label">From my notebook</p>
-                <div className="dv-notebook__grid">
-                  <figure>
-                    <Notebook slug="nb-sharing-notes" open={open} tag="Understanding sharing" />
-                    <figcaption className="dv-cap">Clicking through Drive’s sharing settings, and where I got stuck.</figcaption>
-                  </figure>
-                  <figure>
-                    <Notebook slug="nb-offboarding-flow" open={open} tag="Early direction" early />
-                    <figcaption className="dv-cap">My first idea: removing someone when they leave.</figcaption>
-                  </figure>
-                </div>
-              </div>
+              <ol className="dv-trail">
+                <li>
+                  <h3>Removing people first</h3>
+                  <p>I started with taking away someone’s access when they leave a project.</p>
+                </li>
+                <li>
+                  <h3>Something I couldn’t explain</h3>
+                  <p>The bulk-remove option was greyed out for me, and I couldn’t work out why. So I didn’t build on it.</p>
+                </li>
+                <li>
+                  <h3>A smaller problem</h3>
+                  <p>Drive could already keep selected files private. Finding that, and knowing what it would change, was the hard part.</p>
+                </li>
+              </ol>
 
-              <More title="How my focus changed">
-                <ol className="dv-trail">
-                  <li>
-                    <h3>Removing people first</h3>
-                    <p>I started with taking away someone’s access when they leave a project.</p>
-                  </li>
-                  <li>
-                    <h3>Something I couldn’t explain</h3>
-                    <p>The bulk-remove option was greyed out for me, and I couldn’t work out why. So I didn’t build on it.</p>
-                  </li>
-                  <li>
-                    <h3>A smaller problem</h3>
-                    <p>Drive could already keep selected files private. Finding that, and knowing what it would change, was the hard part.</p>
-                  </li>
-                </ol>
+              <More title="My notebook, and what I found with dummy accounts">
+                <div className="dv-notebook">
+                  <div className="dv-notebook__grid">
+                    <figure>
+                      <Notebook slug="nb-sharing-notes" open={open} tag="Understanding sharing" />
+                      <figcaption className="dv-cap">Clicking through Drive’s sharing settings, and where I got stuck.</figcaption>
+                    </figure>
+                    <figure>
+                      <Notebook slug="nb-offboarding-flow" open={open} tag="Early direction" early />
+                      <figcaption className="dv-cap">My first idea: removing someone when they leave.</figcaption>
+                    </figure>
+                  </div>
+                </div>
                 <div className="dv-pair">
                   <div className="dv-pair__text">
                     <h3>What I found with dummy accounts</h3>
@@ -759,12 +793,15 @@ export default function DriveSharing() {
               </More>
             </section>
 
-            {/* Design direction */}
+            {/* Drive's method, guided */}
             <section id="direction" className="dv-sec" aria-labelledby="direction-title" tabIndex={-1}>
-              <p className="dv-kicker">Design direction</p>
-              <h2 id="direction-title" className="dv-question">
-                How can a project owner keep a few files private, and know who still has access?
-              </h2>
+              <Head id="direction" kicker="Drive’s method" title="Drive can already do this. My concept guides you through it.">
+                <p>
+                  Drive’s help pages describe the method: put the file in a limited-access folder. My design keeps
+                  those same rules and <mark>walks you through them, starting from the file’s share settings</mark>.{' '}
+                  <Sources of={['help', 'access', 'sharing']} />
+                </p>
+              </Head>
               <div className="dv-wf">
                 <p className="dv-diagram-label">Today’s steps vs my flow</p>
                 <h3 id="wf-current" className="dv-wf__title">What Drive’s help pages describe today</h3>
@@ -773,83 +810,70 @@ export default function DriveSharing() {
                 <h3 id="wf-proposed" className="dv-wf__title">My proposed flow</h3>
                 <Workflow steps={proposed} labelledBy="wf-proposed" />
               </div>
-              <p className="dv-wf__takeaway">
-                My design <mark>walks you through the folder method Drive already uses</mark>, starting from the file’s
-                share settings.
-              </p>
               <p className="dv-scope-line">
                 What I covered: one My Drive project, keeping selected files private while the team keeps access,
                 checking before saving, and sharing a file again later.
               </p>
-              <More title="What the permission terms mean">
-                <dl className="dv-terms">
-                  <div>
-                    <dt>General access: Restricted</dt>
-                    <dd>Decides who can open something from its link: only people you’ve added. On its own, it doesn’t take away access someone gets from a parent folder.</dd>
-                  </div>
-                  <div>
-                    <dt>Limited access</dt>
-                    <dd>A folder setting. Only people added to the folder can open it, even if they can open the folder above it.</dd>
-                  </div>
-                </dl>
-              </More>
-              <More title="What I didn’t cover">
-                <ul className="dv-out">
-                  <li>Removing people across a whole organization</li>
-                  <li>Groups and public links</li>
-                  <li>Changing other owners’ permissions</li>
-                  <li>Giving back full access through the parent folder</li>
-                  <li>Connecting to the real Drive</li>
-                </ul>
-              </More>
             </section>
 
-            {/* A vs B */}
-            <section id="ab" className="dv-sec" aria-labelledby="ab-title" tabIndex={-1}>
-              <Head id="ab" kicker="A vs B" title="Two ways to start the same task.">
-                <p>I designed both. A was my first attempt; B came out of testing it.</p>
+            {/* Version A, the feedback, Version B */}
+            <section id="versions" className="dv-sec" aria-labelledby="versions-title" tabIndex={-1}>
+              <Head id="versions" kicker="A, then B" title="Testing changed the design.">
+                <p>
+                  I designed Version A first and tested it. The feedback led to Version B. All three people tried A,
+                  then B.
+                </p>
               </Head>
-              <div className="dv-compare">
-                {(['A', 'B'] as const).map((v) => (
-                  <figure key={v} className="dv-compare__col">
-                    <figcaption>
-                      <h3><span className="dv-badge">{v}</span> {v === 'A' ? 'Starts from Remove access' : 'Restrict from the role menu'}</h3>
-                    </figcaption>
-                    <div className="dv-focus">
-                      <p className="dv-focus__label">{v === 'A' ? 'Asks what “remove” means first' : 'Restrict is its own option'}</p>
-                      <Screen slug={v === 'A' ? 'a-choose-scope-detail' : 'b-role-menu-detail'} open={open} size="full" sizes="(max-width: 760px) 100vw, 440px" />
-                    </div>
-                    <p className="dv-cap">
-                      {v === 'A'
-                        ? 'A asks what Remove access should mean, then asks for the folder and the people on two separate screens.'
-                        : 'B gives restrict its own option, then asks for the folder and the people on one screen.'}
-                    </p>
-                    <a className="dv-compare__try" href={`${PROTO}?variant=${v}`} target="_blank" rel="noopener noreferrer">
-                      Open Version {v} <span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span>
-                    </a>
-                  </figure>
-                ))}
+              <div className="dv-iter" role="group" aria-label="Version A and Version B: choosing the folder and the people">
+                <figure className="dv-iter__col">
+                  <h3 className="dv-iter__title"><span className="dv-badge">A</span> Separate steps</h3>
+                  <Screen slug="a-choose-scope-detail" open={open} size="full" sizes="(max-width: 760px) 100vw, 440px" />
+                  <Screen slug="a-destination" open={open} size="full" sizes="(max-width: 760px) 100vw, 440px" />
+                  <Screen slug="a-people" open={open} size="full" sizes="(max-width: 760px) 100vw, 440px" />
+                  <figcaption className="dv-cap">
+                    Starts from Remove access, asks what that should mean, then asks for the folder and the people on
+                    two separate screens.
+                  </figcaption>
+                </figure>
+                <figure className="dv-iter__col">
+                  <h3 className="dv-iter__title"><span className="dv-badge">B</span> Folder and people together</h3>
+                  <Screen slug="b-role-menu-detail" open={open} size="full" sizes="(max-width: 760px) 100vw, 440px" />
+                  <Screen slug="b-restrict-setup" open={open} size="full" sizes="(max-width: 760px) 100vw, 440px" />
+                  <figcaption className="dv-cap">
+                    Restrict is its own action in the role menu. The folder and the people are on one screen: fewer
+                    screens, more to read at once.
+                  </figcaption>
+                </figure>
               </div>
-              <figure className="dv-sketch">
-                <figcaption>
-                  <h3>Sketch → Prototype</h3>
-                  <p className="dv-cap">I sketched A’s folder step on paper first. The prototype kept the same layout.</p>
-                </figcaption>
-                <div className="dv-sketch__pair">
-                  <div className="dv-sketch__col">
-                    <Notebook slug="nb-folder-sketch" open={open} tag="Sketch" sizes="(max-width: 760px) 100vw, 380px" />
-                  </div>
-                  <span className="dv-sketch__arrow" aria-hidden="true">→</span>
-                  <div className="dv-sketch__col">
-                    <span className="dv-paper__tag dv-paper__tag--proto">Prototype · Version A</span>
-                    <Screen slug="a-destination" open={open} size="full" sizes="(max-width: 760px) 100vw, 380px" />
-                  </div>
-                </div>
-              </figure>
+              <div className="dv-feedback">
+                <p className="dv-feedback__kind">Feedback on Version A</p>
+                <p className="dv-feedback__text">One person felt there were too many clicks.</p>
+              </div>
               <p className="dv-note">
-                One person felt A was too long, so I designed B to <mark>put the folder and people on one
-                screen</mark>.
+                B isn’t proven better. Everyone saw A first, so B may have felt easier just because the task was
+                familiar by then. <mark>I didn’t time either version.</mark>
               </p>
+              <div className="dv-end">
+                <External href={`${PROTO}?variant=A`}>Open Version A</External>
+                <External href={`${PROTO}?variant=B`}>Open Version B</External>
+              </div>
+              <More title="From sketch to prototype">
+                <figure className="dv-sketch">
+                  <figcaption>
+                    <p className="dv-cap">I sketched A’s folder step on paper first. The prototype kept the same layout.</p>
+                  </figcaption>
+                  <div className="dv-sketch__pair">
+                    <div className="dv-sketch__col">
+                      <Notebook slug="nb-folder-sketch" open={open} tag="Sketch" sizes="(max-width: 760px) 100vw, 380px" />
+                    </div>
+                    <span className="dv-sketch__arrow" aria-hidden="true">→</span>
+                    <div className="dv-sketch__col">
+                      <span className="dv-paper__tag dv-paper__tag--proto">Prototype · Version A</span>
+                      <Screen slug="a-destination" open={open} size="full" sizes="(max-width: 760px) 100vw, 380px" />
+                    </div>
+                  </div>
+                </figure>
+              </More>
               <More title="Other ideas I considered">
                 <dl className="dv-alts">
                   <div>
@@ -868,31 +892,31 @@ export default function DriveSharing() {
               </More>
             </section>
 
-            {/* Proposed solution */}
+            {/* Version B, step by step */}
             <section id="solution" className="dv-sec" aria-labelledby="solution-title" tabIndex={-1}>
-              <Head id="solution" kicker="Proposed solution" title="Restrict one file. See who keeps access first.">
-                <p>Restrict access is <mark>its own option, not another role</mark>. Nothing changes until you confirm.</p>
+              <Head id="solution" kicker="Version B" title="Restrict one file. See who keeps access first.">
+                <p>Nothing changes until you confirm. The review shows <mark>who keeps access and who loses it</mark> before saving.</p>
               </Head>
               <ol className="dv-steps">
                 <li className="dv-step">
                   <Screen slug="b-role-menu-detail" open={open} marks={[{ n: 1, x: 56, y: 74.7 }]} />
                   <div className="dv-step__text">
                     <h3><span className="dv-num">1</span> Start where you manage the person</h3>
-                    <Decision {...decisions[0]} />
+                    <Why {...decisions[0]} />
                   </div>
                 </li>
                 <li className="dv-step">
                   <Screen slug="b-restrict-setup" open={open} size="sm" marks={[{ n: 2, x: 4.3, y: 27 }]} />
                   <div className="dv-step__text">
                     <h3><span className="dv-num">2</span> Choose the folder and who keeps access</h3>
-                    <Decision {...decisions[1]} />
+                    <Why {...decisions[1]} />
                   </div>
                 </li>
                 <li className="dv-step">
                   <Screen slug="b-review" open={open} marks={[{ n: 3, x: 38, y: 53.6 }]} />
                   <div className="dv-step__text">
-                    <h3><span className="dv-num">3</span> Check each person’s access</h3>
-                    <Decision {...decisions[2]} />
+                    <h3><span className="dv-num">3</span> Check each person’s access before saving</h3>
+                    <Why {...decisions[2]} />
                   </div>
                 </li>
                 <li className="dv-step">
@@ -902,19 +926,18 @@ export default function DriveSharing() {
                     <p>The result uses the same words as the review. Alex loses File A. The team and the rest of the project stay the same.</p>
                   </div>
                 </li>
-                <li className="dv-step">
-                  <Screen slug="b-project-after" open={open} />
-                  <div className="dv-step__text">
-                    <h3>Afterwards, in the project</h3>
-                    <p>A Private files folder now shows up in Client Project, marked Limited access.</p>
-                  </div>
-                </li>
               </ol>
+              <More title="Afterwards, in the project">
+                <figure>
+                  <Screen slug="b-project-after" open={open} size="full" sizes="(max-width: 1100px) 100vw, 900px" />
+                  <figcaption className="dv-cap">A Private files folder now shows up in Client Project, marked Limited access.</figcaption>
+                </figure>
+              </More>
             </section>
 
-            {/* Restore access */}
+            {/* Sharing the file again, and scope */}
             <section id="restore" className="dv-sec" aria-labelledby="restore-title" tabIndex={-1}>
-              <Head id="restore" kicker="Restore access" title="Share the file again without opening the folder.">
+              <Head id="restore" kicker="Other parts" title="Share the file again without opening the folder.">
                 <p>Later, Alex needs File A again. You share just that file, and <mark>the folder stays limited</mark>.</p>
               </Head>
               <ol className="dv-grid">
@@ -926,7 +949,7 @@ export default function DriveSharing() {
                   </li>
                 ))}
               </ol>
-              <More title="See all four restore steps">
+              <More title="See all four steps">
                 <ol className="dv-grid">
                   {restoreAll.map(([slug, title, body], i) => (
                     <li key={slug} className="dv-grid__item">
@@ -937,76 +960,72 @@ export default function DriveSharing() {
                   ))}
                 </ol>
               </More>
-            </section>
-
-            {/* Testing & iteration */}
-            <section id="testing" className="dv-sec" aria-labelledby="testing-title" tabIndex={-1}>
-              <Head id="testing" kicker="Testing & iteration" title="What testing changed.">
-                <p className="dv-statement">
-                  I tested A first, then B, with three people. <mark>The results were mixed</mark>: one finished without
-                  help, one needed help, and one figured it out after some time. One person also restored access on
-                  their own and explained the result correctly.
-                </p>
-              </Head>
-              <div className="dv-feedback">
-                <p className="dv-feedback__kind">Feedback on Version A</p>
-                <p className="dv-feedback__text">One person felt there were too many clicks.</p>
-              </div>
-              <div className="dv-iter" role="group" aria-label="Version A and Version B: choosing the folder and the people">
-                <figure className="dv-iter__col">
-                  <h3 className="dv-iter__title"><span className="dv-badge">A</span> Separate steps</h3>
-                  <Screen slug="a-destination" open={open} size="full" sizes="(max-width: 760px) 100vw, 440px" />
-                  <Screen slug="a-people" open={open} size="full" sizes="(max-width: 760px) 100vw, 440px" />
-                  <figcaption className="dv-cap">The folder and the people on two screens.</figcaption>
-                </figure>
-                <figure className="dv-iter__col">
-                  <h3 className="dv-iter__title"><span className="dv-badge">B</span> Both choices together</h3>
-                  <Screen slug="b-restrict-setup" open={open} size="full" sizes="(max-width: 760px) 100vw, 440px" />
-                  <figcaption className="dv-cap">Both on one screen: fewer screens, but more to read at once.</figcaption>
-                </figure>
-              </div>
               <More title="How I checked the prototype">
                 <p>
                   I ran restrict and then share-again as one sequence in both versions, without resetting. In the
-                  simulated link previews, Alex could open File A as Viewer while Private files stayed blocked.
+                  simulated link previews, Alex could open File A as Viewer while Private files stayed blocked. This
+                  checks the prototype’s logic, not the real Drive.
                 </p>
+              </More>
+              <More title="What I didn’t cover">
+                <ul className="dv-out">
+                  <li>Removing people across a whole organization</li>
+                  <li>Groups and public links</li>
+                  <li>Changing other owners’ permissions</li>
+                  <li>Giving back full access through the parent folder</li>
+                  <li>Connecting to the real Drive</li>
+                </ul>
               </More>
             </section>
 
-            {/* Outcome */}
-            <section id="outcome" className="dv-sec" aria-labelledby="outcome-title" tabIndex={-1}>
-              <Head id="outcome" kicker="Outcome" title="A second version, shaped by testing." />
-              <dl className="dv-results">
-                <div>
-                  <dt>What happened</dt>
-                  <dd>Testing <mark>shaped a second version of the restrict flow</mark>, and one participant restored access unaided and explained the result correctly.</dd>
-                </div>
-                <div>
-                  <dt>Limits of this round</dt>
-                  <dd>
-                    Three participants, who all saw A before B, on a prototype with simulated permissions. The next
-                    round would time both versions and alternate their order.
-                  </dd>
-                </div>
-              </dl>
-            </section>
+            <CaseImpact
+              title="Testing changed the design."
+              lede="Feedback on Version A led to Version B: fewer screens, and a review that shows who keeps and loses access before anything is saved."
+              stats={impact}
+              note="A small study: three people, A before B, nothing timed and permissions simulated. It shows how the design changed, not that B is proven better."
+            />
 
-            {/* Reflection */}
-            <section id="reflection" className="dv-sec" aria-labelledby="reflection-title" tabIndex={-1}>
-              <Head id="reflection" kicker="Reflection" title="Learning how Drive works made the problem smaller.">
-                <p>
-                  I started out wanting to redesign how you remove people. Once I understood how Drive’s permissions
-                  already work, <mark>I could narrow it down</mark> to one clear flow. Drive already had this option. I
-                  wanted to make it easier to find and use.
+            {/* Outcome and reflection */}
+            <section id="outcome" className="dv-sec" aria-labelledby="outcome-title" tabIndex={-1}>
+              <Head id="outcome" kicker="Outcome" title="A second version, shaped by testing. Not yet proven.">
+                <p className="dv-statement">
+                  I tested A first, then B, with three people. <mark>On Version B, the results were mixed</mark>: one
+                  finished without help, one needed help, and one figured it out after some time. One person also restored access on
+                  their own and explained the result correctly.
                 </p>
               </Head>
-              <h3 className="dv-h3">What I’d test next</h3>
+              <div className="cp-outcome">
+                <div>
+                  <h3 className="dv-h3">Delivered</h3>
+                  <ul className="ticks">
+                    <li>A working prototype of both versions, with simulated permissions.</li>
+                    <li>A restrict flow that shows who keeps and loses access before saving.</li>
+                    <li>A way to share one file again while its folder stays limited.</li>
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="dv-h3">Not tested yet</h3>
+                  <ul className="ticks">
+                    <li>Whether B is better than A. Everyone saw A first, so the next round should show half the people B first.</li>
+                    <li>Whether either version is quicker. Nothing was timed.</li>
+                    <li>How it compares with Drive’s current steps.</li>
+                    <li>Whether the review helps people catch someone they unticked by mistake.</li>
+                  </ul>
+                </div>
+              </div>
+              <h3 className="dv-h3 cp-gap">About this study</h3>
               <ul className="ticks">
-                <li>Whether people can finish on their own, and correctly guess who keeps access</li>
-                <li>Whether the review helps people spot someone they unticked by mistake</li>
-                <li>How it compares with Drive’s current steps, and A vs B in a fair order, with half the people seeing B first</li>
-                <li>Record the task, version, help needed, point of confusion and final understanding for each participant.</li>
+                <li>3 participants. That’s enough to find problems, not to prove a design works.</li>
+                <li>Version A was always tested before Version B.</li>
+                <li>The prototype simulates Drive’s permissions. It isn’t connected to the real Drive.</li>
+                <li>An independent study. It wasn’t done for Google, and Google wasn’t involved.</li>
               </ul>
+              <h3 className="dv-h3 cp-gap">Reflection: learn the system before redesigning it</h3>
+              <p className="cp-reflect">
+                I started out wanting to redesign how you remove people. Once I understood how Drive’s permissions
+                already work, <mark>I could narrow it down</mark> to one clear flow. Drive already had this option. I
+                wanted to make it easier to find and use.
+              </p>
               <div className="dv-end">
                 <External href={PROTO}>Try the prototype</External>
               </div>

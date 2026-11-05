@@ -6,20 +6,21 @@ import { useLightbox } from '../components/Lightbox'
 import useTitle from '../components/useTitle'
 import loadAhead, { warmUp } from '../components/loadAhead'
 import type { ImageItem } from '../data/images'
+import CaseImpact from '../components/CaseImpact'
 
 const DIR = '/work/wavo'
 const FROM_APP = 'WAVO interactive concept, sample data. Simulated payments, locks and checks.'
 
 const sections = [
-  { id: 'overview', label: 'Overview' },
+  { id: 'problem', label: 'The problem' },
   { id: 'references', label: 'Public references' },
-  { id: 'decisions', label: 'Key decisions' },
+  { id: 'pay', label: 'What am I paying for?' },
+  { id: 'return', label: 'Where to return it' },
+  { id: 'check', label: 'Checks before paying' },
+  { id: 'end', label: 'Has it ended?' },
   { id: 'iteration', label: 'Before and after' },
-  { id: 'recovery', label: 'When things go wrong' },
-  { id: 'system', label: 'Visual style' },
-  { id: 'testing', label: 'Testing' },
-  { id: 'policies', label: 'Open policies' },
-  { id: 'next', label: 'Next steps' },
+  { id: 'impact', label: 'Impact' },
+  { id: 'outcome', label: 'Outcome' },
 ]
 
 /** Screens captured from the interactive app at 390 × 844, 2× (780 × 1688); the earlier
@@ -297,32 +298,72 @@ function More({ title, children }: { title: string; children: React.ReactNode })
   )
 }
 
-/** A key decision: the likely confusion, what the screen does instead, and why; alternatives and limits fold away */
-function Decision({ n, title, confusion, response, notes, reason, children }: {
-  n: number
+/** A key decision: the likely confusion, what the screen does instead, and why; limits fold away */
+function Decision({ title, confusion, response, notes, reason, children }: {
   title: string
   confusion: string
   response: string
   notes: string[]
   reason: string
-  children: React.ReactNode
+  children?: React.ReactNode
 }) {
   return (
     <div className="dv-step__text">
-      <h3><span className="dv-num">{n}</span> {title}</h3>
+      <h3>{title}</h3>
       <div className="wv-flip">
         <p className="wv-flip__risk"><span>Could confuse</span>{confusion}</p>
         <p className="wv-flip__fix"><span>So the screen</span>{response}</p>
       </div>
       <Notes notes={notes} />
       <p className="wv-reason"><strong>Why:</strong> {reason}</p>
-      <details className="wv-alt">
-        <summary>Alternative and limits</summary>
-        <dl className="dv-why">{children}</dl>
-      </details>
+      {children && (
+        <details className="wv-alt">
+          <summary>Alternative and limits</summary>
+          <dl className="dv-why">{children}</dl>
+        </details>
+      )}
     </div>
   )
 }
+
+/** Two things a rider could mix up, set side by side with what each one means */
+function Pair({ a, b }: { a: [string, string]; b: [string, string] }) {
+  return (
+    <dl className="cp-two wv-pair">
+      {[a, b].map(([term, meaning]) => (
+        <div key={term}>
+          <dt>{term}</dt>
+          <dd>{meaning}</dd>
+        </div>
+      ))}
+    </dl>
+  )
+}
+
+/** A caveat placed where it matters: what kind of claim this is, and what that means */
+function Caveat({ tag, children }: { tag: string; children: React.ReactNode }) {
+  return (
+    <p className="wv-caveat">
+      <span className="dv-tag">{tag}</span> {children}
+    </p>
+  )
+}
+
+/** The four questions the page is built around */
+const questions = [
+  ['pay', 'What am I paying for?', 'Included km vs battery range. Rental charge vs deposit.'],
+  ['return', 'Where can I return the scooty?', 'One return hub, chosen before you book.'],
+  ['check', 'What should I check before paying?', 'Find it, check it, then pay.'],
+  ['end', 'How do I know the rental has really ended?', '“Return requested” vs “lock confirmed”.'],
+] as const
+
+/** Impact: what the concept does on screen; no rider has used it yet */
+const impact = [
+  { tone: 'sun', value: '4', label: 'Rider questions, each answered on screen' },
+  { tone: 'mint', value: '₹0', label: 'Charged before the rider has checked the scooty' },
+  { tone: 'rose', value: '3', label: 'Recovery flows: an unsafe scooty, a pending payment, a lock that won’t confirm' },
+  { tone: 'sky', value: '4 widths', label: 'Layouts checked from 320 to 430 px' },
+] as const
 
 export default function Wavo() {
   useTitle('WAVO | Jb Yashvi')
@@ -371,8 +412,8 @@ export default function Wavo() {
               <dd>Product framing, interaction and visual design, recovery flows, and iteration direction.</dd>
             </div>
             <div>
-              <dt>Tools</dt>
-              <dd>AI tools supported exploration, implementation and transfer to editable Figma.</dd>
+              <dt>Built with AI help</dt>
+              <dd>AI tools supported exploration, coding the app and moving the screens into editable Figma.</dd>
             </div>
             <div>
               <dt>Sample data</dt>
@@ -387,17 +428,16 @@ export default function Wavo() {
           <CaseSidebar sections={sections} />
 
           <div className="dv-main">
-            {/* Overview, the question and who it's for */}
-            <section id="overview" className="dv-sec dv-sec--first" aria-labelledby="overview-title" tabIndex={-1}>
-              <Head id="overview" kicker="Overview" title="Renting is more than picking the nearest scooty.">
+            {/* The problem, who it's for, and the four questions */}
+            <section id="problem" className="dv-sec dv-sec--first" aria-labelledby="problem-title" tabIndex={-1}>
+              <Head id="problem" kicker="The problem" title="Renting is more than picking the nearest scooty.">
                 <p className="dv-statement">
                   A rental has many parts: included km, battery range, where to return it, safety checks and a
-                  deposit. WAVO shows each one at the moment it matters.
+                  deposit. Riders need to <mark>know what they’re agreeing to</mark>, and when it’s really over.
                 </p>
                 <p>
-                  The question: how can the app show riders <mark>what they’re agreeing to</mark> before they rent,
-                  and what happened when they return? It came from my own design work. I don’t know yet how often
-                  riders face these problems.
+                  The problem came from my own design work, not from research with riders. I don’t know yet how often
+                  riders face it.
                 </p>
               </Head>
               <dl className="wv-audience">
@@ -413,15 +453,25 @@ export default function Wavo() {
                   <dd>
                     “When I need a scooty for a short trip, help me see if it fits, know what I’m agreeing to, and
                     get a clear confirmation when I return it.”
+                    <span className="wv-audience__note">My own framing, not a rider’s quote.</span>
                   </dd>
                 </div>
               </dl>
+              <h3 className="dv-h3 cp-gap">Four questions the design answers</h3>
+              <ol className="wv-questions wv-questions--four">
+                {questions.map(([id, q, short]) => (
+                  <li key={id}>
+                    <h3><a href={`#${id}`}>{q}</a></h3>
+                    <p>{short}</p>
+                  </li>
+                ))}
+              </ol>
               <figure className="wv-overview-fig">
                 <p className="dv-diagram-label">The rental in three screens · sample data</p>
                 <ol className="wv-hero">
                   {hero.map(([slug, label], i) => (
                     <li key={slug}>
-                      <Phone slug={slug} open={open} eager sizes="(max-width: 560px) 30vw, (max-width: 760px) 28vw, 260px" />
+                      <Phone slug={slug} open={open} sizes="(max-width: 560px) 30vw, (max-width: 760px) 28vw, 260px" />
                       <span className="wv-hero__label"><span className="wv-hero__num">{i + 1}</span> {label}</span>
                     </li>
                   ))}
@@ -430,56 +480,54 @@ export default function Wavo() {
                   What you agree to, what you pay, and how it ends. Tap a screen to make it bigger.
                 </figcaption>
               </figure>
-              <div className="wv-journey">
-                <p className="dv-diagram-label">The main journey · tap a screen or a stop to see it</p>
-                <ol className="wv-route">
-                  {legs.map((leg, l) => {
-                    const first = legs.slice(0, l).reduce((n, g) => n + g.stops.length, 0)
-                    const screens = [...new Set(leg.stops.map(([, slug]) => slug))]
-                    return (
-                      <li key={leg.name} className="wv-leg">
-                        <p className="wv-leg__name"><span aria-hidden="true">{String.fromCharCode(65 + l)}</span> {leg.name}</p>
-                        <div className="wv-fan" style={{ '--n': screens.length } as React.CSSProperties}>
-                          {screens.map((slug, i) => (
-                            <button
-                              key={slug}
-                              type="button"
-                              className="wv-fan__card"
-                              style={{ '--i': i } as React.CSSProperties}
-                              onClick={() => open(at(slug))}
-                              aria-label={`Enlarge: ${shots[slug].caption}`}
-                            >
-                              <img src={`${DIR}/${slug}-800.webp`} width={390} height={844} alt="" loading="lazy" ref={loadAhead} decoding="async" />
-                            </button>
-                          ))}
-                        </div>
-                        <ol className="wv-leg__stops" start={first + 1}>
-                          {leg.stops.map(([name, slug], i) => (
-                            <li key={name}>
-                              <button type="button" onClick={() => open(at(slug))}>
-                                <span className="wv-journey__n">{String(first + i + 1).padStart(2, '0')}</span> {name}
+              <More title="The whole journey, step by step">
+                <div className="wv-journey">
+                  <ol className="wv-route">
+                    {legs.map((leg, l) => {
+                      const first = legs.slice(0, l).reduce((n, g) => n + g.stops.length, 0)
+                      const screens = [...new Set(leg.stops.map(([, slug]) => slug))]
+                      return (
+                        <li key={leg.name} className="wv-leg">
+                          <p className="wv-leg__name"><span aria-hidden="true">{String.fromCharCode(65 + l)}</span> {leg.name}</p>
+                          <div className="wv-fan" style={{ '--n': screens.length } as React.CSSProperties}>
+                            {screens.map((slug, i) => (
+                              <button
+                                key={slug}
+                                type="button"
+                                className="wv-fan__card"
+                                style={{ '--i': i } as React.CSSProperties}
+                                onClick={() => open(at(slug))}
+                                aria-label={`Enlarge: ${shots[slug].caption}`}
+                              >
+                                <img src={`${DIR}/${slug}-800.webp`} width={390} height={844} alt="" loading="lazy" ref={loadAhead} decoding="async" />
                               </button>
-                            </li>
-                          ))}
-                        </ol>
-                      </li>
-                    )
-                  })}
-                </ol>
-                <p className="dv-cap">
-                  Things that go wrong have <a href="#recovery">their own flows</a>, so the main journey stays simple.
-                </p>
-              </div>
-              <dl className="dv-facts wv-scope">
-                <div>
-                  <dt>In scope</dt>
-                  <dd>Pick a scooty, a plan and a return hub. Find and check it. Pay and unlock. Return it, with a clear lock status and bill.</dd>
+                            ))}
+                          </div>
+                          <ol className="wv-leg__stops" start={first + 1}>
+                            {leg.stops.map(([name, slug], i) => (
+                              <li key={name}>
+                                <button type="button" onClick={() => open(at(slug))}>
+                                  <span className="wv-journey__n">{String(first + i + 1).padStart(2, '0')}</span> {name}
+                                </button>
+                              </li>
+                            ))}
+                          </ol>
+                        </li>
+                      )
+                    })}
+                  </ol>
                 </div>
-                <div>
-                  <dt>Left out</dt>
-                  <dd>Sign-up, real ID checks, live maps, hardware and operations. A real service would need all of these.</dd>
-                </div>
-              </dl>
+                <dl className="dv-facts wv-scope">
+                  <div>
+                    <dt>In scope</dt>
+                    <dd>Pick a scooty, a plan and a return hub. Find and check it. Pay and unlock. Return it, with a clear lock status and bill.</dd>
+                  </div>
+                  <div>
+                    <dt>Left out</dt>
+                    <dd>Sign-up, real ID checks, live maps, hardware and operations. A real service would need all of these.</dd>
+                  </div>
+                </dl>
+              </More>
             </section>
 
             {/* Reference review */}
@@ -529,9 +577,15 @@ export default function Wavo() {
               </More>
             </section>
 
-            {/* Key decisions */}
-            <section id="decisions" className="dv-sec" aria-labelledby="decisions-title" tabIndex={-1}>
-              <Head id="decisions" kicker="Key decisions" title="Four decisions, each answering a likely confusion." />
+            {/* Question 1: cost */}
+            <section id="pay" className="dv-sec" aria-labelledby="pay-title" tabIndex={-1}>
+              <Head id="pay" kicker="Question 1" title="What am I paying for?">
+                <p>Two pairs of numbers are easy to mix up. The screens keep each pair apart.</p>
+              </Head>
+              <Pair
+                a={['Included km', 'Part of the price. A 2-hour plan includes 30 km; going over costs extra per km.']}
+                b={['Estimated battery range', 'How far the current charge might go. An estimate, not a promise, and it doesn’t grow with a longer plan.']}
+              />
               <ol className="dv-steps wv-steps">
                 <li className="wv-step">
                   <div className="wv-step__pair">
@@ -539,29 +593,77 @@ export default function Wavo() {
                     <Phone slug="warning" open={open} pins={[{ n: 3, top: 36 }]} />
                   </div>
                   <Decision
-                    n={1}
                     title="Keep the plan’s km and the battery range apart"
                     confusion="Included km and battery range look like one promise about distance."
                     response="Gives each number its own place."
                     reason="Included km is part of the price. Battery range is an estimate on the current charge, not a guaranteed travel distance."
                     notes={[
                       'Each plan shows its included km.',
-                      'Battery range is shown on its own as an estimate, and doesn’t grow with a longer plan.',
+                      'Battery range is shown on its own as an estimate.',
                       'An optional distance check shows the extra cost and suggests a better plan.',
                     ]}
                   >
                     <div><dt>Alternative</dt><dd>Show battery % only. Riders would have to work out the distance themselves.</dd></div>
                   </Decision>
                 </li>
+              </ol>
+              <Pair
+                a={['Rental charge', 'What the ride costs. Charged at unlock: ₹179 for 2 hours in the sample.']}
+                b={['Deposit hold', 'Money held, not charged: ₹500 in the sample. It’s released after the return is confirmed.']}
+              />
+              <ol className="dv-steps wv-steps">
+                <li className="wv-step">
+                  <div className="wv-step__pair">
+                    <Phone slug="review" open={open} />
+                    <Phone slug="pay" open={open} pins={[{ n: 1, top: 43 }]} />
+                  </div>
+                  <Decision
+                    title="Never add the rental and the deposit together"
+                    confusion="An earlier “Total authorised” line mixed the rental charge and the deposit."
+                    response="Puts them on separate lines, everywhere."
+                    reason="A rider should know what they’ve spent and what they’ll get back."
+                    notes={['At payment, the rental and the refundable deposit hold sit on separate lines, with the late rate below.']}
+                  />
+                </li>
+              </ol>
+              <More title="When the payment is pending">
+                <div className="wv-step">
+                  <div className="wv-step__pair">
+                    <Phone slug="payment-pending" open={open} pins={[{ n: 1, top: 22 }]} />
+                  </div>
+                  <div className="dv-step__text">
+                    <p>
+                      “Payment pending” can look like paid. The screen says it’s not confirmed yet, tells you not to
+                      pay again, and offers a status check.
+                    </p>
+                  </div>
+                </div>
+              </More>
+              <Caveat tag="Illustrative prices">
+                The prices, the ₹6 per extra km and the ₹30 late charge are sample numbers, not a real tariff.
+              </Caveat>
+              <Caveat tag="Unresolved">
+                {unresolved[1][1]}
+              </Caveat>
+            </section>
+
+            {/* Question 2: return hub */}
+            <section id="return" className="dv-sec" aria-labelledby="return-title" tabIndex={-1}>
+              <Head id="return" kicker="Question 2" title="Where can I return the scooty?">
+                <p>
+                  In WAVO, a rental can only end at one return hub. A nearby pickup is no use if you can’t return the
+                  scooty where you’re going.
+                </p>
+              </Head>
+              <ol className="dv-steps wv-steps">
                 <li className="wv-step">
                   <div className="wv-step__pair">
                     <Phone slug="hub" open={open} pins={[{ n: 1, top: 52 }]} />
                     <Phone slug="ride" open={open} pins={[{ n: 2, top: 70 }]} />
                   </div>
                   <Decision
-                    n={2}
                     title="Show the return hub before you book"
-                    confusion="A nearby pickup is no use if you can’t return the scooty where you’re going."
+                    confusion="Finding out where you must return only at the end of the ride."
                     response="Asks for the return hub before you reserve."
                     reason="A strict return rule should be part of the choice, not a surprise at the end."
                     notes={[
@@ -570,52 +672,114 @@ export default function Wavo() {
                     ]}
                   >
                     <div><dt>Alternative</dt><dd>Faster booking, with return rules shown later.</dd></div>
-                    <div><dt>Open issue</dt><dd>Detour billing when a hub is full or closed. See <a href="#policies">open policies</a>.</dd></div>
                   </Decision>
                 </li>
+              </ol>
+              <Caveat tag="Proposed rule">
+                Fixed return hubs are a rule I proposed for the concept. Whether riders accept them is untested.
+              </Caveat>
+              <Caveat tag="Unresolved">
+                {unresolved[0][1]}
+              </Caveat>
+            </section>
+
+            {/* Question 3: checks before paying */}
+            <section id="check" className="dv-sec" aria-labelledby="check-title" tabIndex={-1}>
+              <Head id="check" kicker="Question 3" title="What should I check before paying?">
+                <p>
+                  The order is find, check, then pay. Paying at booking would save steps, but a rider who finds a
+                  problem at pickup would then wait for a refund.
+                </p>
+              </Head>
+              <ol className="dv-steps wv-steps">
                 <li className="wv-step">
                   <div className="wv-step__trio">
                     <Phone slug="scan" open={open} pins={[{ n: 1, top: 95 }]} />
                     <Phone slug="checks" open={open} pins={[{ n: 2, top: 34 }]} />
-                    <Phone slug="pay" open={open} pins={[{ n: 3, top: 43 }]} />
+                    <Phone slug="checks-done" open={open} pins={[{ n: 3, top: 70 }]} />
                   </div>
                   <Decision
-                    n={3}
                     title="Check the scooty before paying"
                     confusion="Pay first, find a problem at pickup, then wait for a refund."
                     response="Goes find → check → pay → unlock."
-                    reason="Paying at booking would save steps, but means refunds when a rider finds a problem."
+                    reason="Nothing is charged until the rider has checked the scooty they’re about to ride."
                     notes={[
                       'Type in the code if the QR sticker won’t scan.',
                       'Checks in two groups: the scooty, and helmet and readiness.',
-                      'Then pay: the rental and the deposit on separate lines.',
+                      '“Report a problem” stays separate from the ticks.',
                     ]}
-                  >
-                    <div><dt>Limit</dt><dd>A checklist can’t prove a scooty is safe. Real maintenance happens outside the app.</dd></div>
-                  </Decision>
+                  />
                 </li>
+              </ol>
+              <figure className="wv-rec">
+                <h3 className="wv-rec__title">If the scooty isn’t safe</h3>
+                <ol className="wv-rec__row">
+                  <li><Phone slug="unsafe-report" open={open} /><span className="wv-rec__label">Report: small damage or safety</span></li>
+                  <li><Phone slug="unsafe-confirm" open={open} /><span className="wv-rec__label">Confirm: booking ends, no charge</span></li>
+                  <li><Phone slug="unsafe-ended" open={open} /><span className="wv-rec__label">Ended, another scooty suggested</span></li>
+                </ol>
+                <figcaption className="dv-cap">
+                  Small damage and safety problems are separate. A safety problem ends the booking for free, and
+                  another scooty is suggested, <mark>not booked for you</mark>.
+                </figcaption>
+              </figure>
+              <Caveat tag="Simulated">
+                Scanning, the checks and payment are simulated. A checklist can’t prove a scooty is safe; real
+                maintenance happens outside the app.
+              </Caveat>
+            </section>
+
+            {/* Question 4: the end of the rental */}
+            <section id="end" className="dv-sec" aria-labelledby="end-title" tabIndex={-1}>
+              <Head id="end" kicker="Question 4" title="How do I know the rental has really ended?">
+                <p>Asking to end a rental and the scooty actually locking are two different moments.</p>
+              </Head>
+              <Pair
+                a={['Return requested', 'You’ve asked to end the rental at the hub. Billing stops here, but the scooty may not be locked yet.']}
+                b={['Lock confirmed', 'The scooty is locked. Only now is the rental complete, and the deposit release can start.']}
+              />
+              <ol className="dv-steps wv-steps">
                 <li className="wv-step">
                   <div className="wv-step__trio">
-                    <Phone slug="payment-pending" open={open} pins={[{ n: 1, top: 22 }]} />
+                    <Phone slug="end-request" open={open} pins={[{ n: 1, top: 62 }]} />
                     <Phone slug="lock-failed" open={open} pins={[{ n: 2, top: 44 }]} />
                     <Phone slug="summary" open={open} pins={[{ n: 3, top: 20 }]} />
                   </div>
                   <Decision
-                    n={4}
                     title="Don’t show “done” until it’s done"
-                    confusion="“Payment pending” can look like paid, and “return requested” like locked."
+                    confusion="“Return requested” can look like locked."
                     response="Gives each state its own screen and next step."
-                    reason="A rider needs to know if they can start, if they can leave, and what’s still open."
+                    reason="A rider needs to know if they can leave, and what’s still open."
                     notes={[
-                      '“Not confirmed yet. Don’t pay again”, with a status check.',
-                      'Billing stops once the return request is accepted (proposed policy), but the lock still says “Not yet confirmed”.',
+                      'Before you request, the screen says what happens next.',
+                      'If the lock doesn’t engage, it says “Not yet confirmed” and what to do.',
                       'Only a confirmed lock says “Scooty locked · return confirmed”.',
                     ]}
                   >
-                    <div><dt>Depends on</dt><dd>Reliable times, payment matching, signals from the lock and a real support team. The concept has none of these.</dd></div>
+                    <div><dt>Depends on</dt><dd>Reliable times, signals from the lock and a real support team. The concept has none of these.</dd></div>
                   </Decision>
                 </li>
               </ol>
+              <More title="If the lock still won’t confirm">
+                <figure className="wv-rec">
+                  <ol className="wv-rec__row">
+                    <li><Phone slug="lock-failed" open={open} /><span className="wv-rec__label">Lock failed: return asked, not confirmed</span></li>
+                    <li><Phone slug="lock-assist" open={open} /><span className="wv-rec__label">Close with help, lock not confirmed</span></li>
+                    <li><Phone slug="pending-summary" open={open} /><span className="wv-rec__label">Summary: billing stopped, check pending</span></li>
+                  </ol>
+                  <figcaption className="dv-cap">
+                    None of these shows a successful lock. You can close with help, the summary says{' '}
+                    <mark>“scooty check pending”</mark>, and the deposit stays held until then.
+                  </figcaption>
+                </figure>
+              </More>
+              <Caveat tag="Proposed rule">
+                Billing stopping at the return request is a rule I proposed, not one an operator has agreed to.
+              </Caveat>
+              <Caveat tag="Simulated">The lock and its signals are simulated.</Caveat>
+              <Caveat tag="Unresolved">
+                {unresolved[2][1]}
+              </Caveat>
             </section>
 
             {/* Visual iteration */}
@@ -638,113 +802,95 @@ export default function Wavo() {
                   <figcaption className="dv-cap">Short labels, grouped steps, extra detail under “How range works”, one button.</figcaption>
                 </figure>
               </div>
-              <h3 className="dv-h3">What changed across screens</h3>
-              <ul className="wv-changes">
-                {changes.map(([before, after]) => (
-                  <li key={before}>
-                    <span className="wv-changes__before">{before}</span>
-                    <span className="wv-changes__after">{after}</span>
-                  </li>
-                ))}
-              </ul>
+              <More title="What changed across screens">
+                <ul className="wv-changes">
+                  {changes.map(([before, after]) => (
+                    <li key={before}>
+                      <span className="wv-changes__before">{before}</span>
+                      <span className="wv-changes__after">{after}</span>
+                    </li>
+                  ))}
+                </ul>
+              </More>
+              <More title="The visual style">
+                <div className="wv-system">
+                  <div className="wv-system__block">
+                    <p className="dv-diagram-label">Colour</p>
+                    <ul className="wv-swatches">
+                      <li><span style={{ background: '#f6f9f6' }} /> Background</li>
+                      <li><span style={{ background: '#e3f6e8' }} /> Mint</li>
+                      <li><span style={{ background: '#2cc65e' }} /> Action green</li>
+                      <li><span style={{ background: '#0f7a38' }} /> Green text</li>
+                      <li><span style={{ background: '#141a17' }} /> Ink</li>
+                    </ul>
+                  </div>
+                  <div className="wv-system__block">
+                    <p className="dv-diagram-label">Type</p>
+                    <p className="wv-type"><span className="wv-type__display">Bricolage Grotesque</span> for headings</p>
+                    <p className="wv-type"><span className="wv-type__ui">Inter</span> for reading: 16 px text, 14 px labels, 22–24 px headings</p>
+                  </div>
+                  <div className="wv-system__block">
+                    <p className="dv-diagram-label">States and actions</p>
+                    <div className="wv-chips">
+                      <span className="wv-chip wv-chip--ok">Scooty locked · return confirmed</span>
+                      <span className="wv-chip wv-chip--pending">Billing closed · scooty check pending</span>
+                      <span className="wv-chip wv-chip--block">Don’t ride WV-0874</span>
+                      <span className="wv-chip wv-chip--tag">Illustrative prices</span>
+                    </div>
+                    <div className="wv-btns" aria-hidden="true">
+                      <span className="wv-btn">Pay with UPI</span>
+                      <span className="wv-btn wv-btn--quiet">Keep trying</span>
+                      <span className="wv-btn wv-btn--danger">Report and end booking</span>
+                    </div>
+                  </div>
+                </div>
+                <p className="dv-cap">
+                  Shared buttons and spacing keep the screens consistent. The first Figma copy lost detail, so I matched
+                  it back to the app.
+                </p>
+              </More>
               <p className="dv-note">
                 These are <mark>design-led iterations</mark>. Prices, rules and logic stayed the same. I checked the
                 layouts in a browser at 320, 360, 390 and 430 px wide, not with users.
               </p>
             </section>
 
-            {/* Recovery flows */}
-            <section id="recovery" className="dv-sec" aria-labelledby="recovery-title" tabIndex={-1}>
-              <Head id="recovery" kicker="When things go wrong" title="Say what’s true, and what to do next.">
-                <p>Two examples from the many states in the app. Payment pending is shown in decision 4.</p>
-              </Head>
-              <div className="wv-recs">
-                <figure className="wv-rec">
-                  <h3 className="wv-rec__title">Unsafe vehicle at pickup</h3>
-                  <ol className="wv-rec__row">
-                    <li><Phone slug="unsafe-report" open={open} /><span className="wv-rec__label">Report: small damage or safety</span></li>
-                    <li><Phone slug="unsafe-confirm" open={open} /><span className="wv-rec__label">Confirm: booking ends, no charge</span></li>
-                    <li><Phone slug="unsafe-ended" open={open} /><span className="wv-rec__label">Ended, another scooty suggested</span></li>
-                  </ol>
-                  <figcaption className="dv-cap">
-                    Small damage and safety problems are separate. A safety problem ends the booking for free, and
-                    another scooty is suggested, <mark>not booked for you</mark>.
-                  </figcaption>
-                </figure>
-              </div>
-              <More title="Lock not confirmed at return: three screens">
-                <figure className="wv-rec">
-                  <ol className="wv-rec__row">
-                    <li><Phone slug="lock-failed" open={open} /><span className="wv-rec__label">Lock failed: return asked, not confirmed</span></li>
-                    <li><Phone slug="lock-assist" open={open} /><span className="wv-rec__label">Close with help, lock not confirmed</span></li>
-                    <li><Phone slug="pending-summary" open={open} /><span className="wv-rec__label">Summary: billing stopped, check pending</span></li>
-                  </ol>
-                  <figcaption className="dv-cap">
-                    None of these shows a successful lock. Under the proposed policy, billing stops when the return
-                    request is accepted. If the scooty still won’t lock, you can close with help. The summary says{' '}
-                    <mark>“scooty check pending”</mark>, and the deposit stays held until then.
-                  </figcaption>
-                </figure>
-              </More>
-            </section>
+            <CaseImpact
+              title="Fewer surprises in a rental, ready to test."
+              lede="Before a rider pays, the screens show what is charged and what is held, where the scooty must go back, and what to check. At the end, they say plainly whether the rental is over."
+              stats={impact}
+              note="A concept with sample data. No riders have tested it yet, so this is what the design does, not a measured result."
+            />
 
-            {/* Visual system */}
-            <section id="system" className="dv-sec" aria-labelledby="system-title" tabIndex={-1}>
-              <Head id="system" kicker="Visual style" title="A small visual style, so key states stand out.">
-                <p>
-                  Off-white screens, pale mint sections, bright green buttons and dark text. Warnings, errors and
-                  pending states each look different.
-                </p>
+            {/* Outcome, planned testing and reflection */}
+            <section id="outcome" className="dv-sec" aria-labelledby="outcome-title" tabIndex={-1}>
+              <Head id="outcome" kicker="Outcome" title="A working concept. Nothing tested with riders yet.">
+                <p>No proof of demand, no drop in support calls, no conversion measured.</p>
               </Head>
-              <div className="wv-system">
-                <div className="wv-system__block">
-                  <p className="dv-diagram-label">Colour</p>
-                  <ul className="wv-swatches">
-                    <li><span style={{ background: '#f6f9f6' }} /> Background</li>
-                    <li><span style={{ background: '#e3f6e8' }} /> Mint</li>
-                    <li><span style={{ background: '#2cc65e' }} /> Action green</li>
-                    <li><span style={{ background: '#0f7a38' }} /> Green text</li>
-                    <li><span style={{ background: '#141a17' }} /> Ink</li>
+              <div className="cp-outcome">
+                <div>
+                  <h3 className="dv-h3">What exists</h3>
+                  <ul className="ticks">
+                    <li>A working rental app concept, with sample data.</li>
+                    <li>Editable Figma screens for the main journey.</li>
+                    <li>Flows for an unsafe scooty, a pending payment and a lock that won’t confirm.</li>
                   </ul>
                 </div>
-                <div className="wv-system__block">
-                  <p className="dv-diagram-label">Type</p>
-                  <p className="wv-type"><span className="wv-type__display">Bricolage Grotesque</span> for headings</p>
-                  <p className="wv-type"><span className="wv-type__ui">Inter</span> for reading: 16 px text, 14 px labels, 22–24 px headings</p>
-                </div>
-                <div className="wv-system__block">
-                  <p className="dv-diagram-label">States and actions</p>
-                  <div className="wv-chips">
-                    <span className="wv-chip wv-chip--ok">Scooty locked · return confirmed</span>
-                    <span className="wv-chip wv-chip--pending">Billing closed · scooty check pending</span>
-                    <span className="wv-chip wv-chip--block">Don’t ride WV-0874</span>
-                    <span className="wv-chip wv-chip--tag">Illustrative prices</span>
-                  </div>
-                  <div className="wv-btns" aria-hidden="true">
-                    <span className="wv-btn">Pay with UPI</span>
-                    <span className="wv-btn wv-btn--quiet">Keep trying</span>
-                    <span className="wv-btn wv-btn--danger">Report and end booking</span>
-                  </div>
+                <div>
+                  <h3 className="dv-h3">Not tested or settled yet</h3>
+                  <ul className="ticks">
+                    <li>Whether riders understand the costs, checks and return states.</li>
+                    <li>The three unresolved rules: detour billing, the deposit by payment method and assisted returns.</li>
+                    <li>Accessibility beyond contrast and proper controls: keyboard, screen readers and zoom.</li>
+                  </ul>
                 </div>
               </div>
-              <p className="dv-cap">
-                Shared buttons and spacing keep the screens consistent. The first Figma copy lost detail, so I matched
-                it back to the app.
+              <h3 className="dv-h3 cp-gap">Planned testing <span className="dv-tag">Planned</span></h3>
+              <p className="cp-reflect">
+                3–5 people, 35–45 minutes each, on a phone-sized screen, with sample data only. No real payments,
+                licences or IDs. No sessions have run, so there are no findings, quotes or success rates. Results will
+                be shared as counts, like “3 of 5”.
               </p>
-              <p className="dv-note">
-                Accessibility is <mark>only partly done</mark>. I checked contrast and used proper controls, but that’s
-                not an audit. Keyboard use, screen readers, zoom and real assistive tech still need testing.
-              </p>
-            </section>
-
-            {/* Testing */}
-            <section id="testing" className="dv-sec" aria-labelledby="testing-title" tabIndex={-1}>
-              <Head id="testing" kicker="Testing" title="A small test round, planned but not run yet.">
-                <p>
-                  3–5 people, 35–45 minutes each, on a phone-sized screen, with sample data only. No real payments,
-                  licences or IDs. Three themes come first:
-                </p>
-              </Head>
               <ol className="wv-questions wv-themes">
                 {themes.map(([name, ids, check]) => (
                   <li key={name}>
@@ -765,57 +911,11 @@ export default function Wavo() {
                   ))}
                 </ol>
               </More>
-              <p className="dv-note">
-                <span className="dv-tag">Planned</span> No sessions yet, so no findings, quotes or success rates. Results
-                will be shared as counts, like “3 of 5”.
+              <h3 className="dv-h3 cp-gap">Reflection: clear screens need clear service rules</h3>
+              <p className="cp-reflect">
+                A return button can’t fix a missing hub rule, and a deposit label can’t replace a payment agreement.
+                Next, I need rider feedback and business decisions, not just visual polish.
               </p>
-            </section>
-
-            {/* Open policies */}
-            <section id="policies" className="dv-sec" aria-labelledby="policies-title" tabIndex={-1}>
-              <Head id="policies" kicker="Open policies" title="Three rules the screens can’t decide.">
-                <p>These are only proposed. A real operator and payment provider would need to decide them.</p>
-              </Head>
-              <ul className="wv-open">
-                {unresolved.map(([name, text]) => (
-                  <li key={name}>
-                    <span className="dv-tag">Unresolved</span>
-                    <h3>{name}</h3>
-                    <p>{text}</p>
-                  </li>
-                ))}
-              </ul>
-            </section>
-
-            {/* Next steps */}
-            <section id="next" className="dv-sec" aria-labelledby="next-title" tabIndex={-1}>
-              <Head id="next" kicker="Next steps" title="Clear screens need clear service rules." />
-              <dl className="dv-results">
-                <div>
-                  <dt>What exists</dt>
-                  <dd>A working rental app concept and editable Figma screens, covering the main journey and what happens when things go wrong.</dd>
-                </div>
-                <div>
-                  <dt>Limitations</dt>
-                  <dd>No proof of demand, no drop in support calls, no conversion measured.</dd>
-                </div>
-                <div>
-                  <dt>Next</dt>
-                  <dd>
-                    Run the planned rider test <span className="dv-tag">Planned</span>, then settle the three{' '}
-                    <a href="#policies">open policies</a> with an operator and payment provider. The Welcome picture
-                    shows a standing scooter’s handlebar: welcome illustration replacement pending to match the seated
-                    scooty.
-                  </dd>
-                </div>
-                <div>
-                  <dt>Reflection</dt>
-                  <dd>
-                    A return button can’t fix a missing hub rule, and a deposit label can’t replace a payment agreement.
-                    Next, I need rider feedback and business decisions, not just visual polish.
-                  </dd>
-                </div>
-              </dl>
             </section>
           </div>
         </div>

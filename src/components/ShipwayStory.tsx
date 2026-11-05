@@ -100,8 +100,8 @@ function phone(door: Pt) {
   return k.out
 }
 
-// every word here is from the Shipway case study below: the overview, the challenge, the three
-// decisions, the iteration and the delivery; the download count is from the Google Play listing
+// every word here is from the Shipway case study below: the problem, the three decisions, the
+// change after launch and the outcome; the download count is from the Google Play listing
 const stops: RouteStop[] = [
   {
     name: 'Problem',
@@ -116,7 +116,7 @@ const stops: RouteStop[] = [
   {
     name: 'Map',
     sub: '5 stages',
-    meta: 'Desktop-to-mobile challenge',
+    meta: 'The problem',
     title: 'I followed the order, step by step.',
     body: 'The hard part was choosing what each small screen shows first. So the app follows an order’s 5 steps: new, choose a courier, processing, pickup and tracking.',
     tone: 'sky',
@@ -125,8 +125,8 @@ const stops: RouteStop[] = [
   },
   {
     name: 'Design',
-    sub: '3 decisions',
-    meta: 'Three key design decisions',
+    sub: '2 decisions',
+    meta: 'Decisions 1 and 2',
     title: 'Show only what matters now.',
     body: 'Each order is a small card with only what its step needs. The 8 couriers are a simple list, not a grid. Full details are one tap away.',
     tone: 'lilac',
@@ -137,7 +137,7 @@ const stops: RouteStop[] = [
   {
     name: 'Iterate',
     sub: 'Onboarding',
-    meta: 'Iteration · Before launch',
+    meta: 'Decision 3 · Before launch',
     title: 'Made sign-up shorter.',
     body: 'My first design asked for everything at sign-up: profile, KYC documents, warehouse and sales channel. Now sign-up asks only for the account and business address. The rest became a checklist on Home.',
     tone: 'sun',
@@ -147,9 +147,9 @@ const stops: RouteStop[] = [
   {
     name: 'Refine',
     sub: 'After launch',
-    meta: 'Iteration · After launch',
+    meta: 'After launch',
     title: 'Cut down the order card.',
-    body: 'After launch, I checked every order card again. I kept only what you need for the next step. The rest is one tap away.',
+    body: 'After launch, the cards took up too much space, so few orders fit on screen. I kept only what you need for the next step, so more cards show at once. The rest is one tap away.',
     tone: 'mint',
     at: [780, 560],
     via: 'vuv',
@@ -158,7 +158,7 @@ const stops: RouteStop[] = [
   {
     name: 'Impact',
     sub: 'On Google Play',
-    meta: 'Delivery',
+    meta: 'Outcome',
     title: 'Live on Google Play.',
     body: 'Shipway’s Android app is live on Google Play. The download count is for the whole app.',
     tone: 'rose',
@@ -166,7 +166,7 @@ const stops: RouteStop[] = [
     label: 'left',
     shapes: [],
     facts: [
-      { value: '10K+', label: 'Downloads on Google Play' },
+      { value: '10K+', label: 'Downloads for the whole app, Oct 2026' },
       { value: '9 → 1', label: 'Desktop columns into one order card' },
       { value: '8 couriers', label: 'In one list instead of a grid' },
     ],

@@ -8,6 +8,7 @@ import useTitle from '../components/useTitle'
 import loadAhead, { warmUp } from '../components/loadAhead'
 import type { ImageItem } from '../data/images'
 import { mid } from '../components/srcset'
+import CaseImpact from '../components/CaseImpact'
 
 const LIVE = 'https://compass-mapperv2.vercel.app/worklist'
 const PDF = `${import.meta.env.BASE_URL}work/compass/cmp-autobot-design-system.pdf`
@@ -32,6 +33,7 @@ const sections = [
   { id: 'progress', label: 'Progress & targets' },
   { id: 'system', label: 'Design system' },
   { id: 'outcome', label: 'Outcome' },
+  { id: 'impact', label: 'Impact' },
   { id: 'reflection', label: 'Reflection' },
 ]
 
@@ -530,6 +532,14 @@ function Head({ id, kicker, title, children }: { id: string; kicker: string; tit
 
 const WIDE = '(max-width: 1100px) 100vw, 980px'
 
+/** Impact: user and site counts as of November 2026; the rest is from the shipped screens */
+const impact = [
+  { tone: 'sun', value: '20+', label: 'People using the platform' },
+  { tone: 'mint', value: '7 sites', label: 'Running their mapping review on it' },
+  { tone: 'sky', value: '1 table', label: 'Replaced a review split across Excel and another tool' },
+  { tone: 'rose', value: '6 reasons', label: 'Every rejection now says what went wrong' },
+] as const
+
 export default function Compass() {
   useTitle('Compass Group — Helping operators review AI ingredient matches | Jb Yashvi')
   const { open, lightbox } = useLightbox(items)
@@ -936,6 +946,13 @@ export default function Compass() {
                 <span className="cp-inuse__dot" aria-hidden="true" /> In use day to day by the client’s operators.
               </p>
             </section>
+
+            <CaseImpact
+              title="One place for the review, used every day."
+              lede="More than 20 people across 7 sites now do their mapping review here, every day, instead of in Excel and another tool. Each decision carries its reason, and a wrong click can be undone on the same row."
+              stats={impact}
+              note="User and site counts as of November 2026. I don’t have measured figures for time saved or accuracy."
+            />
 
             {/* Reflection */}
             <section id="reflection" className="dv-sec" aria-labelledby="reflection-title" tabIndex={-1}>

@@ -2,7 +2,7 @@ import { useEffect, useRef, type CSSProperties } from 'react'
 import { COVER_V } from '../data/projects'
 
 type Tone = 'sun' | 'sky' | 'rose' | 'lilac'
-type Doodle = 'me' | 'circle' | 'under' | 'stars'
+type Doodle = 'me' | 'circle' | 'under' | 'stars' | 'double'
 type Piece = string | { text: string; tone: Tone; doodle: Doodle }
 
 // Jb's own words about how architecture shaped the way they design
@@ -15,7 +15,8 @@ const story: Piece[] = [
   { text: 'small design changes', tone: 'rose', doodle: 'circle' },
   'shape their experience. I bring that thinking into',
   { text: 'product design:', tone: 'lilac', doodle: 'stars' },
-  'organising information and helping people find their way.',
+  'organising information, helping people find their way and making',
+  { text: 'a real impact.', tone: 'sun', doodle: 'double' },
 ]
 
 const plain = story.map((p) => (typeof p === 'string' ? p : p.text)).join(' ').replace(/ ,/g, ',')
@@ -37,6 +38,7 @@ const at = (d: Doodle, later = 0) => ({ '--s': startOf(d) + later }) as CSSPrope
 const DOODLES: Record<Exclude<Doodle, 'me'>, { box: string; d: string }> = {
   circle: { box: '0 0 100 40', d: 'M54 4 C82 3 98 11 97 21 C96 33 72 38 47 37 C20 36 3 30 4 19 C5 9 25 4 60 6' },
   under: { box: '0 0 100 12', d: 'M2 8 C14 2 24 11 37 6 S61 2 74 7 S91 10 98 4' },
+  double: { box: '0 0 100 16', d: 'M2 5 C20 2 40 7 60 4 S88 3 98 5 M6 13 C26 10 50 14 72 11 S90 11 96 12' },
   stars: { box: '0 0 40 30', d: 'M12 3 L14 11 L22 13 L14 15 L12 23 L10 15 L2 13 L10 11 Z M31 1 L32.2 5.8 L37 7 L32.2 8.2 L31 13 L29.8 8.2 L25 7 L29.8 5.8 Z' },
 }
 
@@ -111,7 +113,7 @@ export default function StoryScroll() {
                     {w.text}
                     {r.mark && k === r.words.length - 1 && r.mark.doodle === 'me' && <Me e={r.mark.start + r.mark.len} />}
                     {r.mark && k === r.words.length - 1 && r.mark.doodle !== 'me' && (
-                      <svg className={`story__doodle story__doodle--${r.mark.doodle}`} style={{ '--e': r.mark.start + r.mark.len } as CSSProperties} viewBox={DOODLES[r.mark.doodle].box} preserveAspectRatio={r.mark.doodle === 'circle' || r.mark.doodle === 'under' ? 'none' : undefined}>
+                      <svg className={`story__doodle story__doodle--${r.mark.doodle}`} style={{ '--e': r.mark.start + r.mark.len } as CSSProperties} viewBox={DOODLES[r.mark.doodle].box} preserveAspectRatio={r.mark.doodle === 'circle' || r.mark.doodle === 'under' || r.mark.doodle === 'double' ? 'none' : undefined}>
                         <path d={DOODLES[r.mark.doodle].d} pathLength={1} />
                       </svg>
                     )}
@@ -143,12 +145,12 @@ export default function StoryScroll() {
           <figure className="scard scard--compass" style={at('stars')}>
             <span className="scard__tape scard__tape--sky" />
             <img src={`/work/featured/compass-640.webp${COVER_V}`} width={640} height={427} alt="" loading="lazy" decoding="async" />
-            <figcaption>Compass Group, CMP Autobot</figcaption>
+            <figcaption>Compass Group, CMP Autobot<span className="scard__impact">20+ users · 7 sites</span></figcaption>
           </figure>
           <figure className="scard scard--shipway" style={at('stars', 3)}>
             <span className="scard__tape scard__tape--rose" />
             <img src={`/work/featured/shipway-640.webp${COVER_V}`} width={640} height={427} alt="" loading="lazy" decoding="async" />
-            <figcaption>Shipway at Heizen</figcaption>
+            <figcaption>Shipway at Heizen<span className="scard__impact">Live · 10K+ downloads</span></figcaption>
           </figure>
         </div>
       </div>

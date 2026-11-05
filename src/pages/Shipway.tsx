@@ -8,6 +8,7 @@ import useTitle from '../components/useTitle'
 import loadAhead from '../components/loadAhead'
 import type { ImageItem } from '../data/images'
 import { mid } from '../components/srcset'
+import CaseImpact from '../components/CaseImpact'
 
 const PLAY = 'https://play.google.com/store/apps/details?id=com.shipway.app&hl=en_IN'
 const DIR = '/work/shipway'
@@ -19,13 +20,14 @@ const REVISION = 'Post-launch card revision. Exported from my Figma files, demo 
 const DESKTOP = 'Existing desktop platform, not my design. From the client’s requirements document.'
 
 const sections = [
-  { id: 'overview', label: 'Overview' },
-  { id: 'role', label: 'What I did' },
-  { id: 'challenge', label: 'Desktop-to-mobile challenge' },
-  { id: 'decisions', label: 'Three key design decisions' },
-  { id: 'iteration', label: 'Iteration' },
-  { id: 'delivery', label: 'Delivery' },
-  { id: 'reflection', label: 'Reflection' },
+  { id: 'problem', label: 'The problem' },
+  { id: 'cards', label: '1 · Tables to cards' },
+  { id: 'couriers', label: '2 · Comparing couriers' },
+  { id: 'setup', label: '3 · Setup as a checklist' },
+  { id: 'after', label: 'After launch' },
+  { id: 'details', label: 'Other parts' },
+  { id: 'impact', label: 'Impact' },
+  { id: 'outcome', label: 'Outcome' },
 ]
 
 const PHONE = { w: 780, h: 1688, small: 520 }
@@ -173,10 +175,42 @@ const shots = {
     label: REVISION,
     alt: 'Revised New order card: #ORD001 with a Shopify icon, Jan 15, 2025, Rahul Sharma, Bangalore 560001, ₹2,499 with a COD tag, 5000 gm, and an Assign Courier button.',
   },
+  'card-process': {
+    w: 764,
+    h: 638,
+    small: 640,
+    caption: 'Revised Process card: the courier, AWB and shipment status',
+    label: REVISION,
+    alt: 'Two processing order cards: order ID and date, Rahul Sharma, Bangalore 560001, Delhivery Surface Express Cargo, an AWB number, and an In transit tag. The first card shows how a long order ID fits on one line.',
+  },
+  'card-track': {
+    w: 764,
+    h: 422,
+    small: 640,
+    caption: 'Revised Track card: the same facts, with Track Order',
+    label: REVISION,
+    alt: 'Track order card: order ID and date, Rahul Sharma, Bangalore 560001, Delhivery Surface Express Cargo, an AWB number, an In transit tag and a Track Order button.',
+  },
+  'card-manifest': {
+    w: 764,
+    h: 1242,
+    small: 640,
+    caption: 'Revised Pickup cards: pickup status for a group of orders',
+    label: REVISION,
+    alt: 'Four manifest cards for Manifest ID 1342344 with pickup statuses Picked in green, Pickup Failed in red, Pickup by Today in blue and Partial Picked in yellow. Each shows order count 03, Delhivery Surface Express Cargo, Warehouse Name and a Dispatched or New tag.',
+  },
 } satisfies Record<string, { w: number; h: number; small: number; caption: string; label: string; alt: string }>
 
 type Shot = keyof typeof shots
-const order = Object.keys(shots) as Shot[]
+/** the enlarged view steps through the screens in page order */
+const order: Shot[] = [
+  'desk-new',
+  'desk-process-crop', 'bulk-manifest', 'orders', 'order-detail',
+  'desk-assign', 'assign',
+  'onb-kyc', 'onb-warehouse', 'onb-channel', 'onb-signup', 'onb-profile', 'home-setup',
+  'card-initial', 'card-new', 'card-process', 'card-track', 'card-manifest',
+  'onb-login', 'onb-otp', 'onb-account', 'desk-manifest', 'pickup', 'track',
+]
 const items: ImageItem[] = order.map((slug) => ({ slug, src: `${DIR}/${slug}`, ...shots[slug] }))
 
 const PHONE_SIZES = '(max-width: 760px) 50vw, 300px'
@@ -226,34 +260,62 @@ function Phones({ slugs, open, eager }: { slugs: readonly Shot[]; open: (i: numb
   )
 }
 
-/** A wide screen beside a phone screen, each tagged, with the caption under each */
-function Pair({ left, right, leftTag, rightTag, open }: {
-  left: Shot
-  right: Shot
-  leftTag: string
-  rightTag: string
-  open: (i: number) => void
-}) {
-  const wide = shots[left].w > shots[left].h
+/** A desktop screen shown wide on top, then the mobile screen beside what the section says about it */
+function Shift({ desk, phone, open, children }: { desk: Shot; phone: Shot; open: (i: number) => void; children: React.ReactNode }) {
   return (
-    <div className={`sw-pair__grid${wide ? '' : ' sw-pair__grid--phones'}`}>
-      <figure className="sw-pair__desk">
-        <p className="cp-pair__tag">{leftTag}</p>
-        <Screen slug={left} open={open} sizes={wide ? DESK_SIZES : PAIR_PHONE_SIZES} />
-        <figcaption className="sw-phones__cap">{shots[left].caption}</figcaption>
+    <div className="sw-shift">
+      <figure className="sw-shift__desk">
+        <p className="cp-pair__tag">Existing desktop platform</p>
+        <Screen slug={desk} open={open} sizes={DESK_SIZES} />
+        <figcaption className="sw-phones__cap">{shots[desk].caption}</figcaption>
       </figure>
-      <figure className="sw-pair__phone">
-        <p className="cp-pair__tag cp-pair__tag--final">{rightTag}</p>
-        <Screen slug={right} open={open} sizes={PAIR_PHONE_SIZES} />
-        <figcaption className="sw-phones__cap">{shots[right].caption}</figcaption>
-      </figure>
+      <div className="sw-shift__row">
+        <figure className="sw-shift__phone">
+          <p className="cp-pair__tag cp-pair__tag--final">My mobile design</p>
+          <Screen slug={phone} open={open} sizes={PAIR_PHONE_SIZES} />
+          <figcaption className="sw-phones__cap">{shots[phone].caption}</figcaption>
+        </figure>
+        <div className="sw-shift__text">{children}</div>
+      </div>
     </div>
+  )
+}
+
+/** What stays on a mobile screen, and what moves a tap away */
+function Keep({ stays, moves, staysLabel = 'Stays on the card', movesLabel = 'Moves to order details' }: {
+  stays: readonly string[]
+  moves: readonly string[]
+  staysLabel?: string
+  movesLabel?: string
+}) {
+  return (
+    <dl className="sw-diff sw-keep">
+      <div className="sw-diff__item">
+        <dt>{staysLabel}</dt>
+        <dd><ul>{stays.map((t) => <li key={t}>{t}</li>)}</ul></dd>
+      </div>
+      <div className="sw-diff__item sw-diff__item--moved">
+        <dt>{movesLabel}</dt>
+        <dd><ul>{moves.map((t) => <li key={t}>{t}</li>)}</ul></dd>
+      </div>
+    </dl>
+  )
+}
+
+function Why({ hard, did, why, cost }: { hard: string; did: string; why: string; cost: string }) {
+  return (
+    <dl className="dv-why cp-why cp-why--grid">
+      <div><dt>The difficulty</dt><dd>{hard}</dd></div>
+      <div><dt>What I designed</dt><dd>{did}</dd></div>
+      <div><dt>Why</dt><dd>{why}</dd></div>
+      <div><dt>Trade-off</dt><dd>{cost}</dd></div>
+    </dl>
   )
 }
 
 function More({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <details className="dv-more" open>
+    <details className="dv-more">
       <summary>{title}</summary>
       <div className="dv-more__body">{children}</div>
     </details>
@@ -315,69 +377,20 @@ function Flow() {
   )
 }
 
-/** The three decisions, each built around one comparison */
-const decisions = [
-  {
-    title: 'From a desktop table to a card for each stage',
-    left: 'desk-process-crop',
-    right: 'bulk-manifest',
-    leftTag: 'Existing desktop platform',
-    rightTag: 'My mobile design',
-    need: 'Desktop shows every field for every order in one wide row: product, SKU, dimensions, the customer’s phone, tracking and actions.',
-    did: 'A card per order that shows what that stage needs. On the Process tab: order ID and date, customer and location, amount and payment type, courier, AWB and status. Product, SKU, dimensions and the phone number move to order details. New cards end in Assign Courier, and selecting orders brings up Manifest in the header.',
-    intent: 'To keep each card focused on the order’s current stage.',
-    tradeoff: 'Fields that sit side by side on desktop now take a tap to reach.',
-  },
-  {
-    title: 'From a courier grid to a courier list',
-    left: 'desk-assign',
-    right: 'assign',
-    leftTag: 'Existing desktop platform',
-    rightTag: 'My mobile design',
-    need: 'The desktop dialog compares eight couriers in a four-column grid, which a phone screen can’t fit.',
-    did: 'A full screen with one courier per row. Each row keeps price, charged weight, expected pickup and expected delivery, with the Cheapest tag. The All, Air and Surface filters and sorting stay at the top, under the pickup address.',
-    intent: 'To keep the same comparison points as desktop, read top to bottom.',
-    tradeoff: 'Fewer couriers are visible at once, so comparing more of them means scrolling.',
-  },
-  {
-    title: 'Essentials in the list, the full record in details',
-    left: 'orders',
-    right: 'order-detail',
-    leftTag: 'Orders list',
-    rightTag: 'Order details',
-    need: 'An order has more fields than a list card can hold: customer contact, billing address, HSN, SKU, quantity, package size.',
-    did: 'I reduced the information shown in the list and grouped the fuller record into customer, product and package details, with Assign Courier fixed at the bottom. The phone number is masked until revealed.',
-    intent: 'To let the list show more orders per screen, with details one tap away.',
-    tradeoff: 'Less information on each card, and another step to inspect an order.',
-  },
-] as const
-
-function Decision({ need, did, intent, tradeoff }: { need: string; did: string; intent: string; tradeoff: string }) {
-  return (
-    <dl className="dv-why cp-why sw-why">
-      <div><dt>The need</dt><dd>{need}</dd></div>
-      <div><dt>What I designed</dt><dd>{did}</dd></div>
-      <div><dt>Intent</dt><dd>{intent}</dd></div>
-      <div><dt>Trade-off</dt><dd>{tradeoff}</dd></div>
-    </dl>
-  )
-}
-
 /** The headline numbers, from the brief, the screens and the Google Play listing */
 const glance = [
-  { tone: 'sun', value: '10K+', label: 'Downloads of the app on Google Play' },
-  { tone: 'sky', value: '9 → 1', label: 'Desktop columns reworked into a single order card' },
-  { tone: 'rose', value: '8 couriers', label: 'Compared in one scannable list instead of a grid' },
-  { tone: 'mint', value: '5 stages', label: 'Of the order journey brought to mobile' },
+  { tone: 'sky', value: '9 → 1', label: 'Desktop columns reworked into one order card' },
+  { tone: 'rose', value: '8 couriers', label: 'Compared in a list instead of a grid' },
+  { tone: 'mint', value: '5 stages', label: 'Of an order’s journey brought to the phone' },
+  { tone: 'sun', value: '10K+', label: 'Google Play downloads for the whole app, October 2026' },
 ] as const
 
-/** My part, end to end; each row points to where it is shown */
+/** My part; each card points to where it is shown */
 const role = [
-  { title: 'Order journey', body: 'Rebuilt the app around the five stages an order goes through.', href: '#challenge', link: 'The challenge' },
-  { title: 'Order cards', body: 'Turned wide desktop rows into one card per order, showing what its stage needs.', href: '#decisions', link: 'Decision A' },
-  { title: 'Courier list', body: 'Fit the eight-courier comparison grid into a list read top to bottom.', href: '#decisions', link: 'Decision B' },
-  { title: 'Onboarding', body: 'Cut a four-step setup down to a short sign-up and a checklist on Home.', href: '#iteration', link: 'Iteration' },
-  { title: 'After launch', body: 'Reviewed and revised the order cards across every stage.', href: '#iteration', link: 'Iteration' },
+  { title: 'Order cards', body: 'Wide desktop rows turned into one card per order, showing what its stage needs.', href: '#cards', link: 'Decision 1' },
+  { title: 'Courier list', body: 'The eight-courier comparison grid, read top to bottom.', href: '#couriers', link: 'Decision 2' },
+  { title: 'Setup checklist', body: 'A four-step setup cut to a short sign-up and a checklist on Home.', href: '#setup', link: 'Decision 3' },
+  { title: 'After launch', body: 'The order cards reviewed and simplified at every stage.', href: '#after', link: 'After launch' },
 ] as const
 
 function Head({ id, kicker, title, children }: { id: string; kicker: string; title: string; children?: React.ReactNode }) {
@@ -389,6 +402,14 @@ function Head({ id, kicker, title, children }: { id: string; kicker: string; tit
     </header>
   )
 }
+
+/** Impact: from the shipped design and the Google Play listing */
+const impact = [
+  { tone: 'sun', value: '10K+', label: 'Google Play downloads for the whole app, October 2026' },
+  { tone: 'mint', value: '12K', label: 'Orders handled through the mobile app' },
+  { tone: 'sky', value: '9 → 1', label: 'Desktop columns turned into one order card' },
+  { tone: 'rose', value: 'More orders', label: 'Visible at once after the post-launch card revision' },
+] as const
 
 export default function Shipway() {
   useTitle('Shipway — Bringing Shipway’s shipping workflows to mobile | Jb Yashvi')
@@ -404,26 +425,31 @@ export default function Shipway() {
           <p className="dv-top__type">Shipway by Unicommerce · Client project through Heizen</p>
           <h1 className="dv-top__title">Bringing Shipway’s shipping workflows to mobile</h1>
           <p className="dv-top__lede">
-            I took Shipway’s desktop shipping platform, with its nine-column tables and always-open filters, and
-            designed the Android app that puts the same workflows on a phone: orders, couriers, pickups and tracking.
+            Online sellers use Shipway to send their orders through courier companies. It ran on a desktop website
+            built on wide tables. I designed the Android app that brings{' '}
+            <mark>the same work to a phone</mark>: orders, couriers, pickups and tracking.
           </p>
           <div className="dv-top__grid">
             <dl className="dv-top__meta">
               <div>
-                <dt>Role</dt>
-                <dd>Mobile product design</dd>
+                <dt>Client</dt>
+                <dd>Shipway by Unicommerce, through Heizen</dd>
               </div>
               <div>
-                <dt>Duration</dt>
-                <dd>Approximately 4–6 weeks</dd>
+                <dt>Time</dt>
+                <dd>Approximately 4–6 weeks, then card changes after launch</dd>
+              </div>
+              <div>
+                <dt>My part</dt>
+                <dd>Mobile product design, in Figma</dd>
+              </div>
+              <div>
+                <dt>Not mine</dt>
+                <dd>The desktop platform the app started from</dd>
               </div>
               <div>
                 <dt>Status</dt>
-                <dd>Live on Google Play, 10K+ downloads</dd>
-              </div>
-              <div>
-                <dt>Scope</dt>
-                <dd>Desktop-to-mobile workflow adaptation and post-launch card iteration</dd>
+                <dd>Live on Google Play</dd>
               </div>
               <div>
                 <dt>Link</dt>
@@ -435,14 +461,14 @@ export default function Shipway() {
               </div>
             </dl>
             <div className="dv-signal">
-              <p className="dv-signal__kind">What shaped it</p>
+              <p className="dv-signal__kind">The idea that shaped it</p>
               <p className="dv-signal__text">
-                <mark>Keep the platform, rethink what comes first.</mark> Most desktop features came across. The work
-                was deciding what each screen shows first.
+                <mark>Keep the features, change what comes first.</mark> Almost everything on desktop came across.
+                The work was deciding what each small screen shows first.
               </p>
               <p className="dv-signal__note">
-                Mobile screens are exported from my Figma files, with demo data. Desktop screens are the client’s
-                existing platform.
+                Mobile screens are exported from my Figma files, with demo data. The live app matches these final
+                designs. Desktop screens are the client’s existing platform.
               </p>
             </div>
           </div>
@@ -464,44 +490,52 @@ export default function Shipway() {
           <CaseSidebar sections={sections} />
 
           <div className="dv-main">
-            {/* Overview */}
-            <section id="overview" className="dv-sec dv-sec--first" aria-labelledby="overview-title" tabIndex={-1}>
-              <Head id="overview" kicker="Overview" title="A whole shipping platform, redesigned for the phone.">
+            {/* The problem */}
+            <section id="problem" className="dv-sec dv-sec--first" aria-labelledby="problem-title" tabIndex={-1}>
+              <Head id="problem" kicker="The problem" title="A full desktop platform, not a lite version.">
                 <p>
-                  Shipway helps online sellers ship through many courier partners. Its desktop platform already
-                  covered every step after a sale. Through Heizen, I owned the mobile product design for its{' '}
-                  <mark>Android app</mark>, from onboarding to delivery tracking, and after launch I led the revision
-                  of its order cards.
+                  Sellers already ran every step after a sale on Shipway’s desktop website: wide tables, with a filter
+                  panel always open. The brief wasn’t to cut features. Almost all of it had to work on a phone.
+                </p>
+                <p>
+                  So the hard part was not fitting things in. It was <mark>deciding what each screen shows first</mark>,
+                  and what can wait one tap. I followed the five stages an order goes through and designed a screen
+                  for each.
                 </p>
               </Head>
-              <dl className="dv-facts" aria-label="Project at a glance">
+              <dl className="dv-terms" aria-label="Words used on this page">
                 <div>
-                  <dt>Client</dt>
-                  <dd>Shipway by Unicommerce, through Heizen</dd>
+                  <dt>Courier</dt>
+                  <dd>The delivery company that carries a parcel. Shipway lets a seller choose between many.</dd>
                 </div>
                 <div>
-                  <dt>Starting point</dt>
-                  <dd>An existing desktop platform</dd>
+                  <dt>AWB</dt>
+                  <dd>The tracking number a courier gives a shipment.</dd>
                 </div>
                 <div>
-                  <dt>My part</dt>
-                  <dd>Mobile product design, then the post-launch card revisions</dd>
+                  <dt>Manifest</dt>
+                  <dd>A list of orders handed to one courier at pickup.</dd>
                 </div>
                 <div>
-                  <dt>Timeline</dt>
-                  <dd>Approximately 4–6 weeks</dd>
+                  <dt>COD and Prepaid</dt>
+                  <dd>Whether the buyer pays cash on delivery, or has already paid.</dd>
+                </div>
+                <div>
+                  <dt>KYC</dt>
+                  <dd>Business documents a seller uploads to be verified, like a PAN card or GST number.</dd>
+                </div>
+                <div>
+                  <dt>NDR</dt>
+                  <dd>A failed delivery that needs the seller to decide what happens next.</dd>
                 </div>
               </dl>
-              <Phones slugs={['home-setup', 'track']} open={open} eager />
-            </section>
-
-            {/* What I did */}
-            <section id="role" className="dv-sec" aria-labelledby="role-title" tabIndex={-1}>
-              <Head id="role" kicker="What I did" title="From a desktop platform to an app on Google Play.">
-                <p>
-                  I owned the mobile product design, and <mark>came back after launch to cut the order cards down</mark>.
-                </p>
-              </Head>
+              <figure className="sw-baseline">
+                <p className="cp-pair__tag">Existing desktop platform</p>
+                <Screen slug="desk-new" open={open} sizes={DESK_SIZES} eager />
+                <figcaption className="sw-phones__cap">{shots['desk-new'].caption}</figcaption>
+              </figure>
+              <Flow />
+              <h3 className="dv-h3 cp-gap">What I did</h3>
               <ol className="cp-role">
                 {role.map((r, i) => (
                   <li key={r.title} className="cp-role__card">
@@ -515,31 +549,190 @@ export default function Shipway() {
                 ))}
               </ol>
               <p className="cp-role__not">
-                <strong>Starting point:</strong> the client’s existing desktop platform, which I didn’t design.
+                <strong>Not mine:</strong> the desktop platform, which I started from. The mobile screens on this page
+                are my Figma designs; the live app matches them.
               </p>
             </section>
 
-            {/* Desktop-to-mobile challenge */}
-            <section id="challenge" className="dv-sec" aria-labelledby="challenge-title" tabIndex={-1}>
-              <Head id="challenge" kicker="Desktop-to-mobile challenge" title="A full platform, not a lite version.">
+            {/* Decision 1: tables to cards */}
+            <section id="cards" className="dv-sec" aria-labelledby="cards-title" tabIndex={-1}>
+              <Head id="cards" kicker="Decision 1" title="Wide tables become one card per order.">
+                <p>Desktop shows every field for every order in one row. A phone can show a few.</p>
+              </Head>
+              <Shift desk="desk-process-crop" phone="bulk-manifest" open={open}>
                 <p>
-                  The desktop platform runs everything after a sale on wide tables with a filter panel always open. The
-                  brief wasn’t to cut features; almost all of it had to come across. So the real design problem was
-                  hierarchy: <mark>deciding what each mobile screen shows first</mark>. I rebuilt the app around the
-                  journey an order takes, stage by stage.
+                  On the Process tab, each card keeps what a seller checks at this stage. The rest is one tap away in
+                  order details.
+                </p>
+                <Keep
+                  stays={['Order ID and date', 'Customer name and location', 'Amount, and COD or Prepaid', 'Courier, AWB and status']}
+                  moves={['Product name and SKU', 'Package size and weight', 'Customer phone number', 'Billing address']}
+                />
+                <p className="sw-src">
+                  Ticking cards brings up Manifest in the header, so several orders move to pickup at once.
+                </p>
+              </Shift>
+              <Why
+                hard="Nine columns of detail per order, and almost none of it could be dropped from the app."
+                did="A card per order that shows what its stage needs, and an order details screen that groups the full record into customer, product and package, with Assign Courier fixed at the bottom. The phone number is masked until revealed."
+                why="The list stays short enough to scan many orders per screen, and nothing is lost: it is one tap away."
+                cost="Fields that sit side by side on desktop now take a tap to reach."
+              />
+              <More title="The list and the full record, side by side">
+                <Phones slugs={['orders', 'order-detail']} open={open} />
+              </More>
+            </section>
+
+            {/* Decision 2: comparing couriers */}
+            <section id="couriers" className="dv-sec" aria-labelledby="couriers-title" tabIndex={-1}>
+              <Head id="couriers" kicker="Decision 2" title="Comparing couriers in a list, not a grid.">
+                <p>Choosing a courier is a comparison: price against speed. Desktop does it in a four-column grid.</p>
+              </Head>
+              <Shift desk="desk-assign" phone="assign" open={open}>
+                <p>Each courier is one row, read top to bottom. Every row keeps the same comparison points as desktop.</p>
+                <Keep
+                  staysLabel="Kept on every row"
+                  movesLabel="Kept at the top"
+                  stays={['Price', 'Charged weight', 'Expected pickup and delivery', 'Rating, and the Cheapest tag']}
+                  moves={['Pickup address', 'All, Air and Surface filters', 'Sort']}
+                />
+              </Shift>
+              <Why
+                hard="Eight couriers side by side don’t fit a phone, but the seller still has to compare them."
+                did="A full screen with one courier per row, the same facts on every row, and the filters and sort above the list."
+                why="When every row has the same facts in the same place, couriers can be compared by reading down."
+                cost="Fewer couriers are visible at once, so comparing more of them means scrolling."
+              />
+            </section>
+
+            {/* Decision 3: setup as a checklist */}
+            <section id="setup" className="dv-sec" aria-labelledby="setup-title" tabIndex={-1}>
+              <Head id="setup" kicker="Decision 3" title="Setup steps become a checklist on Home.">
+                <p>
+                  My first design asked for everything at sign-up. I changed it before launch.
                 </p>
               </Head>
-              <figure className="sw-baseline">
-                <p className="cp-pair__tag">Existing desktop platform</p>
-                <Screen slug="desk-new" open={open} sizes={DESK_SIZES} />
-                <figcaption className="sw-phones__cap">{shots['desk-new'].caption}</figcaption>
-              </figure>
-              <Flow />
-              <More title="Full project scope">
+              <div className="sw-rounds">
+                <figure>
+                  <p className="cp-pair__tag">My first design: setup inside sign-up</p>
+                  <Phones slugs={['onb-kyc', 'onb-warehouse', 'onb-channel']} open={open} />
+                </figure>
+                <figure>
+                  <p className="cp-pair__tag cp-pair__tag--final">Final design: sign-up, then a checklist</p>
+                  <Phones slugs={['onb-signup', 'onb-profile', 'home-setup']} open={open} />
+                </figure>
+              </div>
+              <Why
+                hard="The first flow had four steps, each with a progress bar and Skip: profile, KYC documents, a warehouse and a sales channel. That’s a PAN card, a GST number and a bank statement before a seller has seen the app."
+                did="Sign-up now stops at the account and the business address. KYC, the pickup address, a channel and bank details became a Getting Started checklist on Home."
+                why="The setup tasks sit next to the orders they unlock, and a seller can do them when they’re ready."
+                cost="Setup isn’t forced any more, so the checklist has to stay on Home until it’s done."
+              />
+            </section>
+
+            {/* After launch */}
+            <section id="after" className="dv-sec" aria-labelledby="after-title" tabIndex={-1}>
+              <Head id="after" kicker="After launch" title="The order cards, simplified.">
                 <p>
-                  The scope as the client’s module list requested it, beside what my design files show for each
-                  group.
+                  With the app live, the order cards took up too much space, so only a few fit on the screen at once.
+                  Sellers needed to see more orders at a time. So I reviewed every card against the one decision its
+                  stage asks for. On the New tab, that decision is which courier to assign. The card was carrying the
+                  product name, package size and the customer’s phone, and none of them change it.
                 </p>
+              </Head>
+              <div className="dv-compare sw-compare">
+                <figure className="dv-compare__col">
+                  <p className="cp-pair__tag">Before: my first mobile design</p>
+                  <Screen slug="card-initial" open={open} sizes={CARD_SIZES} />
+                </figure>
+                <figure className="dv-compare__col">
+                  <p className="cp-pair__tag cp-pair__tag--final">After: the revision</p>
+                  <Screen slug="card-new" open={open} sizes={CARD_SIZES} />
+                </figure>
+              </div>
+              <p className="sw-src">Both are New-tab cards from my Figma files, with different sample data. The phone number is blurred in the first.</p>
+              <dl className="sw-diff">
+                <div className="sw-diff__item sw-diff__item--out">
+                  <dt>Removed from the card</dt>
+                  <dd>
+                    <ul>
+                      <li>Customer phone number</li>
+                      <li>Product name</li>
+                      <li>Package dimensions</li>
+                      <li>Repeated labels: the New badge, Channel Information, Order info</li>
+                    </ul>
+                  </dd>
+                </div>
+                <div className="sw-diff__item">
+                  <dt>Kept</dt>
+                  <dd>
+                    <ul>
+                      <li>Order ID and date</li>
+                      <li>Customer name and location</li>
+                      <li>Amount and payment type</li>
+                      <li>Weight</li>
+                      <li>Assign Courier</li>
+                    </ul>
+                  </dd>
+                </div>
+                <div className="sw-diff__item">
+                  <dt>Changed</dt>
+                  <dd>
+                    <ul>
+                      <li>Two labelled columns became three rows</li>
+                      <li>The channel is an icon beside the order ID</li>
+                    </ul>
+                  </dd>
+                </div>
+              </dl>
+              <p className="sw-hierarchy">
+                The removed details weren’t lost. They are in order details, one tap away (Decision 1).
+              </p>
+              <More title="The same change on the other stages">
+                <p>Each stage’s card leads with what that stage needs next: the courier and AWB, a Track Order button, or a manifest’s pickup status.</p>
+                <ol className="sw-phones sw-phones--3 sw-cards">
+                  {(['card-process', 'card-track', 'card-manifest'] as const).map((slug) => (
+                    <li key={slug}>
+                      <Screen slug={slug} open={open} sizes={CARD_SIZES} />
+                      <p className="sw-phones__cap">{shots[slug].caption}</p>
+                    </li>
+                  ))}
+                </ol>
+              </More>
+            </section>
+
+            {/* Other parts */}
+            <section id="details" className="dv-sec" aria-labelledby="details-title" tabIndex={-1}>
+              <Head id="details" kicker="Other parts" title="Also designed.">
+                <p>Shorter notes on the rest of the app. Open any to see the screens.</p>
+              </Head>
+              <More title="Logging in: phone, OTP and choosing an account">
+                <p>
+                  A phone number and an OTP, then a step to choose between accounts linked to the same number. New
+                  sellers go on to sign-up and the business address.
+                </p>
+                <Phones slugs={['onb-login', 'onb-otp', 'onb-account']} open={open} />
+              </More>
+              <More title="Manifests and pickup">
+                <p>
+                  On desktop, each manifest is a table row with view, print and download icons. On mobile, each is a
+                  card that puts the pickup status first, in colour.
+                </p>
+                <figure className="sw-baseline">
+                  <p className="cp-pair__tag">Existing desktop platform</p>
+                  <Screen slug="desk-manifest" open={open} sizes={DESK_SIZES} />
+                  <figcaption className="sw-phones__cap">{shots['desk-manifest'].caption}</figcaption>
+                </figure>
+                <Phones slugs={['pickup', 'track']} open={open} />
+              </More>
+              <More title="Navigation">
+                <p>
+                  A bottom bar with Home, Orders, Track and More. Orders splits into New, Process, Pickup and All, with
+                  counts. Wallet, Dashboards, KYC, Pickup Addresses, COD Remittance, NDR, Invoices and Contact Support
+                  sit in More.
+                </p>
+              </More>
+              <More title="The full scope, against my design files">
                 <div className="dv-matrix cp-matrix sw-matrix">
                   <table>
                     <caption className="sr-only">Requested scope, and what the design files show for each group</caption>
@@ -568,170 +761,59 @@ export default function Shipway() {
               </More>
             </section>
 
-            {/* Three key design decisions */}
-            <section id="decisions" className="dv-sec" aria-labelledby="decisions-title" tabIndex={-1}>
-              <Head id="decisions" kicker="Three key design decisions" title="What stays in view, and what moves a tap away.">
-                <p>Three calls shaped the app. Each one started from a desktop screen sellers already used.</p>
-              </Head>
-              <ol className="sw-decisions">
-                {decisions.map((d, i) => (
-                  <li key={d.title} className="sw-decision">
-                    <h3 className="dv-h3"><span className="dv-num">{String.fromCharCode(65 + i)}</span> {d.title}</h3>
-                    <Pair left={d.left} right={d.right} leftTag={d.leftTag} rightTag={d.rightTag} open={open} />
-                    <Decision {...d} />
-                  </li>
-                ))}
-              </ol>
-              <More title="Also designed: onboarding, manifests and navigation">
-                <h3 className="dv-h3">Onboarding</h3>
-                <p>
-                  The final flow: a phone number and an OTP, a step to choose between accounts linked to the same
-                  number, then sign-up and the business address for new sellers. Why it ended up this short is under{' '}
-                  <a href="#iteration">Iteration</a>.
-                </p>
-                <Phones slugs={['onb-login', 'onb-otp', 'onb-account', 'onb-signup', 'onb-profile']} open={open} />
-                <h3 className="dv-h3 cp-gap">Manifests</h3>
-                <p>
-                  On desktop, each manifest is a table row with view, print and download icons. On mobile, each is a
-                  card that puts the pickup status first, in colour.
-                </p>
-                <Pair
-                  left="desk-manifest"
-                  right="pickup"
-                  leftTag="Existing desktop platform"
-                  rightTag="My mobile design"
-                  open={open}
-                />
-                <h3 className="dv-h3 cp-gap">Navigation</h3>
-                <p>
-                  A bottom bar with Home, Orders, Track and More (visible on the Orders list above). Orders splits into
-                  New, Process, Pickup and All, with counts. Wallet, Dashboards, KYC, Pickup Addresses, COD
-                  Remittance, NDR, Invoices and Contact Support sit in More.
-                </p>
-              </More>
-            </section>
+            <CaseImpact
+              title="A desktop platform, now in sellers’ pockets."
+              lede="The Android app is live, and 12K orders have gone through it. Sellers can run the whole shipping job from a phone: orders, couriers, pickups and tracking. After launch, slimmer cards let them see more orders on one screen."
+              stats={impact}
+              note="The download count is from the Google Play listing; both numbers cover the whole app, not only my design. The designs weren’t usability tested."
+            />
 
-            {/* Post-launch iteration */}
-            <section id="iteration" className="dv-sec" aria-labelledby="iteration-title" tabIndex={-1}>
-              <Head id="iteration" kicker="Iteration" title="Two things I cut after the first version.">
+            {/* Outcome */}
+            <section id="outcome" className="dv-sec" aria-labelledby="outcome-title" tabIndex={-1}>
+              <Head id="outcome" kicker="Outcome" title="What was delivered, and what’s still untested.">
                 <p>
-                  The first versions worked, but both asked too much of the seller at the wrong moment. I went back to
-                  each with one question: <mark>what does the seller need right now, and what can wait?</mark>
+                  The app is live on Google Play. The designs weren’t usability tested, so I make no claims about speed
+                  or ease of use.
                 </p>
               </Head>
-              <h3 className="dv-h3"><span className="dv-num">1</span> Onboarding: from a four-step setup to a short sign-up</h3>
-              <p>
-                My first design asked for everything up front: profile, then KYC documents, a warehouse and a sales
-                channel, each a step with a progress bar and Skip. That’s a PAN card, a GST number and a bank
-                statement before a seller has even seen the app. In the final design, sign-up stops at the account
-                and the business address. KYC, the pickup address, a channel and bank details became a{' '}
-                <mark>Getting Started checklist on Home</mark>, next to the orders they unlock.
-              </p>
-              <div className="sw-rounds">
-                <figure>
-                  <p className="cp-pair__tag">Initial design: setup inside sign-up</p>
-                  <Phones slugs={['onb-kyc', 'onb-warehouse', 'onb-channel']} open={open} />
-                </figure>
-                <figure>
-                  <p className="cp-pair__tag cp-pair__tag--final">Final design: sign-up, then a checklist</p>
-                  <Phones slugs={['onb-signup', 'onb-profile', 'home-setup']} open={open} />
-                </figure>
+              <div className="cp-outcome">
+                <div>
+                  <h3 className="dv-h3">Delivered</h3>
+                  <ul className="ticks">
+                    <li>The mobile design for Shipway’s shipping work, from sign-up to tracking.</li>
+                    <li>Shipway’s Android app is live on Google Play.</li>
+                    <li>After launch, simpler order cards at every stage.</li>
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="dv-h3">What I’d test next</h3>
+                  <ul className="ticks">
+                    <li>Can sellers tell the next action from an order card?</li>
+                    <li>Are the details still easy to find once they’re off the card?</li>
+                    <li>Can sellers tell shipment status apart from pickup status?</li>
+                    <li>Do bulk actions stay clear on a phone?</li>
+                  </ul>
+                </div>
               </div>
-              <h3 className="dv-h3 cp-gap"><span className="dv-num">2</span> After launch: the order card cut down</h3>
-              <p>
-                With the app live, I reviewed every order card against the one decision its stage asks for. On the
-                New tab that decision is which courier to assign, and the card was carrying the product name,
-                package dimensions and the customer’s phone, none of which change it. I{' '}
-                <mark>revised the cards across every stage</mark> to keep only what the next action needs; the
-                rest is one tap away in order details.
-              </p>
-              <div className="dv-compare sw-compare">
-                <figure className="dv-compare__col">
-                  <p className="cp-pair__tag">Initial mobile design</p>
-                  <Screen slug="card-initial" open={open} sizes={CARD_SIZES} />
-                </figure>
-                <figure className="dv-compare__col">
-                  <p className="cp-pair__tag cp-pair__tag--final">Post-launch revision</p>
-                  <Screen slug="card-new" open={open} sizes={CARD_SIZES} />
-                </figure>
-              </div>
-              <p className="sw-src">Same order stage, using different sample data. Phone number blurred in the initial card.</p>
-              <p className="sw-hierarchy">
-                The initial card split its details into two labelled columns. The revision reads in three rows: order
-                and date, then customer and location, then amount, payment type and weight above Assign Courier.
-              </p>
-              <dl className="sw-diff">
-                <div className="sw-diff__item sw-diff__item--out">
-                  <dt>Removed from the list</dt>
-                  <dd>
-                    <ul>
-                      <li>Customer phone number</li>
-                      <li>Product name</li>
-                      <li>Package dimensions</li>
-                      <li>Repeated labels: the New badge, Channel Information, Order info</li>
-                    </ul>
-                  </dd>
-                </div>
-                <div className="sw-diff__item">
-                  <dt>Retained</dt>
-                  <dd>
-                    <ul>
-                      <li>Order ID and date</li>
-                      <li>Customer name and location</li>
-                      <li>Amount and payment type</li>
-                      <li>Weight</li>
-                      <li>Assign Courier</li>
-                    </ul>
-                  </dd>
-                </div>
-                <div className="sw-diff__item">
-                  <dt>Changed</dt>
-                  <dd>
-                    <ul>
-                      <li>The channel is now an icon beside the order ID</li>
-                    </ul>
-                  </dd>
-                </div>
-              </dl>
-            </section>
-
-            {/* Delivery */}
-            <section id="delivery" className="dv-sec" aria-labelledby="delivery-title" tabIndex={-1}>
-              <Head id="delivery" kicker="Delivery" title="Launched on Android, refined after release." />
-              <ol className="sw-outcomes">
-                <li><strong>Designed</strong><span>The mobile experience for Shipway’s existing shipping workflows, from onboarding to tracking.</span></li>
-                <li><strong>Launched</strong><span>As Shipway’s Android app, live on Google Play with 10K+ downloads.</span></li>
-                <li><strong>Refined</strong><span>After release, I revised the order cards across every stage.</span></li>
-              </ol>
               <a className="cp-inuse sw-live" href={PLAY} target="_blank" rel="noopener noreferrer">
                 <span className="cp-inuse__dot" aria-hidden="true" /> Live on Google Play · 10K+ downloads, as of October 2026
                 <span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span>
               </a>
-            </section>
-
-            {/* Reflection */}
-            <section id="reflection" className="dv-sec" aria-labelledby="reflection-title" tabIndex={-1}>
-              <Head id="reflection" kicker="Reflection" title="Adapting is not shrinking.">
-                <p>
-                  Bringing a desktop platform to mobile wasn’t about making screens smaller. It meant{' '}
-                  <mark>rethinking the hierarchy</mark>: what an order card is for at each stage, and what can wait
-                  one tap. Both rounds of iteration came down to the same move: taking things off the screen until only
-                  the next step was left.
-                </p>
-              </Head>
-              <h3 className="dv-h3">What I’d test next</h3>
-              <ul className="ticks">
-                <li>Can sellers identify the next action from an order card?</li>
-                <li>Are the details still easy to find once they’re off the card?</li>
-                <li>Can sellers tell shipment state apart from pickup and manifest state?</li>
-                <li>Do bulk actions stay clear on mobile?</li>
-              </ul>
+              <p className="sw-src">
+                The download count is from the Google Play listing. It covers the whole app, not just my design, and is
+                not a measure of it.
+              </p>
+              <h3 className="dv-h3 cp-gap">Reflection: adapting is not shrinking</h3>
+              <p className="cp-reflect">
+                Bringing a desktop platform to a phone wasn’t about making screens smaller. It meant{' '}
+                <mark>deciding what each screen is for</mark>. Both of my changes, the setup checklist and the
+                simpler cards, came down to the same move: taking things off the screen until the next step was clear.
+              </p>
               <h3 className="dv-h3 cp-gap">About the screens</h3>
               <ul className="sw-sources">
-                <li>Mobile screens are exported from my Figma files and use demo data. The live app may differ from them.</li>
+                <li>Mobile screens are exported from my Figma files and use demo data. The live app matches these final designs.</li>
                 <li>Desktop screens are the client’s existing platform, from the requirements document they shared.</li>
                 <li>Customer phone numbers are blurred or masked.</li>
-                <li>The download count is from the Google Play listing and covers the app as a whole.</li>
                 <li>The designs weren’t usability tested.</li>
               </ul>
               <div className="dv-end cp-end">
