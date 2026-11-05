@@ -213,7 +213,8 @@ export default function HeroCanvas() {
       <div className="wrap hero__canvas">
         <div className="hero__group">
           <p className="hero__hello">
-            <img src="/about/cafe-avatar.webp" width={240} height={240} alt="" decoding="async" />
+            {/* decorative: the name sits right beside it */}
+            <img src="/about/jb-face-96.webp" srcSet="/about/jb-face-96.webp 96w, /about/jb-face-192.webp 192w" sizes="40px" width={96} height={96} alt="" decoding="async" />
             Hi, I’m Jb Yashvi
           </p>
           <div className="hero__stage">

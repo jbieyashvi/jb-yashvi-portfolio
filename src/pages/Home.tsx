@@ -75,6 +75,9 @@ export default function Home() {
                 <img className="about__avatar" src="/about/cafe-avatar.webp" width={240} height={240} alt="" loading="lazy" decoding="async" />,
                 a senior product designer at Heizen, designing web and mobile experiences across SaaS, <span className="keep">e-commerce</span>, logistics and operations.
               </p>
+              <p className="about__more">
+                I tend to notice the small things and ask questions to understand what people need. Those conversations often shape where I start.
+              </p>
             </div>
 
             <figure className="mod__cell mod__photo about__portrait">

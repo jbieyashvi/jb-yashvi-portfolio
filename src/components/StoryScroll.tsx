@@ -5,16 +5,17 @@ type Tone = 'sun' | 'sky' | 'rose' | 'lilac'
 type Doodle = 'me' | 'circle' | 'under' | 'stars'
 type Piece = string | { text: string; tone: Tone; doodle: Doodle }
 
-// every fact here is from the résumé, the journey data and the Moss project
+// Jb's own words about how architecture shaped the way they design
 const story: Piece[] = [
   'I studied',
   { text: 'architecture', tone: 'sun', doodle: 'me' },
-  'at MNIT Jaipur, then moved into',
-  { text: 'product design.', tone: 'sky', doodle: 'circle' },
-  'Now I’m a',
-  { text: 'product designer', tone: 'rose', doodle: 'under' },
-  'at Heizen, prototyping with',
-  { text: 'Figma, Claude and Codex.', tone: 'lilac', doodle: 'stars' },
+  'at MNIT Jaipur, where I learned to notice how people',
+  { text: 'move through spaces', tone: 'sky', doodle: 'under' },
+  'and how',
+  { text: 'small design changes', tone: 'rose', doodle: 'circle' },
+  'shape their experience. I bring that thinking into',
+  { text: 'product design:', tone: 'lilac', doodle: 'stars' },
+  'organising information and helping people find their way.',
 ]
 
 const plain = story.map((p) => (typeof p === 'string' ? p : p.text)).join(' ').replace(/ ,/g, ',')
@@ -30,7 +31,7 @@ const runs: Run[] = story.map((p) => {
 })
 const TOTAL = count
 const startOf = (d: Doodle) => runs.find((r) => r.mark?.doodle === d)?.mark?.start ?? 0
-const at = (d: Doodle) => ({ '--s': startOf(d) }) as CSSProperties
+const at = (d: Doodle, later = 0) => ({ '--s': startOf(d) + later }) as CSSProperties
 
 // architecture gets a small 3D avatar instead of a drawn doodle (see Me)
 const DOODLES: Record<Exclude<Doodle, 'me'>, { box: string; d: string }> = {
@@ -138,26 +139,17 @@ export default function StoryScroll() {
             <img src="/story/mnit-thesis-460.webp" srcSet="/story/mnit-thesis-460.webp 460w, /story/mnit-thesis-920.webp 920w" sizes="230px" width={460} height={575} alt="" loading="lazy" decoding="async" />
             <figcaption>B.Arch · MNIT Jaipur · 2025</figcaption>
           </figure>
-          <figure className="scard scard--compass" style={at('circle')}>
+          {/* product design: two of the products, pinned up one after the other */}
+          <figure className="scard scard--compass" style={at('stars')}>
             <span className="scard__tape scard__tape--sky" />
             <img src={`/work/featured/compass-640.webp${COVER_V}`} width={640} height={427} alt="" loading="lazy" decoding="async" />
             <figcaption>Compass Group, CMP Autobot</figcaption>
           </figure>
-          <figure className="scard scard--shipway" style={at('under')}>
+          <figure className="scard scard--shipway" style={at('stars', 3)}>
             <span className="scard__tape scard__tape--rose" />
             <img src={`/work/featured/shipway-640.webp${COVER_V}`} width={640} height={427} alt="" loading="lazy" decoding="async" />
             <figcaption>Shipway at Heizen</figcaption>
           </figure>
-          <figure className="scard scard--moss" style={at('stars')}>
-            <span className="scard__tape scard__tape--peach" />
-            <img src={`/work/covers/home/moss-640.webp${COVER_V}`} width={640} height={427} alt="" loading="lazy" decoding="async" />
-            <figcaption><span className="scard__yc">Y</span> Moss · backed by YC, 2025</figcaption>
-          </figure>
-          <ul className="scard scard--tools" style={at('stars')}>
-            <li className="stool stool--figma">Figma</li>
-            <li className="stool stool--claude">Claude</li>
-            <li className="stool stool--codex">Codex</li>
-          </ul>
         </div>
       </div>
     </section>
