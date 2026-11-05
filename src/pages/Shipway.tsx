@@ -9,6 +9,8 @@ import loadAhead from '../components/loadAhead'
 import type { ImageItem } from '../data/images'
 import { mid } from '../components/srcset'
 import CaseImpact from '../components/CaseImpact'
+import { MarkedTitle, Pin, Tape, type TitleMark } from '../components/CaseFlair'
+import useCaseReveal from '../components/useCaseReveal'
 
 const PLAY = 'https://play.google.com/store/apps/details?id=com.shipway.app&hl=en_IN'
 const DIR = '/work/shipway'
@@ -246,13 +248,22 @@ function Screen({ slug, open, sizes = PHONE_SIZES, eager }: {
   )
 }
 
-/** A row of phone screens, each with its caption */
-function Phones({ slugs, open, eager }: { slugs: readonly Shot[]; open: (i: number) => void; eager?: boolean }) {
+const PIN_TILTS = [-2, 1.5, -1] as const
+const PIN_TAPES = ['sun', 'rose', 'lilac'] as const
+
+/** A row of phone screens, each with its caption; `pinned` tapes them up at a slight tilt */
+function Phones({ slugs, open, eager, pinned }: { slugs: readonly Shot[]; open: (i: number) => void; eager?: boolean; pinned?: boolean }) {
   return (
     <ol className={`sw-phones sw-phones--${slugs.length}`}>
-      {slugs.map((slug) => (
+      {slugs.map((slug, i) => (
         <li key={slug}>
-          <Screen slug={slug} open={open} eager={eager} />
+          {pinned ? (
+            <Pin tone={PIN_TAPES[i % 3]} r={PIN_TILTS[i % 3]}>
+              <Screen slug={slug} open={open} eager={eager} />
+            </Pin>
+          ) : (
+            <Screen slug={slug} open={open} eager={eager} />
+          )}
           <p className="sw-phones__cap">{shots[slug].caption}</p>
         </li>
       ))}
@@ -263,7 +274,7 @@ function Phones({ slugs, open, eager }: { slugs: readonly Shot[]; open: (i: numb
 /** A desktop screen shown wide on top, then the mobile screen beside what the section says about it */
 function Shift({ desk, phone, open, children }: { desk: Shot; phone: Shot; open: (i: number) => void; children: React.ReactNode }) {
   return (
-    <div className="sw-shift">
+    <div className="sw-shift" data-reveal>
       <figure className="sw-shift__desk">
         <p className="cp-pair__tag">Existing desktop platform</p>
         <Screen slug={desk} open={open} sizes={DESK_SIZES} />
@@ -272,7 +283,9 @@ function Shift({ desk, phone, open, children }: { desk: Shot; phone: Shot; open:
       <div className="sw-shift__row">
         <figure className="sw-shift__phone">
           <p className="cp-pair__tag cp-pair__tag--final">My mobile design</p>
-          <Screen slug={phone} open={open} sizes={PAIR_PHONE_SIZES} />
+          <Pin tone="sky" r={-2}>
+            <Screen slug={phone} open={open} sizes={PAIR_PHONE_SIZES} />
+          </Pin>
           <figcaption className="sw-phones__cap">{shots[phone].caption}</figcaption>
         </figure>
         <div className="sw-shift__text">{children}</div>
@@ -304,7 +317,7 @@ function Keep({ stays, moves, staysLabel = 'Stays on the card', movesLabel = 'Mo
 
 function Why({ hard, did, why, cost }: { hard: string; did: string; why: string; cost: string }) {
   return (
-    <dl className="dv-why cp-why cp-why--grid">
+    <dl className="dv-why cp-why cp-why--grid" data-reveal>
       <div><dt>The difficulty</dt><dd>{hard}</dd></div>
       <div><dt>What I designed</dt><dd>{did}</dd></div>
       <div><dt>Why</dt><dd>{why}</dd></div>
@@ -393,11 +406,11 @@ const role = [
   { title: 'After launch', body: 'The order cards reviewed and simplified at every stage.', href: '#after', link: 'After launch' },
 ] as const
 
-function Head({ id, kicker, title, children }: { id: string; kicker: string; title: string; children?: React.ReactNode }) {
+function Head({ id, kicker, title, mark, children }: { id: string; kicker: string; title: string; mark?: TitleMark; children?: React.ReactNode }) {
   return (
-    <header className="dv-head">
-      <p className="dv-kicker">{kicker}</p>
-      <h2 id={`${id}-title`} className="dv-h2">{title}</h2>
+    <header className="dv-head" data-reveal>
+      <p className={mark ? `dv-kicker cs-kicker cs-kicker--${mark.tone}` : 'dv-kicker'}>{kicker}</p>
+      <h2 id={`${id}-title`} className="dv-h2"><MarkedTitle title={title} mark={mark} /></h2>
       {children}
     </header>
   )
@@ -414,6 +427,7 @@ const impact = [
 export default function Shipway() {
   useTitle('Shipway — Bringing Shipway’s shipping workflows to mobile | Jb Yashvi')
   const { open, lightbox } = useLightbox(items)
+  useCaseReveal()
 
   return (
     <article className="dv">
@@ -460,8 +474,12 @@ export default function Shipway() {
                 </dd>
               </div>
             </dl>
-            <div className="dv-signal">
-              <p className="dv-signal__kind">The idea that shaped it</p>
+            <div className="dv-signal cs-note">
+              <Tape tone="sun" />
+              <p className="dv-signal__kind">
+                <img className="cs-note__me" src="/story/me-128.webp" width={128} height={128} alt="" decoding="async" />
+                The idea that shaped it
+              </p>
               <p className="dv-signal__text">
                 <mark>Keep the features, change what comes first.</mark> Almost everything on desktop came across.
                 The work was deciding what each small screen shows first.
@@ -499,7 +517,7 @@ export default function Shipway() {
 
             {/* The problem */}
             <section id="problem" className="dv-sec dv-sec--first" aria-labelledby="problem-title" tabIndex={-1}>
-              <Head id="problem" kicker="The problem" title="A full desktop platform, not a lite version.">
+              <Head id="problem" kicker="The problem" title="A full desktop platform, not a lite version." mark={{ text: 'not a lite version.', tone: 'sun', doodle: 'under' }}>
                 <p>
                   Sellers already ran every step after a sale on Shipway’s desktop website: wide tables, with a filter
                   panel always open. The brief wasn’t to cut features. Almost all of it had to work on a phone.
@@ -563,7 +581,7 @@ export default function Shipway() {
 
             {/* Decision 1: tables to cards */}
             <section id="cards" className="dv-sec" aria-labelledby="cards-title" tabIndex={-1}>
-              <Head id="cards" kicker="Decision 1" title="Wide tables become one card per order.">
+              <Head id="cards" kicker="Decision 1" title="Wide tables become one card per order." mark={{ text: 'one card per order.', tone: 'sky', doodle: 'double' }}>
                 <p>Desktop shows every field for every order in one row. A phone can show a few.</p>
               </Head>
               <Shift desk="desk-process-crop" phone="bulk-manifest" open={open}>
@@ -592,7 +610,7 @@ export default function Shipway() {
 
             {/* Decision 2: comparing couriers */}
             <section id="couriers" className="dv-sec" aria-labelledby="couriers-title" tabIndex={-1}>
-              <Head id="couriers" kicker="Decision 2" title="Comparing couriers in a list, not a grid.">
+              <Head id="couriers" kicker="Decision 2" title="Comparing couriers in a list, not a grid." mark={{ text: 'in a list,', tone: 'rose', doodle: 'under' }}>
                 <p>Choosing a courier is a comparison: price against speed. Desktop does it in a four-column grid.</p>
               </Head>
               <Shift desk="desk-assign" phone="assign" open={open}>
@@ -614,19 +632,19 @@ export default function Shipway() {
 
             {/* Decision 3: setup as a checklist */}
             <section id="setup" className="dv-sec" aria-labelledby="setup-title" tabIndex={-1}>
-              <Head id="setup" kicker="Decision 3" title="Setup steps become a checklist on Home.">
+              <Head id="setup" kicker="Decision 3" title="Setup steps become a checklist on Home." mark={{ text: 'a checklist', tone: 'lilac', doodle: 'under' }}>
                 <p>
                   My first design asked for everything at sign-up. I changed it before launch.
                 </p>
               </Head>
-              <div className="sw-rounds">
+              <div className="sw-rounds" data-reveal>
                 <figure>
                   <p className="cp-pair__tag">My first design: setup inside sign-up</p>
                   <Phones slugs={['onb-kyc', 'onb-warehouse', 'onb-channel']} open={open} />
                 </figure>
                 <figure>
                   <p className="cp-pair__tag cp-pair__tag--final">Final design: sign-up, then a checklist</p>
-                  <Phones slugs={['onb-signup', 'onb-profile', 'home-setup']} open={open} />
+                  <Phones slugs={['onb-signup', 'onb-profile', 'home-setup']} open={open} pinned />
                 </figure>
               </div>
               <Why
@@ -639,7 +657,7 @@ export default function Shipway() {
 
             {/* After launch */}
             <section id="after" className="dv-sec" aria-labelledby="after-title" tabIndex={-1}>
-              <Head id="after" kicker="After launch" title="The order cards, simplified.">
+              <Head id="after" kicker="After launch" title="The order cards, simplified." mark={{ text: 'simplified.', tone: 'sun', doodle: 'double' }}>
                 <p>
                   With the app live, the order cards took up too much space, so only a few fit on the screen at once.
                   Sellers needed to see more orders at a time. So I reviewed every card against the one decision its
@@ -647,14 +665,16 @@ export default function Shipway() {
                   product name, package size and the customer’s phone, and none of them change it.
                 </p>
               </Head>
-              <div className="dv-compare sw-compare">
+              <div className="dv-compare sw-compare" data-reveal>
                 <figure className="dv-compare__col">
                   <p className="cp-pair__tag">Before: my first mobile design</p>
                   <Screen slug="card-initial" open={open} sizes={CARD_SIZES} />
                 </figure>
                 <figure className="dv-compare__col">
                   <p className="cp-pair__tag cp-pair__tag--final">After: the revision</p>
-                  <Screen slug="card-new" open={open} sizes={CARD_SIZES} />
+                  <Pin tone="rose" r={-1.5}>
+                    <Screen slug="card-new" open={open} sizes={CARD_SIZES} />
+                  </Pin>
                 </figure>
               </div>
               <p className="sw-src">Both are New-tab cards from my Figma files, with different sample data. The phone number is blurred in the first.</p>
@@ -710,7 +730,7 @@ export default function Shipway() {
 
             {/* Other parts */}
             <section id="details" className="dv-sec" aria-labelledby="details-title" tabIndex={-1}>
-              <Head id="details" kicker="Other parts" title="Also designed.">
+              <Head id="details" kicker="Other parts" title="Also designed." mark={{ text: 'Also designed.', tone: 'lilac', doodle: 'stars' }}>
                 <p>Shorter notes on the rest of the app. Open any to see the screens.</p>
               </Head>
               <More title="Logging in: phone, OTP and choosing an account">
@@ -771,7 +791,7 @@ export default function Shipway() {
 
             {/* Outcome */}
             <section id="outcome" className="dv-sec" aria-labelledby="outcome-title" tabIndex={-1}>
-              <Head id="outcome" kicker="Outcome" title="What was delivered, and what’s still untested.">
+              <Head id="outcome" kicker="Outcome" title="What was delivered, and what’s still untested." mark={{ text: 'still untested.', tone: 'sky', doodle: 'under' }}>
                 <p>
                   The app is live on Google Play. The designs weren’t usability tested, so I make no claims about speed
                   or ease of use.
