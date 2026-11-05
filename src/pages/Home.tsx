@@ -1,4 +1,5 @@
 import { useEffect, useState, type MouseEvent } from 'react'
+import HandsReel from '../components/HandsReel'
 import HeroCanvas from '../components/HeroCanvas'
 import HowIWork from '../components/HowIWork'
 import IdeasInMotion from '../components/IdeasInMotion'
@@ -167,6 +168,8 @@ export default function Home() {
       <JourneyRoute />
 
       <Journey />
+
+      <HandsReel />
 
       <section id="outside" className="outside" aria-labelledby="outside-title" tabIndex={-1}>
         <OutsideTeaser />

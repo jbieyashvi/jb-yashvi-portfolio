@@ -164,12 +164,12 @@ section:focus { outline: none; }
 
 /* ---------- Content edges, drawn as two hairlines ---------- */
 
-.work, .process, .outside, .about, .journey, .ideas, .contact, .phead {
+.work, .process, .outside, .about, .journey, .reel, .ideas, .contact, .phead {
   position: relative;
   isolation: isolate;
 }
 
-.work::before, .process::before, .outside::before, .about::before, .journey::before, .ideas::before,
+.work::before, .process::before, .outside::before, .about::before, .journey::before, .reel::before, .ideas::before,
 .contact::before, .phead::before {
   content: '';
   position: absolute;
@@ -1446,7 +1446,11 @@ html.has-intro:not(.intro-done) .boot { display: block; position: fixed; inset: 
   .story__pin { position: static; height: auto; padding-block: clamp(3.5rem, 8vw, 6rem); }
   .story + .work { margin-top: 0; }
 }
-/* without the pinned screen, leave room above and below the text for the cards */
+/* without the pinned screen, keep enough height (wide) or room above and below the text
+   (narrow) for the cards */
+@media (prefers-reduced-motion: reduce) and (min-width: 1101px) {
+  .story__pin { min-height: 44rem; }
+}
 @media (prefers-reduced-motion: reduce) and (max-width: 1100px) {
   .story__pin { padding-block: clamp(10rem, 44vw, 14rem) clamp(11rem, 48vw, 14rem); }
 }
@@ -1833,6 +1837,16 @@ html.has-intro:not(.intro-done) .boot { display: block; position: fixed; inset: 
 .lightbox img.is-mono { filter: grayscale(1); }
 
 .outside { padding-block: clamp(3.5rem, 7vw, 6rem); }
+
+/* Hands on: a short muted recording after My journey, full width under a heading */
+.reel { padding-block: clamp(3.5rem, 7vw, 6rem) 0; }
+.reel__head { display: grid; justify-items: center; gap: 0.75rem; margin-bottom: clamp(1.5rem, 3vw, 2.5rem); text-align: center; }
+.reel__made { display: inline-flex; align-items: center; gap: 0.45rem; margin-top: 0.25rem; padding: 0.4rem 0.85rem; border-radius: 999px; background: #121214; color: #f4f4f1; font-size: 0.875rem; font-weight: 500; }
+.reel__made::before { content: ''; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: #d97757; }
+[data-theme='dark'] .reel__made { background: #f4f4f1; color: #17171a; }
+/* no taller than about three quarters of the screen, so the whole frame is seen at once */
+.reel__frame { max-width: calc(75svh * 1280 / 778); margin: 0 auto; overflow: hidden; border: 1px solid var(--rule); border-radius: clamp(12px, 1.6vw, 20px); background: var(--pale); }
+.reel__video { display: block; width: 100%; height: auto; aspect-ratio: 1280 / 778; object-fit: cover; }
 
 /* roughly 40/60: the heading and link stay still beside a three-piece composition */
 .teaser {
@@ -4919,7 +4933,21 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
 .lp-frame__bar i { width: 10px; height: 10px; border-radius: 50%; background: #d4d6cf; }
 .lp-frame img { display: block; width: 100%; height: auto; }
 
-/* Impact: the closing numbers on a case study */
+/* Impact: the black, starred card that opens a case study, with its numbers on pastel tiles */
+.dv-main > .cp-impact {
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  padding: clamp(1.75rem, 4vw, 3rem);
+  border-radius: clamp(16px, 2vw, 24px);
+  background: #121214;
+  color: #f4f4f1;
+  box-shadow: 0 24px 48px -28px rgb(0 0 0 / 0.5);
+}
+[data-theme='dark'] .dv-main > .cp-impact { background: #1c1c20; border: 1px solid rgb(255 255 255 / 0.1); }
+.cp-impact .dv-head { margin-bottom: 0; }
+.cp-impact .dv-h2 { color: #fff; }
+.cp-impact .dv-head p:not(.dv-kicker) { color: #c9c9ce; }
+.cp-impact__kicker { display: inline-flex; align-items: center; gap: 0.5rem; width: fit-content; padding: 0.35rem 0.75rem 0.35rem 0.6rem; border-radius: 999px; background: #ffe58f; color: #17171a !important; }
+.cp-impact__star { width: 1.05em; height: 1.05em; fill: currentColor; }
 .cp-impact__stats { margin-top: clamp(1.5rem, 3vw, 2rem); }
 .cp-impact .cp-glance__value { font-size: clamp(1.9rem, 3.2vw, 2.6rem); }
-.cp-impact__note { margin-top: 1rem; max-width: 62ch; font-size: 0.92rem; color: var(--graphite); }
+.cp-impact__note { margin-top: 1rem; max-width: 62ch; font-size: 0.92rem !important; color: #a2a2a8; }

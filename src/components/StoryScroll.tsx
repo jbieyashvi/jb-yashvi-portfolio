@@ -9,13 +9,13 @@ type Piece = string | { text: string; tone: Tone; doodle: Doodle }
 const story: Piece[] = [
   'I studied',
   { text: 'architecture', tone: 'sun', doodle: 'me' },
-  'at MNIT Jaipur, where I learned to notice how people',
+  ', where I learned how people',
   { text: 'move through spaces', tone: 'sky', doodle: 'under' },
   'and how',
   { text: 'small design changes', tone: 'rose', doodle: 'circle' },
-  'shape their experience. I bring that thinking into',
+  'shape what they feel. Now I bring that to',
   { text: 'product design:', tone: 'lilac', doodle: 'stars' },
-  'organising information, helping people find their way and making',
+  'making complex work clear, so it has',
   { text: 'a real impact.', tone: 'sun', doodle: 'double' },
 ]
 

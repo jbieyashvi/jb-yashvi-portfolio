@@ -20,13 +20,13 @@ const REVISION = 'Post-launch card revision. Exported from my Figma files, demo 
 const DESKTOP = 'Existing desktop platform, not my design. From the client’s requirements document.'
 
 const sections = [
+  { id: 'impact', label: 'Impact' },
   { id: 'problem', label: 'The problem' },
   { id: 'cards', label: '1 · Tables to cards' },
   { id: 'couriers', label: '2 · Comparing couriers' },
   { id: 'setup', label: '3 · Setup as a checklist' },
   { id: 'after', label: 'After launch' },
   { id: 'details', label: 'Other parts' },
-  { id: 'impact', label: 'Impact' },
   { id: 'outcome', label: 'Outcome' },
 ]
 
@@ -490,6 +490,13 @@ export default function Shipway() {
           <CaseSidebar sections={sections} />
 
           <div className="dv-main">
+            <CaseImpact
+              title="A desktop platform, now in sellers’ pockets."
+              lede="The Android app is live, and 12K orders have gone through it. Sellers can run the whole shipping job from a phone: orders, couriers, pickups and tracking. After launch, slimmer cards let them see more orders on one screen."
+              stats={impact}
+              note="The download count is from the Google Play listing; both numbers cover the whole app, not only my design. The designs weren’t usability tested."
+            />
+
             {/* The problem */}
             <section id="problem" className="dv-sec dv-sec--first" aria-labelledby="problem-title" tabIndex={-1}>
               <Head id="problem" kicker="The problem" title="A full desktop platform, not a lite version.">
@@ -761,12 +768,6 @@ export default function Shipway() {
               </More>
             </section>
 
-            <CaseImpact
-              title="A desktop platform, now in sellers’ pockets."
-              lede="The Android app is live, and 12K orders have gone through it. Sellers can run the whole shipping job from a phone: orders, couriers, pickups and tracking. After launch, slimmer cards let them see more orders on one screen."
-              stats={impact}
-              note="The download count is from the Google Play listing; both numbers cover the whole app, not only my design. The designs weren’t usability tested."
-            />
 
             {/* Outcome */}
             <section id="outcome" className="dv-sec" aria-labelledby="outcome-title" tabIndex={-1}>

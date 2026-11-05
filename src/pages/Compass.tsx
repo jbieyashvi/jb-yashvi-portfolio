@@ -21,6 +21,7 @@ const LIVE_CAPTURE = 'Live prototype at compass-mapperv2.vercel.app, captured Oc
 const FROM_PDF = 'From the CMP Autobot design system PDF.'
 
 const sections = [
+  { id: 'impact', label: 'Impact' },
   { id: 'overview', label: 'Overview' },
   { id: 'role', label: 'What I did' },
   { id: 'context', label: 'Context' },
@@ -33,7 +34,6 @@ const sections = [
   { id: 'progress', label: 'Progress & targets' },
   { id: 'system', label: 'Design system' },
   { id: 'outcome', label: 'Outcome' },
-  { id: 'impact', label: 'Impact' },
   { id: 'reflection', label: 'Reflection' },
 ]
 
@@ -614,6 +614,13 @@ export default function Compass() {
           <CaseSidebar sections={sections} />
 
           <div className="dv-main">
+            <CaseImpact
+              title="One place for the review, used every day."
+              lede="More than 20 people across 7 sites now do their mapping review here, every day, instead of in Excel and another tool. Each decision carries its reason, and a wrong click can be undone on the same row."
+              stats={impact}
+              note="User and site counts as of November 2026. I don’t have measured figures for time saved or accuracy."
+            />
+
             {/* Overview */}
             <section id="overview" className="dv-sec dv-sec--first" aria-labelledby="overview-title" tabIndex={-1}>
               <Head id="overview" kicker="Overview" title="One table for hundreds of small decisions.">
@@ -947,12 +954,6 @@ export default function Compass() {
               </p>
             </section>
 
-            <CaseImpact
-              title="One place for the review, used every day."
-              lede="More than 20 people across 7 sites now do their mapping review here, every day, instead of in Excel and another tool. Each decision carries its reason, and a wrong click can be undone on the same row."
-              stats={impact}
-              note="User and site counts as of November 2026. I don’t have measured figures for time saved or accuracy."
-            />
 
             {/* Reflection */}
             <section id="reflection" className="dv-sec" aria-labelledby="reflection-title" tabIndex={-1}>

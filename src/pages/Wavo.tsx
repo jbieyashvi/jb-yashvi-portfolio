@@ -12,6 +12,7 @@ const DIR = '/work/wavo'
 const FROM_APP = 'WAVO interactive concept, sample data. Simulated payments, locks and checks.'
 
 const sections = [
+  { id: 'impact', label: 'Impact' },
   { id: 'problem', label: 'The problem' },
   { id: 'references', label: 'Public references' },
   { id: 'pay', label: 'What am I paying for?' },
@@ -19,7 +20,6 @@ const sections = [
   { id: 'check', label: 'Checks before paying' },
   { id: 'end', label: 'Has it ended?' },
   { id: 'iteration', label: 'Before and after' },
-  { id: 'impact', label: 'Impact' },
   { id: 'outcome', label: 'Outcome' },
 ]
 
@@ -428,6 +428,13 @@ export default function Wavo() {
           <CaseSidebar sections={sections} />
 
           <div className="dv-main">
+            <CaseImpact
+              title="Fewer surprises in a rental, ready to test."
+              lede="Before a rider pays, the screens show what is charged and what is held, where the scooty must go back, and what to check. At the end, they say plainly whether the rental is over."
+              stats={impact}
+              note="A concept with sample data. No riders have tested it yet, so this is what the design does, not a measured result."
+            />
+
             {/* The problem, who it's for, and the four questions */}
             <section id="problem" className="dv-sec dv-sec--first" aria-labelledby="problem-title" tabIndex={-1}>
               <Head id="problem" kicker="The problem" title="Renting is more than picking the nearest scooty.">
@@ -855,12 +862,6 @@ export default function Wavo() {
               </p>
             </section>
 
-            <CaseImpact
-              title="Fewer surprises in a rental, ready to test."
-              lede="Before a rider pays, the screens show what is charged and what is held, where the scooty must go back, and what to check. At the end, they say plainly whether the rental is over."
-              stats={impact}
-              note="A concept with sample data. No riders have tested it yet, so this is what the design does, not a measured result."
-            />
 
             {/* Outcome, planned testing and reflection */}
             <section id="outcome" className="dv-sec" aria-labelledby="outcome-title" tabIndex={-1}>

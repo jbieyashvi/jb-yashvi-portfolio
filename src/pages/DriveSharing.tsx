@@ -15,13 +15,13 @@ const DIR = '/work/drive-sharing'
 const FROM_PROTO = 'My study prototype: a proposed design, not current Google Drive.'
 
 const sections = [
+  { id: 'impact', label: 'Impact' },
   { id: 'problem', label: 'The problem' },
   { id: 'research', label: 'Research' },
   { id: 'direction', label: 'Drive’s method' },
   { id: 'versions', label: 'A, then B' },
   { id: 'solution', label: 'Version B' },
   { id: 'restore', label: 'Other parts' },
-  { id: 'impact', label: 'Impact' },
   { id: 'outcome', label: 'Outcome' },
 ]
 
@@ -596,6 +596,13 @@ export default function DriveSharing() {
           <CaseSidebar sections={sections} />
 
           <div className="dv-main">
+            <CaseImpact
+              title="Testing changed the design."
+              lede="Feedback on Version A led to Version B: fewer screens, and a review that shows who keeps and loses access before anything is saved."
+              stats={impact}
+              note="A small study: three people, A before B, nothing timed and permissions simulated. It shows how the design changed, not that B is proven better."
+            />
+
             {/* The problem, the words, and my part */}
             <section id="problem" className="dv-sec dv-sec--first" aria-labelledby="problem-title" tabIndex={-1}>
               <Storyboard />
@@ -978,12 +985,6 @@ export default function DriveSharing() {
               </More>
             </section>
 
-            <CaseImpact
-              title="Testing changed the design."
-              lede="Feedback on Version A led to Version B: fewer screens, and a review that shows who keeps and loses access before anything is saved."
-              stats={impact}
-              note="A small study: three people, A before B, nothing timed and permissions simulated. It shows how the design changed, not that B is proven better."
-            />
 
             {/* Outcome and reflection */}
             <section id="outcome" className="dv-sec" aria-labelledby="outcome-title" tabIndex={-1}>
