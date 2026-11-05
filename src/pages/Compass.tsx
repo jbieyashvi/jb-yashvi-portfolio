@@ -534,7 +534,7 @@ const WIDE = '(max-width: 1100px) 100vw, 980px'
 
 /** Impact: user and site counts as of November 2026; the rest is from the shipped screens */
 const impact = [
-  { tone: 'sun', value: '20+', label: 'People using the platform' },
+  { tone: 'sun', value: '30+', label: 'People using the platform' },
   { tone: 'mint', value: '7 sites', label: 'Running their mapping review on it' },
   { tone: 'sky', value: '1 table', label: 'Replaced a review split across Excel and another tool' },
   { tone: 'rose', value: '6 reasons', label: 'Every rejection now says what went wrong' },
@@ -616,7 +616,7 @@ export default function Compass() {
           <div className="dv-main">
             <CaseImpact
               title="One place for the review, used every day."
-              lede="More than 20 people across 7 sites now do their mapping review here, every day, instead of in Excel and another tool. Each decision carries its reason, and a wrong click can be undone on the same row."
+              lede="More than 30 people across 7 sites now do their mapping review here, every day, instead of in Excel and another tool. Each decision carries its reason, and a wrong click can be undone on the same row."
               stats={impact}
               note="User and site counts as of November 2026. I don’t have measured figures for time saved or accuracy."
             />
