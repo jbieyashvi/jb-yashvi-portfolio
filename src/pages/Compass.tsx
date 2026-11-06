@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
 import CaseSidebar from '../components/CaseSidebar'
 import CompassStory from '../components/CompassStory'
@@ -9,6 +10,8 @@ import loadAhead, { warmUp } from '../components/loadAhead'
 import type { ImageItem } from '../data/images'
 import { mid } from '../components/srcset'
 import CaseImpact from '../components/CaseImpact'
+import { MarkedTitle, Pin, Tape, type TitleMark } from '../components/CaseFlair'
+import useCaseReveal from '../components/useCaseReveal'
 
 const LIVE = 'https://compass-mapperv2.vercel.app/worklist'
 const PDF = `${import.meta.env.BASE_URL}work/compass/cmp-autobot-design-system.pdf`
@@ -20,22 +23,6 @@ const EXPLORATION = 'Exploration. Screenshot from my files.'
 const LIVE_CAPTURE = 'Live prototype at compass-mapperv2.vercel.app, captured October 2026. Demo data.'
 const FROM_PDF = 'From the CMP Autobot design system PDF.'
 
-const sections = [
-  { id: 'impact', label: 'Impact' },
-  { id: 'overview', label: 'Overview' },
-  { id: 'role', label: 'What I did' },
-  { id: 'context', label: 'Context' },
-  { id: 'map', label: 'How it fits together' },
-  { id: 'queues', label: 'Four queues' },
-  { id: 'approaches', label: 'Approaches explored' },
-  { id: 'decisions', label: 'Design decisions' },
-  { id: 'finding', label: 'Finding the work' },
-  { id: 'after', label: 'After launch' },
-  { id: 'progress', label: 'Progress & targets' },
-  { id: 'system', label: 'Design system' },
-  { id: 'outcome', label: 'Outcome' },
-  { id: 'reflection', label: 'Reflection' },
-]
 
 /** Every screen the enlarged view steps through, in reading order */
 const shots = {
@@ -291,14 +278,6 @@ function Screen({ slug, open, size = 'full', sizes = '(max-width: 760px) 100vw, 
   )
 }
 
-/** The three places in the product and the question each one answers */
-const surfaces = [
-  { name: 'Dashboard', body: 'How much is done, and what needs attention today.' },
-  { name: 'My Tasks', body: 'The worklist, where every suggestion is confirmed, rejected or replaced.' },
-  { name: 'Settings', body: 'Users, sites and the target date for each site.' },
-  { name: 'Site switcher', body: 'Everything is shown for one kitchen site at a time.' },
-]
-
 /** The workflow end to end: who does each step, and whether the prototype shows it */
 const flow = [
   { kind: 'ai', shown: true, who: 'Autobot', name: 'Suggest', body: 'Finds a match' },
@@ -332,11 +311,11 @@ function Flow() {
 
 /** What each status means and what the row lets you do, as observed in the prototype */
 const queues = [
-  { name: 'Matches', means: 'The Autobot is fairly sure.', can: 'Confirm, Reject, Link APL', job: 'Clear them fast.' },
-  { name: 'Likely Matches', means: 'The Autobot isn’t sure.', can: 'Confirm, Reject, Link APL', job: 'Check before deciding.' },
-  { name: 'No Match', means: 'No article suggested.', can: 'Link APL only', job: 'Find the article.' },
-  { name: 'Retired', means: 'The article is no longer sold.', can: 'Resolve, Reject', job: 'Pick a replacement.' },
-  { name: 'Mapped', means: 'Confirmed.', can: '—', job: 'Nothing.' },
+  { key: 'match', name: 'Matches', means: 'The Autobot is fairly sure.', can: 'Confirm, Reject, Link APL', job: 'Clear them fast.' },
+  { key: 'likely', name: 'Likely Matches', means: 'The Autobot isn’t sure.', can: 'Confirm, Reject, Link APL', job: 'Check before deciding.' },
+  { key: 'none', name: 'No Match', means: 'No article suggested.', can: 'Link APL only', job: 'Find the article.' },
+  { key: 'retired', name: 'Retired', means: 'The article is no longer sold.', can: 'Resolve, Reject', job: 'Pick a replacement.' },
+  { key: 'mapped', name: 'Mapped', means: 'Confirmed.', can: 'Nothing left to do', job: 'Done.' },
 ] as const
 
 /** The layouts explored, and the confirmed final one; trade-offs are my own analysis */
@@ -345,7 +324,7 @@ const approaches = [
     key: 'A',
     title: 'Table with expandable rows',
     shot: 'table-expanded',
-    does: 'One row per ingredient. Expand it to see every candidate article.',
+    does: 'One row per ingredient. Expand it to see every candidate.',
     good: 'Scanning and comparing many items.',
     hard: 'Long rows push the rest of the list down.',
   },
@@ -361,7 +340,7 @@ const approaches = [
     key: 'C',
     title: 'Separate CookBook queue',
     shot: 'v1-cookbook',
-    does: 'Confirmed items move to their own page to be entered in CookBook.',
+    does: 'Confirmed items move to their own page, to be entered in CookBook.',
     good: 'Shows the work left after review.',
     hard: 'One more page, and two kinds of “done”.',
   },
@@ -376,36 +355,94 @@ const approaches = [
   },
 ] as const
 
+/**
+ * The four layouts as one scroll: the text steps through A to D while the screen beside it holds
+ * still and changes to match. On small screens each step simply shows its own screen.
+ */
+function Approaches({ open }: { open: (i: number) => void }) {
+  const ref = useRef<HTMLOListElement>(null)
+  const [on, setOn] = useState(0)
+
+  useEffect(() => {
+    const steps = ref.current?.querySelectorAll<HTMLElement>('[data-step]')
+    if (!steps) return
+    // the step crossing the middle of the screen is the one shown
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) if (e.isIntersecting) setOn(Number((e.target as HTMLElement).dataset.step))
+    }, { rootMargin: '-45% 0px -50% 0px' })
+    steps.forEach((s) => io.observe(s))
+    return () => io.disconnect()
+  }, [])
+
+  return (
+    <div className="cp-scroll">
+      <ol ref={ref} className="cp-scroll__steps">
+        {approaches.map((a, i) => {
+          const final = 'final' in a
+          return (
+            <li key={a.key} data-step={i} className={`cp-scroll__step${i === on ? ' is-on' : ''}${final ? ' cp-scroll__step--final' : ''}`}>
+              <p className={`cp-pair__tag${final ? ' cp-pair__tag--final' : ''}`}>{final ? 'Final design' : 'Exploration'}</p>
+              <h3><span className="dv-badge">{a.key}</span> {a.title}</h3>
+              <div className="cp-scroll__inline">
+                <Screen slug={a.shot} open={open} />
+                <span className={`cp-stamp${final ? ' cp-stamp--final' : ''}`} aria-hidden="true">{final ? 'Chosen ✓' : 'Explored'}</span>
+              </div>
+              <p className="cp-scroll__does">{a.does}</p>
+              <ul className="cp-pros">
+                <li className="cp-pros__good"><span className="sr-only">Good for: </span>{a.good}</li>
+                <li className="cp-pros__hard"><span className="sr-only">Harder: </span>{a.hard}</li>
+              </ul>
+            </li>
+          )
+        })}
+      </ol>
+      <div className="cp-scroll__stage">
+        <p className="cp-scroll__dots" aria-hidden="true">
+          {approaches.map((a, i) => <span key={a.key} className={i === on ? 'is-on' : undefined}>{a.key}</span>)}
+        </p>
+        <div className="cp-scroll__frame">
+          {approaches.map((a, i) => (
+            <div key={a.key} className={`cp-scroll__shot${i === on ? ' is-on' : ''}`} inert={i !== on}>
+              <Screen slug={a.shot} open={open} sizes="(max-width: 1100px) 60vw, 600px" />
+              <span className={`cp-stamp${'final' in a ? ' cp-stamp--final' : ''}`} aria-hidden="true">{'final' in a ? 'Chosen ✓' : 'Explored'}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 /** Each final decision, with the screen that shows it */
 const decisions = [
   {
     title: 'Everything needed to decide, in one row',
     shot: 'deep-columns',
     wide: true,
-    need: 'Two articles can have the same name and differ only in pack size or category.',
-    does: 'Each row shows the ingredient, the suggested article with its code and category, a status and the actions. An optional Reason column shows the Autobot’s checks as ✓ and ✗, like “✓ Price ✗ Pack size”.',
-    why: 'The ✓ and ✗ tell you where to look before you decide. It’s optional because experienced operators mostly read the name and code.',
+    need: 'Two articles can share a name and differ only in pack size or category.',
+    does: 'Each row shows the article’s code and category. An optional Reason column shows the Autobot’s checks, like “✓ Price ✗ Pack size”.',
+    why: 'The ✓ and ✗ show where to look. It’s optional because experienced operators mostly read the name and code.',
   },
   {
     title: 'One click for one row, a preview for many',
     shot: 'deep-bulkconfirm',
-    need: 'Most matches are right, so a pop-up on every Confirm would just slow people down. But one wrong row in a batch of twenty is easy to miss.',
-    does: 'Confirm on a single row works straight away. Confirming several rows at once first shows a list of every pairing.',
-    why: 'The bigger the mistake could be, the more checking it gets.',
+    need: 'A pop-up on every Confirm slows people down, but one wrong row in a batch of twenty is easy to miss.',
+    does: 'Confirm on one row works straight away. Confirming several first lists every pairing.',
+    why: 'The bigger the possible mistake, the more checking it gets.',
   },
   {
     title: 'Every rejection has a reason',
     shot: 'deep-bulkreject',
-    need: 'A plain “no” doesn’t tell anyone what went wrong.',
-    does: 'Reject asks for a reason from a short list, like Wrong pack size or Price too high. In bulk, one reason covers all selected rows.',
-    why: 'The reasons match the Autobot’s own checks, so each rejection tells it which check failed.',
+    need: 'A plain “no” doesn’t say what went wrong.',
+    does: 'Reject asks for a reason from a short list. In bulk, one reason covers every selected row.',
+    why: 'The reasons match the Autobot’s checks, so each one says which check failed.',
   },
   {
     title: 'No Match rows only offer what helps',
     shot: 'deep-nomatch',
     wide: true,
     need: 'With no suggestion, there’s nothing to confirm or reject.',
-    does: 'Confirm and Reject are greyed out. Link APL, to search for an article, is the only action.',
+    does: 'Confirm and Reject are greyed out. Link APL is the only action.',
     why: 'The buttons stay in the same place on every row, so nobody has to look for them.',
   },
   {
@@ -413,50 +450,44 @@ const decisions = [
     shot: 'deep-link',
     wide: true,
     need: 'When the suggestion is wrong or missing, the operator has to find the right article.',
-    does: 'A search of all articles, showing code and category so similar ones can be told apart. More than one can be picked.',
+    does: 'A search of all articles, with code and category to tell similar ones apart. More than one can be picked.',
     why: 'One ingredient can be bought in more than one pack size.',
   },
   {
     title: 'Retired items get their own action',
     shot: 'final-states-crop',
     wide: true,
-    need: 'A retired article was correct once. Now it needs a replacement.',
-    does: 'Retired rows are marked in blue, and Resolve takes the place of Confirm. They can’t be bulk-selected.',
-    why: 'The job is different, so the button is different, but the row layout stays the same.',
+    need: 'A retired article was right once. Now it needs a replacement.',
+    does: 'Retired rows are blue, and Resolve takes the place of Confirm. They can’t be bulk-selected.',
+    why: 'A different job gets a different button, in the same row layout.',
   },
-] as const
-
-/** The headline facts, all from the brief and the prototype; nothing here is measured */
-const glance = [
-  { tone: 'sun', value: '2 → 1', label: 'Excel plus another tool became one table' },
-  { tone: 'sky', value: '676 · 4,626', label: 'MOGs and articles for one site in the prototype' },
-  { tone: 'rose', value: '5 weeks', label: 'Of design, then changes after launch' },
-  { tone: 'mint', value: 'Daily', label: 'In use by the client’s menu planning operators' },
 ] as const
 
 /** My part, end to end; each card points to where it is shown */
 const role = [
-  { title: 'Workflow', body: 'Turned the task into three screens, one flow and four queues.', href: '#map', link: 'How it fits together' },
-  { title: 'Interface', body: 'Explored four layouts, then designed My Tasks around six decisions.', href: '#decisions', link: 'Design decisions' },
-  { title: 'Design system', body: 'Built a small system on shadcn/ui and Radix, documented in a PDF.', href: '#system', link: 'Design system' },
-  { title: 'Built with AI', body: 'Implemented the interface myself, with AI.', href: LIVE, link: 'Open the prototype' },
-  { title: 'After launch', body: 'Fixed the two problems the client’s team reported, in the row itself.', href: '#after', link: 'After launch' },
+  { icon: 'flow', title: 'Workflow', body: 'One flow, three screens, four queues.', href: '#flow', link: 'How it works' },
+  { icon: 'layout', title: 'Interface', body: 'Four layouts explored, then six decisions in My Tasks.', href: '#approaches', link: 'Approaches' },
+  { icon: 'system', title: 'Design system', body: 'Built on shadcn/ui and Radix, documented in a PDF.', href: '#system', link: 'Design system' },
+  { icon: 'code', title: 'Built with AI', body: 'I implemented the interface myself, with AI.', href: LIVE, link: 'Open the prototype' },
+  { icon: 'fix', title: 'After launch', body: 'Fixed the two problems the client’s team reported.', href: '#after', link: 'After launch' },
 ] as const
 
-/** Outcome as problem and fix; the problems are the ones named in the brief and after launch */
-const results = [
-  { was: 'Review split across Excel and another tool, which the team found confusing and slow.', now: 'All the review work in one table.' },
-  { was: 'A plain “no” didn’t tell anyone what went wrong.', now: 'Every rejection carries a reason that matches the Autobot’s checks.' },
-  { was: 'A wrong Confirm or Reject had no easy way back.', now: 'It can be switched on the same row.' },
-  { was: 'No way to mark which correct article comes first.', now: 'A star sets the default.' },
-] as const
+/** Small line icons for the role strip, drawn on a 24px grid */
+const ICONS: Record<(typeof role)[number]['icon'], string> = {
+  flow: 'M4 6h5v5H4zM15 13h5v5h-5zM9 8.5h3.5a2 2 0 0 1 2 2v5',
+  layout: 'M3.5 5h17v14h-17zM3.5 9.5h17M9 9.5V19',
+  system: 'M5 5h6v6H5zM13 5h6v6h-6zM5 13h6v6H5zM16 13v6M13 16h6',
+  code: 'M9 7l-5 5 5 5M15 7l5 5-5 5',
+  fix: 'M5 12.5l4.5 4.5L19 7.5',
+}
 
-function Decision({ need, does, why }: { need: string; does: string; why: string }) {
+/** Problem, what I did, why: the same three beats for every decision, as three coloured notes */
+function Beats({ need, does, why, did = 'What I did' }: { need: string; does: string; why: string; did?: string }) {
   return (
-    <dl className="dv-why cp-why">
-      <div><dt>Problem</dt><dd>{need}</dd></div>
-      <div><dt>What I did</dt><dd>{does}</dd></div>
-      <div><dt>Why</dt><dd>{why}</dd></div>
+    <dl className="cp-beats">
+      <div className="cp-beat cp-tone--rose"><dt>Problem</dt><dd>{need}</dd></div>
+      <div className="cp-beat cp-tone--sky"><dt>{did}</dt><dd>{does}</dd></div>
+      <div className="cp-beat cp-tone--sun"><dt>Why</dt><dd>{why}</dd></div>
     </dl>
   )
 }
@@ -474,28 +505,18 @@ const changes = [
   {
     title: 'Decisions can be switched',
     shot: 'deep-toggle',
-    saw: 'Operators sometimes rejected an article they meant to confirm, or the other way round, and there was no easy way back.',
-    did: 'After Confirm, Reject stays available. After Reject, Confirm stays available. The button you pressed greys out.',
-    why: 'Mistakes like this are often noticed later, not in the moment. Now the fix is right on the row.',
+    saw: 'Operators sometimes rejected an article they meant to confirm, or the other way round, with no easy way back.',
+    did: 'After Confirm, Reject stays available, and the other way round. The button you pressed greys out.',
+    why: 'Mistakes like this are often noticed later. Now the fix is right on the row.',
   },
   {
     title: 'A star for the first choice',
     shot: 'deep-default',
-    saw: 'Some ingredients have more than one correct article, like the same item in two pack sizes. Operators needed to mark which one comes first.',
+    saw: 'Some ingredients have more than one correct article, like two pack sizes. Operators needed to mark which comes first.',
     did: 'Each article has a star. The starred one becomes the default and shows first in the row.',
-    why: 'Which article comes first is a different question from whether it’s right, so it got its own small control.',
+    why: 'Which article comes first is a different question from whether it’s right, so it got its own control.',
   },
 ] as const
-
-function Change({ saw, did, why }: { saw: string; did: string; why: string }) {
-  return (
-    <dl className="dv-why cp-why">
-      <div><dt>Problem</dt><dd>{saw}</dd></div>
-      <div><dt>What changed</dt><dd>{did}</dd></div>
-      <div><dt>Why</dt><dd>{why}</dd></div>
-    </dl>
-  )
-}
 
 /** Other explored screens, kept as supporting depth */
 const explored = ['v1-review', 'v1-priorities', 'v1-exceptions', 'exceptions-table'] as const
@@ -520,17 +541,115 @@ function More({ title, children }: { title: string; children: React.ReactNode })
   )
 }
 
-function Head({ id, kicker, title, children }: { id: string; kicker: string; title: string; children?: React.ReactNode }) {
+function Head({ id, kicker, title, mark, children }: { id: string; kicker: string; title: string; mark?: TitleMark; children?: React.ReactNode }) {
   return (
-    <header className="dv-head">
-      <p className="dv-kicker">{kicker}</p>
-      <h2 id={`${id}-title`} className="dv-h2">{title}</h2>
+    <header className="dv-head" data-reveal>
+      <p className={mark ? `dv-kicker cs-kicker cs-kicker--${mark.tone}` : 'dv-kicker'}>{kicker}</p>
+      <h2 id={`${id}-title`} className="dv-h2"><MarkedTitle title={title} mark={mark} /></h2>
       {children}
     </header>
   )
 }
 
+/** The problem, what I did and the impact, in three notes at the top; all from the brief and the impact counts */
+const trio = [
+  { tone: 'rose', kind: 'The problem', text: 'Operators linked hundreds of ingredients to products across Excel and another tool. They found it confusing and slow.' },
+  { tone: 'sky', kind: 'What I did', text: 'Designed one table to confirm, reject or fix the AI’s suggestions, and the design system. Built the interface with AI.' },
+  { tone: 'sun', kind: 'The impact', text: '30+ people at 7 sites now do this review here, every day.' },
+] as const
+
+/** The operator's brief, phrase by phrase, each tied to the part of the design that answers it */
+const brief = [
+  { text: 'see why', tone: 'sky', answer: 'An optional Reason column with the Autobot’s checks', href: '#decisions' },
+  { text: 'decide quickly', tone: 'sun', answer: 'One click per row, a preview for many', href: '#decisions' },
+  { text: 'fix it if I get it wrong', tone: 'rose', answer: 'Any decision can be switched on the row', href: '#after' },
+] as const
+
+/** Before and after, drawn: two tools with work going back and forth, then one table */
+function TwoToOne() {
+  return (
+    <figure className="cp-two1">
+      <div className="cp-two1__side">
+        <svg viewBox="0 0 220 150" className="cp-two1__art" aria-hidden="true">
+          {/* the spreadsheet */}
+          <rect className="cp-ink cp-fill" x="8" y="22" width="112" height="96" rx="6" />
+          <path className="cp-ink" d="M8 40h112M8 58h112M8 76h112M8 94h112M44 40v78M82 40v78" />
+          {/* the other tool */}
+          <rect className="cp-ink cp-fill" x="132" y="44" width="80" height="78" rx="6" />
+          <path className="cp-ink" d="M132 60h80M142 74h44M142 86h56M142 98h36" />
+          {/* the back and forth */}
+          <path className="cp-ink cp-ink--accent" d="M70 14c24-16 70-14 96 22" />
+          <path className="cp-ink cp-ink--accent" d="M158 30l9 7 1-11" />
+          <path className="cp-ink cp-ink--accent" d="M170 136c-22 14-70 12-96-14" />
+          <path className="cp-ink cp-ink--accent" d="M82 128l-9-6-2 11" />
+        </svg>
+        <p className="cp-two1__label"><span>Before</span> Excel plus another tool</p>
+        <p className="cp-hand">“confusing and slow”</p>
+      </div>
+      <svg viewBox="0 0 60 30" className="cp-two1__arrow" aria-hidden="true">
+        <path className="cp-ink" d="M4 17c14-8 32-8 48-2M44 7l9 8-11 5" />
+      </svg>
+      <div className="cp-two1__side">
+        <svg viewBox="0 0 220 150" className="cp-two1__art" aria-hidden="true">
+          <rect className="cp-ink cp-fill" x="20" y="18" width="180" height="114" rx="6" />
+          <path className="cp-ink" d="M20 38h180" />
+          {[56, 76, 96, 116].map((y, i) => (
+            <g key={y}>
+              <circle className={`cp-dot cp-dot--${['match', 'likely', 'none', 'retired'][i]}`} cx="36" cy={y - 4} r="4.5" />
+              <path className="cp-ink" d={`M50 ${y - 4}h78`} />
+              <rect className="cp-ink" x="148" y={y - 11} width="38" height="14" rx="4" />
+            </g>
+          ))}
+        </svg>
+        <p className="cp-two1__label"><span>After</span> One table for the whole review</p>
+        <p className="cp-hand">confirm, reject or fix, in the row</p>
+      </div>
+      <figcaption className="sr-only">Before: the review was split across Excel and another tool. After: one table.</figcaption>
+    </figure>
+  )
+}
+
+/** What a match is: the ingredient a recipe needs, the article bought for it, and who does what */
+function MatchIdea() {
+  return (
+    <figure className="cp-match">
+      <ol className="cp-match__row">
+        <li className="cp-match__card">
+          <span className="cp-match__kind">MOG · what a recipe needs</span>
+          <strong>Pizza Sauce RTU</strong>
+        </li>
+        <li className="cp-match__step cp-match__step--ai"><span>The Autobot suggests</span></li>
+        <li className="cp-match__card cp-match__card--article">
+          <span className="cp-match__kind">Article · what is bought</span>
+          <span className="cp-match__lines" aria-hidden="true"><i /><i /><i /></span>
+          <span className="cp-match__fields">a brand, a pack size, a code</span>
+        </li>
+        <li className="cp-match__step cp-match__step--you"><span>A person decides</span></li>
+        <li className="cp-match__card cp-match__card--decide">
+          <span className="cp-match__kind">The operator</span>
+          <span className="cp-match__btns"><b>Confirm</b><b>Reject</b><b>Link APL</b></span>
+        </li>
+      </ol>
+      <figcaption className="dv-cap">An illustration of one match. The real worklist has 676 MOGs and 4,626 articles for one site.</figcaption>
+    </figure>
+  )
+}
+
 const WIDE = '(max-width: 1100px) 100vw, 980px'
+
+const sections = [
+  { id: 'impact', label: 'Impact' },
+  { id: 'problem', label: 'The problem' },
+  { id: 'role', label: 'What I did' },
+  { id: 'flow', label: 'How it works' },
+  { id: 'approaches', label: 'Approaches' },
+  { id: 'decisions', label: 'Design decisions' },
+  { id: 'after', label: 'After launch' },
+  { id: 'finding', label: 'Finding the work' },
+  { id: 'progress', label: 'Progress & targets' },
+  { id: 'system', label: 'Design system' },
+  { id: 'reflection', label: 'Reflection' },
+]
 
 /** Impact: user and site counts as of November 2026; the rest is from the shipped screens */
 const impact = [
@@ -543,6 +662,7 @@ const impact = [
 export default function Compass() {
   useTitle('Compass Group — Helping operators review AI ingredient matches | Jb Yashvi')
   const { open, lightbox } = useLightbox(items)
+  useCaseReveal()
 
   return (
     <article className="dv">
@@ -557,6 +677,15 @@ export default function Compass() {
             A worklist where kitchen operators <mark>check the AI’s suggestions</mark> and confirm, reject or fix
             them, hundreds at a time.
           </p>
+          <ol className="cp-trio" aria-label="At a glance">
+            {trio.map((t, i) => (
+              <li key={t.kind} className={`cp-trio__card cp-tone--${t.tone}`} style={{ '--r': `${[-1.2, 0.8, -0.6][i]}deg` } as CSSProperties}>
+                <Tape tone={t.tone} />
+                <p className="cp-trio__kind"><span aria-hidden="true">{i + 1}</span> {t.kind}</p>
+                <p className="cp-trio__text">{t.text}</p>
+              </li>
+            ))}
+          </ol>
           <div className="dv-top__grid">
             <dl className="dv-top__meta">
               <div>
@@ -587,8 +716,12 @@ export default function Compass() {
                 </dd>
               </div>
             </dl>
-            <div className="dv-signal">
-              <p className="dv-signal__kind">The insight that shaped it</p>
+            <div className="dv-signal cs-note">
+              <Tape tone="sun" />
+              <p className="dv-signal__kind">
+                <img className="cs-note__me" src="/story/me-128.webp" width={128} height={128} alt="" decoding="async" />
+                The insight that shaped it
+              </p>
               <p className="dv-signal__text">
                 <mark>The AI suggests, a person decides.</mark> So the screen is built around making that decision
                 quick, and easy to undo.
@@ -596,14 +729,6 @@ export default function Compass() {
               <p className="dv-signal__note">The AI model, backend and data integrations were built by others.</p>
             </div>
           </div>
-          <ul className="cp-glance" aria-label="At a glance">
-            {glance.map((g) => (
-              <li key={g.value} className={`cp-glance__card cp-tone--${g.tone}`}>
-                <span className="cp-glance__value">{g.value}</span>
-                <span className="cp-glance__label">{g.label}</span>
-              </li>
-            ))}
-          </ul>
         </div>
       </header>
 
@@ -621,39 +746,54 @@ export default function Compass() {
               note="User and site counts as of November 2026. I don’t have measured figures for time saved or accuracy."
             />
 
-            {/* Overview */}
-            <section id="overview" className="dv-sec dv-sec--first" aria-labelledby="overview-title" tabIndex={-1}>
-              <Head id="overview" kicker="Overview" title="One table for hundreds of small decisions.">
+            {/* The problem */}
+            <section id="problem" className="dv-sec dv-sec--first" aria-labelledby="problem-title" tabIndex={-1}>
+              <Head id="problem" kicker="The problem" title="Matching ingredients to articles, by hand." mark={{ text: 'by hand.', tone: 'rose', doodle: 'under' }}>
                 <p>
                   Every ingredient in Compass’s kitchens has to be linked to the product actually bought for it. An
                   Autobot suggests the link. Operators <mark>confirm it, reject it, or pick a different one</mark>.
                 </p>
-                <p>
-                  Most decisions are easy, but there are hundreds per site. The design had to keep the easy ones fast
-                  and make mistakes easy to fix.
-                </p>
               </Head>
-              <figure>
-                <Screen slug="final-worklist" open={open} sizes={WIDE} eager />
-                <figcaption className="dv-cap">
-                  My Tasks, the final design. <span className="dv-tag">Final design</span>
-                </figcaption>
-              </figure>
+              <div data-reveal>
+                <MatchIdea />
+              </div>
+              <div className="cp-gap" data-reveal>
+                <TwoToOne />
+              </div>
+              <div className="cp-brief" data-reveal>
+                <p className="dv-diagram-label">Workflow framing</p>
+                <p className="cp-brief__line">
+                  “As an operator, I want to <span className="cs-mark cs-mark--sky">see why</span> the Autobot
+                  suggested an article, <span className="cs-mark cs-mark--sun">decide quickly</span>, and{' '}
+                  <span className="cs-mark cs-mark--rose">fix it if I get it wrong</span>.”
+                </p>
+                <ol className="cp-brief__answers">
+                  {brief.map((b) => (
+                    <li key={b.text} className={`cs-mark--${b.tone}`}>
+                      <span className="cp-brief__q">{b.text}</span>
+                      <span aria-hidden="true">→</span>
+                      <a href={b.href}>{b.answer}</a>
+                    </li>
+                  ))}
+                </ol>
+                <p className="dv-cap">Workflow framing from discussions with the client about where workers struggled.</p>
+              </div>
             </section>
 
             {/* What I did */}
             <section id="role" className="dv-sec" aria-labelledby="role-title" tabIndex={-1}>
-              <Head id="role" kicker="What I did" title="From the first flow to the shipped screen.">
+              <Head id="role" kicker="What I did" title="From the first flow to the shipped screen." mark={{ text: 'shipped screen.', tone: 'sky', doodle: 'double' }}>
                 <p>
                   I owned the design end to end, and <mark>built the interface myself with AI</mark>.
                 </p>
               </Head>
-              <ol className="cp-role">
+              <ol className="cp-strip" data-reveal>
                 {role.map((r, i) => {
                   const external = r.href.startsWith('http')
                   return (
-                    <li key={r.title} className="cp-role__card">
-                      <span className="cp-role__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                    <li key={r.title} className="cp-strip__card">
+                      <span className="cp-strip__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                      <svg className="cp-strip__icon" viewBox="0 0 24 24" aria-hidden="true"><path d={ICONS[r.icon]} /></svg>
                       <h3>{r.title}</h3>
                       <p>{r.body}</p>
                       <a className="cp-role__link" href={r.href} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
@@ -664,60 +804,31 @@ export default function Compass() {
                   )
                 })}
               </ol>
-              <p className="cp-role__not">
+              <p className="cp-notmine">
                 <strong>Not mine:</strong> the AI model, the backend and the data integrations, built by others.
               </p>
+              <figure className="cp-final" data-reveal>
+                <Pin tone="sun" r={-1}>
+                  <Screen slug="final-worklist" open={open} sizes={WIDE} />
+                </Pin>
+                <figcaption className="dv-cap">
+                  My Tasks, the final design. <span className="dv-tag">Final design</span>
+                </figcaption>
+              </figure>
             </section>
 
-            {/* Context */}
-            <section id="context" className="dv-sec" aria-labelledby="context-title" tabIndex={-1}>
-              <Head id="context" kicker="Context" title="Matching ingredients to articles, by hand.">
-                <p>
-                  An ingredient (called a MOG) is what a recipe needs, like “Pizza Sauce RTU”. An article is what’s
-                  actually bought: a brand, a pack size, a code. The two have to be linked before anything can be ordered.
-                </p>
-                <p>
-                  Before this, the team did it <mark>in Excel and another tool</mark>, which they found confusing and
-                  slow.
-                </p>
+            {/* How it works */}
+            <section id="flow" className="dv-sec" aria-labelledby="flow-title" tabIndex={-1}>
+              <Head id="flow" kicker="How it works" title="Each status is a different job." mark={{ text: 'different job.', tone: 'lilac', doodle: 'under' }}>
+                <p>Three screens: a Dashboard, My Tasks and Settings, for one kitchen site at a time. The status decides which buttons a row shows.</p>
               </Head>
-              <dl className="dv-facts" aria-label="Project context">
-                <div>
-                  <dt>Client</dt>
-                  <dd>Compass Group India</dd>
-                </div>
-                <div>
-                  <dt>How I learned the brief</dt>
-                  <dd>Discussions with the client about the task and where workers struggled</dd>
-                </div>
-                <div>
-                  <dt>Who uses it</dt>
-                  <dd>The client’s menu planning operators, one site each</dd>
-                </div>
-                <div>
-                  <dt>Scale in the prototype</dt>
-                  <dd>676 MOGs and 4,626 articles for one site</dd>
-                </div>
-              </dl>
-              <p className="dv-diagram-label">Workflow framing</p>
-              <p className="dv-statement">
-                As an operator, I want to see why the Autobot suggested an article,{' '}
-                <mark>decide quickly</mark>, and fix it if I get it wrong.
-              </p>
-            </section>
-
-            {/* How it fits together */}
-            <section id="map" className="dv-sec" aria-labelledby="map-title" tabIndex={-1}>
-              <Head id="map" kicker="How it fits together" title="Three screens, each answering one question.">
-                <p>
-                  Each screen has one job.
-                </p>
-              </Head>
-              <ul className="surfaces cp-surfaces">
-                {surfaces.map((s) => (
-                  <li key={s.name}>
-                    <h3>{s.name}</h3>
-                    <p>{s.body}</p>
+              <ul className="cp-queues" data-reveal>
+                {queues.map((q) => (
+                  <li key={q.key} className={`cp-queue cp-queue--${q.key}`}>
+                    <span className="cp-queue__name">{q.name}</span>
+                    <span className="cp-queue__means">{q.means}</span>
+                    <strong className="cp-queue__job">{q.job}</strong>
+                    <span className="cp-queue__can">{q.can}</span>
                   </li>
                 ))}
               </ul>
@@ -725,67 +836,17 @@ export default function Compass() {
                 <Flow />
               </div>
               <p className="dv-note">
-                <strong>Confirming isn’t the last step.</strong> The mapping still has to be typed into CookBook. I
-                explored a screen for that (C below), but it isn’t in this build.
+                <strong>Confirming isn’t the last step.</strong> The mapping is still typed into CookBook by hand. I
+                explored a screen for that (C below); it isn’t in this build.
               </p>
-            </section>
-
-            {/* Four queues */}
-            <section id="queues" className="dv-sec" aria-labelledby="queues-title" tabIndex={-1}>
-              <Head id="queues" kicker="Four queues" title="Each status is a different job.">
-                <p>
-                  The status decides which buttons a row shows.
-                </p>
-              </Head>
-              <div className="dv-matrix cp-matrix">
-                <table>
-                  <caption className="sr-only">What each status means and what the row allows</caption>
-                  <thead>
-                    <tr>
-                      <th scope="col">Status</th>
-                      <th scope="col">What it means</th>
-                      <th scope="col">What the row allows</th>
-                      <th scope="col">The operator’s job</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {queues.map((q) => (
-                      <tr key={q.name}>
-                        <th scope="row">{q.name}</th>
-                        <td data-label="What it means">{q.means}</td>
-                        <td data-label="What the row allows">{q.can}</td>
-                        <td data-label="The operator’s job">{q.job}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
             </section>
 
             {/* Approaches explored */}
             <section id="approaches" className="dv-sec" aria-labelledby="approaches-title" tabIndex={-1}>
-              <Head id="approaches" kicker="Approaches explored" title="Four layouts, and why the table won.">
-                <p>
-                  Most of the work is easy and repetitive, with a few hard items. A table handles the easy ones best,
-                  and the hard ones get help inside the row.
-                </p>
+              <Head id="approaches" kicker="Approaches" title="Four layouts, and why the table won." mark={{ text: 'the table won.', tone: 'sun', doodle: 'under' }}>
+                <p>Most items are easy, a few are hard. A table keeps the easy ones fast, and the hard ones get help inside the row.</p>
               </Head>
-              <ol className="cp-approaches">
-                {approaches.map((a) => (
-                  <li key={a.key} className={`cp-approach${'final' in a ? ' cp-approach--final' : ''}`}>
-                    <p className={`cp-pair__tag${'final' in a ? ' cp-pair__tag--final' : ''}`}>
-                      {'final' in a ? 'Final design' : 'Exploration'}
-                    </p>
-                    <h3><span className="dv-badge">{a.key}</span> {a.title}</h3>
-                    <Screen slug={a.shot} open={open} sizes="(max-width: 760px) 100vw, 440px" />
-                    <p>{a.does}</p>
-                    <dl className="cp-approach__tradeoff">
-                      <div><dt>Good for</dt><dd>{a.good}</dd></div>
-                      <div><dt>Harder</dt><dd>{a.hard}</dd></div>
-                    </dl>
-                  </li>
-                ))}
-              </ol>
+              <Approaches open={open} />
               <More title="Other explored screens">
                 <ol className="dv-grid">
                   {explored.map((slug) => (
@@ -800,21 +861,33 @@ export default function Compass() {
 
             {/* Final design decisions */}
             <section id="decisions" className="dv-sec" aria-labelledby="decisions-title" tabIndex={-1}>
-              <Head id="decisions" kicker="Design decisions" title="Six decisions in the worklist.">
-                <p>
-                  Small, safe actions take one click. Bigger ones ask you to check first.
-                </p>
+              <Head id="decisions" kicker="Design decisions" title="Six decisions in the worklist." mark={{ text: 'Six decisions', tone: 'lilac', doodle: 'under' }}>
+                <p>Small, safe actions take one click. Bigger ones ask you to check first.</p>
               </Head>
-              <ol className="dv-steps">
+              <ol className="cp-decisions">
                 {decisions.map((d, i) => (
-                  <li key={d.title} className={`dv-step${'wide' in d ? ' cp-step--wide' : ''}`}>
-                    <figure>
-                      <Screen slug={d.shot} open={open} sizes={'wide' in d ? WIDE : undefined} />
-                    </figure>
-                    <div className="dv-step__text">
-                      <h3><span className="dv-num">{String.fromCharCode(65 + i)}</span> {d.title}</h3>
-                      <Decision {...d} />
-                    </div>
+                  <li key={d.title} className={`cp-decision${'wide' in d ? ' cp-decision--wide' : ''}`} data-reveal>
+                    <h3><span className="dv-badge">{String.fromCharCode(65 + i)}</span> {d.title}</h3>
+                    <Screen slug={d.shot} open={open} sizes={'wide' in d ? WIDE : '(max-width: 760px) 100vw, 560px'} />
+                    <Beats need={d.need} does={d.does} why={d.why} />
+                  </li>
+                ))}
+              </ol>
+            </section>
+
+            {/* After launch */}
+            <section id="after" className="dv-sec" aria-labelledby="after-title" tabIndex={-1}>
+              <Head id="after" kicker="After launch" title="What changed once people used it every day." mark={{ text: 'every day.', tone: 'rose', doodle: 'double' }}>
+                <p>The client’s team reported two problems. Both were fixed in the row itself, with no new screens.</p>
+              </Head>
+              <ol className="cp-decisions">
+                {changes.map((c, i) => (
+                  <li key={c.title} className="cp-decision cp-decision--wide" data-reveal>
+                    <h3><span className="dv-badge">{i + 1}</span> {c.title}</h3>
+                    <Pin tone={i ? 'lilac' : 'rose'} r={i ? 0.8 : -0.8}>
+                      <Screen slug={c.shot} open={open} sizes={WIDE} />
+                    </Pin>
+                    <Beats need={c.saw} does={c.did} why={c.why} did="What changed" />
                   </li>
                 ))}
               </ol>
@@ -822,10 +895,8 @@ export default function Compass() {
 
             {/* Finding the work */}
             <section id="finding" className="dv-sec" aria-labelledby="finding-title" tabIndex={-1}>
-              <Head id="finding" kicker="Finding the work" title="Finding the right rows.">
-                <p>
-                  Nobody works top to bottom. Operators pick a queue, a category or a date, and clear that.
-                </p>
+              <Head id="finding" kicker="Finding the work" title="Finding the right rows." mark={{ text: 'right rows.', tone: 'sky', doodle: 'under' }}>
+                <p>Nobody works top to bottom. Operators pick a queue, a category or a date, and clear that.</p>
               </Head>
               <ol className="dv-grid">
                 {finding.map((f) => (
@@ -838,74 +909,36 @@ export default function Compass() {
               </ol>
             </section>
 
-            {/* After launch */}
-            <section id="after" className="dv-sec" aria-labelledby="after-title" tabIndex={-1}>
-              <Head id="after" kicker="After launch" title="What changed once people used it every day.">
-                <p>
-                  Once the client’s operators were using it, their team reported two problems. Both were fixed in the
-                  row itself.
-                </p>
-              </Head>
-              <ol className="dv-steps">
-                {changes.map((c, i) => (
-                  <li key={c.title} className="dv-step cp-step--wide">
-                    <figure>
-                      <Screen slug={c.shot} open={open} sizes={WIDE} />
-                    </figure>
-                    <div className="dv-step__text">
-                      <h3><span className="dv-num">{i + 1}</span> {c.title}</h3>
-                      <Change {...c} />
-                    </div>
-                  </li>
-                ))}
-              </ol>
-              <p className="dv-note">
-                <strong>No new screens.</strong> The greyed-out button shows what was decided, and the star shows what
-                comes first.
-              </p>
-            </section>
-
             {/* Progress & targets */}
             <section id="progress" className="dv-sec" aria-labelledby="progress-title" tabIndex={-1}>
-              <Head id="progress" kicker="Progress & targets" title="A dashboard that leads into the work.">
-                <p>
-                  Each site has a deadline. The dashboard shows progress against it, and every card opens the matching
-                  queue.
-                </p>
+              <Head id="progress" kicker="Progress & targets" title="A dashboard that leads into the work." mark={{ text: 'into the work.', tone: 'sun', doodle: 'under' }}>
+                <p>Each site has a deadline. Every card on the dashboard opens the matching queue.</p>
               </Head>
-              <ol className="dv-steps">
-                <li className="dv-step cp-step--wide">
-                  <figure>
-                    <Screen slug="deep-dashboard" open={open} sizes={WIDE} />
-                  </figure>
-                  <div className="dv-step__text">
-                    <h3><span className="dv-num">A</span> Dashboard</h3>
-                    <Decision
-                      need="Operators need to know how much is left and where to start."
-                      does="Today’s progress, what needs attention, and one card per queue with how much is left."
-                      why="Every number is a link. “30 Articles need a decision” opens exactly those rows."
-                    />
-                  </div>
+              <ol className="cp-decisions">
+                <li className="cp-decision cp-decision--wide" data-reveal>
+                  <h3><span className="dv-badge">A</span> Dashboard</h3>
+                  <Screen slug="deep-dashboard" open={open} sizes={WIDE} />
+                  <Beats
+                    need="Operators need to know how much is left and where to start."
+                    does="Today’s progress, what needs attention, and one card per queue with how much is left."
+                    why="Every number is a link. “30 Articles need a decision” opens exactly those rows."
+                  />
                 </li>
-                <li className="dv-step cp-step--wide">
-                  <figure>
-                    <Screen slug="deep-config" open={open} sizes={WIDE} />
-                  </figure>
-                  <div className="dv-step__text">
-                    <h3><span className="dv-num">B</span> Targets per site</h3>
-                    <Decision
-                      need="Sites run on different timelines."
-                      does="One default date, which each site can override."
-                      why="Each site sees its own deadline, not someone else’s."
-                    />
-                  </div>
+                <li className="cp-decision cp-decision--wide" data-reveal>
+                  <h3><span className="dv-badge">B</span> Targets per site</h3>
+                  <Screen slug="deep-config" open={open} sizes={WIDE} />
+                  <Beats
+                    need="Sites run on different timelines."
+                    does="One default date, which each site can override."
+                    why="Each site sees its own deadline, not someone else’s."
+                  />
                 </li>
               </ol>
             </section>
 
             {/* Design system */}
             <section id="system" className="dv-sec" aria-labelledby="system-title" tabIndex={-1}>
-              <Head id="system" kicker="Design system" title="A small system for dense, repeated decisions.">
+              <Head id="system" kicker="Design system" title="A small system for dense, repeated decisions." mark={{ text: 'small system', tone: 'lilac', doodle: 'under' }}>
                 <p>I made the design system, built on shadcn/ui and Radix.</p>
               </Head>
               <ol className="dv-grid">
@@ -935,35 +968,21 @@ export default function Compass() {
               </More>
             </section>
 
-            {/* Outcome */}
-            <section id="outcome" className="dv-sec" aria-labelledby="outcome-title" tabIndex={-1}>
-              <Head id="outcome" kicker="Outcome" title="What changed for the operators.">
-                <p>The client’s operators now do this review in one place, every day.</p>
-              </Head>
-              <ol className="cp-ba">
-                {results.map((r) => (
-                  <li key={r.now} className="cp-ba__row">
-                    <p className="cp-ba__was"><span className="cp-ba__tag">Problem</span>{r.was}</p>
-                    <span className="cp-ba__arrow" aria-hidden="true">→</span>
-                    <p className="cp-ba__now"><span className="cp-ba__tag">Now</span>{r.now}</p>
-                  </li>
-                ))}
-              </ol>
-              <p className="cp-inuse">
-                <span className="cp-inuse__dot" aria-hidden="true" /> In use day to day by the client’s operators.
-              </p>
-            </section>
-
-
             {/* Reflection */}
             <section id="reflection" className="dv-sec" aria-labelledby="reflection-title" tabIndex={-1}>
-              <Head id="reflection" kicker="Reflection" title="Plan for the wrong click too.">
-                <p>
-                  I spent most of the time on helping people make the right call. The biggest change after launch was
-                  about the wrong one. When people make hundreds of quick decisions,{' '}
-                  <mark>undo matters as much as getting it right</mark>. Next time I’d plan for it from day one.
+              <Head id="reflection" kicker="Reflection" title="Plan for the wrong click too." mark={{ text: 'wrong click', tone: 'rose', doodle: 'under' }} />
+              <div className="dv-signal cs-note cp-lesson" data-reveal>
+                <Tape tone="rose" />
+                <p className="dv-signal__kind">
+                  <img className="cs-note__me" src="/story/me-128.webp" width={128} height={128} alt="" loading="lazy" decoding="async" />
+                  What I learned
                 </p>
-              </Head>
+                <p className="dv-signal__text">
+                  I spent most of the time helping people make the right call. The biggest change after launch was
+                  about the wrong one. With hundreds of quick decisions, <mark>undo matters as much as getting it
+                  right</mark>. Next time I’d plan for it from day one.
+                </p>
+              </div>
               <h3 className="dv-h3">What I’d tighten next</h3>
               <ul className="ticks">
                 <li>Update the counts after a single Confirm, not only after bulk.</li>
