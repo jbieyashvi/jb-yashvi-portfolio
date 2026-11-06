@@ -17,6 +17,28 @@ const LIVE = 'https://compass-mapperv2.vercel.app/worklist'
 const PDF = `${import.meta.env.BASE_URL}work/compass/cmp-autobot-design-system.pdf`
 const DIR = '/work/compass'
 
+/** A photo from the project, taped up at a slight tilt like the screens */
+function Photo({ name, tone, r, alt, cap }: { name: string; tone: 'sun' | 'sky' | 'rose' | 'lilac'; r: number; alt: string; cap: string }) {
+  return (
+    <figure className="cp-photo" data-reveal>
+      <div className="cs-pin" style={{ '--r': `${r}deg` } as CSSProperties}>
+        <Tape tone={tone} />
+        <img
+          src={`${DIR}/${name}-800.webp`}
+          srcSet={`${DIR}/${name}-800.webp 800w, ${DIR}/${name}-1170.webp 1170w`}
+          sizes="(max-width: 760px) 92vw, 640px"
+          width={1170}
+          height={635}
+          alt={alt}
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+      <figcaption className="dv-cap">{cap}</figcaption>
+    </figure>
+  )
+}
+
 /** Where each screen comes from: my own files, the live prototype, an exploration or the PDF */
 const FINAL = 'Final design: My Tasks. Screenshot from my files.'
 const EXPLORATION = 'Exploration. Screenshot from my files.'
@@ -791,6 +813,13 @@ export default function Compass() {
                 </ol>
                 <p className="dv-cap">Workflow framing from discussions with the client about where workers struggled.</p>
               </div>
+              <Photo
+                name="team-sketch"
+                tone="sky"
+                r={-1.2}
+                alt="Jb and two colleagues at a table, one of them sketching boxes and arrows in a notebook"
+                cap="Talking through the flow on paper with the team."
+              />
             </section>
 
             {/* What I did */}
@@ -820,6 +849,13 @@ export default function Compass() {
               <p className="cp-notmine">
                 <strong>Not mine:</strong> the AI model, the backend and the data integrations, built by others.
               </p>
+              <Photo
+                name="at-work"
+                tone="sun"
+                r={1}
+                alt="Jb working at a laptop at a shared table, with teammates at their laptops in the background"
+                cap="Heads down on CMP Autobot, at a shared table with the team."
+              />
             </section>
 
             {/* How it works */}
