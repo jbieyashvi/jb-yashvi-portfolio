@@ -249,6 +249,32 @@ type Shot = keyof typeof shots
 const order = Object.keys(shots) as Shot[]
 const items: ImageItem[] = order.map((slug) => ({ slug, src: `${DIR}/${slug}`, ...shots[slug] }))
 
+/** x, y, width, height in the screenshot's own pixels */
+type Box = readonly [number, number, number, number]
+
+/**
+ * Where to look in each screen. Inline, a screen shows only the part its text is about: a crop of
+ * the screenshot, or a focus-* image cut by scripts/focus-crops.mjs where columns are joined. A
+ * ring marks the detail inside it. The enlarged view still opens the full screen.
+ */
+const focus: Partial<Record<Shot, { crop?: Box; small?: Box; file?: { name: string; w: number; h: number }; ring?: Box }>> = {
+  'deep-columns': { crop: [700, 118, 660, 335], small: [920, 118, 420, 335], ring: [935, 156, 245, 292] },
+  'deep-bulkreject': { crop: [40, 120, 1220, 640], small: [40, 440, 1220, 320], ring: [58, 486, 1188, 262] },
+  'deep-nomatch': { file: { name: 'focus-nomatch', w: 996, h: 320 }, ring: [672, 50, 194, 264] },
+  'deep-link': { crop: [40, 140, 1720, 530], small: [60, 140, 1300, 530], ring: [696, 300, 650, 366] },
+  'final-states-crop': { ring: [6, 96, 1768, 88] },
+  'deep-filter': { crop: [770, 85, 570, 690] },
+  'deep-export': { crop: [88, 0, 432, 432] },
+  'deep-site': { crop: [10, 115, 460, 290] },
+  'deep-bulkbar': { file: { name: 'focus-bulkbar', w: 754, h: 62 } },
+  'deep-toggle': { file: { name: 'focus-toggle', w: 736, h: 156 }, ring: [404, 22, 324, 114] },
+  'deep-default': { file: { name: 'focus-default', w: 960, h: 86 }, ring: [714, 12, 48, 40] },
+  'deep-dashboard': { crop: [320, 70, 1460, 500], small: [1276, 66, 502, 176], ring: [1286, 76, 482, 156] },
+  'deep-config': { crop: [330, 400, 1440, 218], small: [330, 400, 950, 218] },
+}
+
+const pct = (n: number) => `${(n * 100).toFixed(3)}%`
+
 /** A screen that opens the enlarged view */
 function Screen({ slug, open, size = 'full', sizes = '(max-width: 760px) 100vw, 520px', eager }: {
   slug: Shot
@@ -259,6 +285,42 @@ function Screen({ slug, open, size = 'full', sizes = '(max-width: 760px) 100vw, 
 }) {
   const shot = shots[slug]
   const src = `${DIR}/${slug}`
+  const f = focus[slug]
+  if (f) {
+    // the frame is the crop, the focus image or the whole screen; the ring is placed within it.
+    // Phones can take a tighter crop (small), set as a second set of variables the CSS switches to.
+    const frame = (c?: Box): Box => c ?? (f.file ? [0, 0, f.file.w, f.file.h] : [0, 0, shot.w, shot.h])
+    const vars = (c: Box, end = '') => {
+      const [fx, fy, fw, fh] = c
+      const v: Record<string, string> = { [`--ar${end}`]: `${fw} / ${fh}` }
+      if (f.crop) Object.assign(v, { [`--iw${end}`]: pct(shot.w / fw), [`--il${end}`]: pct(-fx / fw), [`--it${end}`]: pct(-fy / fh) })
+      if (f.ring) {
+        const [rx, ry, rw, rh] = f.ring
+        Object.assign(v, { [`--rl${end}`]: pct((rx - fx) / fw), [`--rt${end}`]: pct((ry - fy) / fh), [`--rw${end}`]: pct(rw / fw), [`--rh${end}`]: pct(rh / fh) })
+      }
+      return v
+    }
+    const style = { ...vars(frame(f.crop)), ...(f.small ? vars(f.small, '-s') : {}) } as CSSProperties
+    return (
+      <div className={`dv-screen dv-screen--${size}`}>
+        <button type="button" className="dv-screen__zoom dv-focus" onClick={() => open(order.indexOf(slug))} aria-label={`Enlarge the full screen: ${shot.caption}`}>
+          <span className={`dv-focus__frame${f.crop ? ' dv-focus__frame--crop' : ''}`} style={style}>
+            <img
+              src={f.file ? `${DIR}/${f.file.name}-1800.webp` : `${src}-1800.webp`}
+              width={f.file?.w ?? shot.w}
+              height={f.file?.h ?? shot.h}
+              alt={shot.alt}
+              loading={eager ? 'eager' : 'lazy'}
+              ref={eager ? undefined : loadAhead}
+              decoding="async"
+            />
+            {f.ring && <span className="dv-focus__ring" aria-hidden="true" />}
+          </span>
+          <span className="dv-focus__full" aria-hidden="true"><span className="dv-focus__word">Full screen </span>⤢</span>
+        </button>
+      </div>
+    )
+  }
   return (
     <div className={`dv-screen dv-screen--${size}`}>
       <button type="button" className="dv-screen__zoom" onClick={() => open(order.indexOf(slug))} aria-label={`Enlarge: ${shot.caption}`}>
@@ -551,13 +613,6 @@ function Head({ id, kicker, title, mark, children }: { id: string; kicker: strin
   )
 }
 
-/** The problem, what I did and the impact, in three notes at the top; all from the brief and the impact counts */
-const trio = [
-  { tone: 'rose', kind: 'The problem', text: 'Operators linked hundreds of ingredients to products across Excel and another tool. They found it confusing and slow.' },
-  { tone: 'sky', kind: 'What I did', text: 'Designed one table to confirm, reject or fix the AI’s suggestions, and the design system. Built the interface with AI.' },
-  { tone: 'sun', kind: 'The impact', text: '30+ people at 7 sites now do this review here, every day.' },
-] as const
-
 /** The operator's brief, phrase by phrase, each tied to the part of the design that answers it */
 const brief = [
   { text: 'see why', tone: 'sky', answer: 'An optional Reason column with the Autobot’s checks', href: '#decisions' },
@@ -671,64 +726,22 @@ export default function Compass() {
           <Link to="/#work" className="back">
             <span aria-hidden="true">←</span> All work
           </Link>
-          <p className="dv-top__type">Compass Group — CMP Autobot</p>
+          <p className="dv-top__type cp-client">
+            <img className="cp-client__logo" src={`${import.meta.env.BASE_URL}work/compass/compass-logo.webp`} width={407} height={160} alt="Compass Group" />
+            <img className="cp-client__logo cp-client__logo--dark" src={`${import.meta.env.BASE_URL}work/compass/compass-logo-dark.webp`} width={407} height={160} alt="" />
+            <span>CMP Autobot</span>
+          </p>
           <h1 className="dv-top__title">Helping operators review AI ingredient matches</h1>
           <p className="dv-top__lede">
-            A worklist where kitchen operators <mark>check the AI’s suggestions</mark> and confirm, reject or fix
-            them, hundreds at a time.
+            <mark>The AI suggests, a person decides.</mark> I designed the worklist where kitchen operators check its
+            suggestions and confirm, reject or fix them, hundreds at a time.
           </p>
-          <ol className="cp-trio" aria-label="At a glance">
-            {trio.map((t, i) => (
-              <li key={t.kind} className={`cp-trio__card cp-tone--${t.tone}`} style={{ '--r': `${[-1.2, 0.8, -0.6][i]}deg` } as CSSProperties}>
-                <Tape tone={t.tone} />
-                <p className="cp-trio__kind"><span aria-hidden="true">{i + 1}</span> {t.kind}</p>
-                <p className="cp-trio__text">{t.text}</p>
-              </li>
-            ))}
-          </ol>
-          <div className="dv-top__grid">
-            <dl className="dv-top__meta">
-              <div>
-                <dt>Client</dt>
-                <dd>Compass Group India</dd>
-              </div>
-              <div>
-                <dt>Design duration</dt>
-                <dd>5 weeks, then changes after launch</dd>
-              </div>
-              <div>
-                <dt>My contribution</dt>
-                <dd>Workflow and interface design, and the design system. I implemented the interface with AI.</dd>
-              </div>
-              <div>
-                <dt>Status</dt>
-                <dd>In use by the client’s workers</dd>
-              </div>
-              <div>
-                <dt>Links</dt>
-                <dd className="cp-links">
-                  <a className="dv-top__try" href={LIVE} target="_blank" rel="noopener noreferrer">
-                    Open the prototype <span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span>
-                  </a>
-                  <a className="dv-top__try" href={PDF} target="_blank" rel="noopener noreferrer">
-                    Design system PDF <span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span>
-                  </a>
-                </dd>
-              </div>
-            </dl>
-            <div className="dv-signal cs-note">
-              <Tape tone="sun" />
-              <p className="dv-signal__kind">
-                <img className="cs-note__me" src="/story/me-128.webp" width={128} height={128} alt="" decoding="async" />
-                The insight that shaped it
-              </p>
-              <p className="dv-signal__text">
-                <mark>The AI suggests, a person decides.</mark> So the screen is built around making that decision
-                quick, and easy to undo.
-              </p>
-              <p className="dv-signal__note">The AI model, backend and data integrations were built by others.</p>
-            </div>
-          </div>
+          <ul className="cp-facts" aria-label="Project facts">
+            <li>Compass Group India</li>
+            <li>5 weeks, then changes after launch</li>
+            <li>Workflow, interface and design system; built with AI</li>
+            <li>In use by the client’s workers</li>
+          </ul>
         </div>
       </header>
 
@@ -807,14 +820,6 @@ export default function Compass() {
               <p className="cp-notmine">
                 <strong>Not mine:</strong> the AI model, the backend and the data integrations, built by others.
               </p>
-              <figure className="cp-final" data-reveal>
-                <Pin tone="sun" r={-1}>
-                  <Screen slug="final-worklist" open={open} sizes={WIDE} />
-                </Pin>
-                <figcaption className="dv-cap">
-                  My Tasks, the final design. <span className="dv-tag">Final design</span>
-                </figcaption>
-              </figure>
             </section>
 
             {/* How it works */}

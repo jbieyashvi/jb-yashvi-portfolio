@@ -38,7 +38,6 @@ const SKILLS: [string, IconName, string][] = [
   ['UI/UX', 'layout', 'rose'],
   ['AI Prototyping', 'spark', 'lilac'],
 ]
-const MADE_WITH = ['Figma', 'Claude', 'Codex']
 
 /** frame proportions the Frame tool steps through; the first hugs the headline */
 const FRAMES = [
@@ -58,7 +57,7 @@ const FONTS = [
 /* only the letters of the headline, so the three fonts together weigh a few kilobytes */
 const FONT_CSS =
   'https://fonts.googleapis.com/css2?family=Instrument+Serif&family=IBM+Plex+Mono:wght@500&family=Nunito:wght@500' +
-  '&display=swap&text=' + encodeURIComponent('ProductDesignerPRODUCTDESIGNER ')
+  '&display=swap&text=' + encodeURIComponent('A little structure. A lot of impact. A LITTLE STRUCTURE. A LOT OF IMPACT.')
 
 let fontsReady: Promise<unknown> | null = null
 /** fetched the first time the visitor reaches for the toolbar, not with the page */
@@ -69,7 +68,7 @@ function loadFonts() {
     link.href = FONT_CSS
     fontsReady = new Promise<void>((done) => {
       link.onload = () => {
-        const all = FONTS.filter((f) => f.family).map((f) => document.fonts.load(`${f.weight} 1em "${f.family}"`, 'PRODUCT'))
+        const all = FONTS.filter((f) => f.family).map((f) => document.fonts.load(`${f.weight} 1em "${f.family}"`, 'STRUCTURE'))
         Promise.allSettled(all).then(() => done())
       }
       link.onerror = () => done()
@@ -221,8 +220,8 @@ export default function HeroCanvas() {
             <div className="hero__sel" ref={sel}>
               {/* sizes the selection: the original headline, invisible */}
               <div className="hero__sizer" ref={sizer} aria-hidden="true">
-                <span>Product</span>
-                <span>Designer</span>
+                <span>A little structure.</span>
+                <span>A lot of impact.</span>
               </div>
               <div className="hero__frame" aria-hidden="true" data-idle={art.tool !== 'pointer' || undefined}>
                 <span className="hero__label">
@@ -241,8 +240,8 @@ export default function HeroCanvas() {
                 data-inline={art.inline || undefined}
                 data-rect={art.rect || undefined}
               >
-                <span className="hero__line"><span>Product</span></span>{' '}
-                <span className="hero__line"><span>Designer</span></span>
+                <span className="hero__line"><span>A little structure.</span></span>{' '}
+                <span className="hero__line"><span>A lot of impact.</span></span>
                 {art.pen && (
                   <svg className="hero__pen" viewBox="0 0 400 24" aria-hidden="true" focusable="false">
                     <path pathLength={1} d="M4 15c40-5 82-8 128-6s84 6 130 3c46-3 90-7 134-4" />
@@ -261,11 +260,10 @@ export default function HeroCanvas() {
                 ))}
               </ul>
             </div>
-            <p className="hero__tag hero__tag--tools">
-              <span className="sr-only">Tools: </span>
-              {MADE_WITH.map((t, i) => (
-                <span key={t} className={`hero__tool-chip hero__tool-chip--${t.toLowerCase()}`}>{t}{i < MADE_WITH.length - 1 && <span className="sr-only">, </span>}</span>
-              ))}
+            {/* a comment pinned to the canvas, as a design tool shows one */}
+            <p className="hero__tag hero__tag--ask">
+              <span className="hero__ask-pin" aria-hidden="true">?</span>
+              It starts with asking the right questions.
             </p>
           </div>
           <div className="hero__play" onPointerEnter={loadFonts} onFocus={loadFonts}>

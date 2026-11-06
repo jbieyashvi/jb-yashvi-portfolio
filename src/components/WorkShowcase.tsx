@@ -28,7 +28,7 @@ const FILTERS: { key: Group | 'all'; label: string }[] = [
 export default function WorkShowcase() {
   return (
     <div className="wrap windex">
-      <h2 id="work-title" className="windex__title" data-reveal>Selected Work</h2>
+      <h2 id="work-title" className="windex__title" data-reveal>Here’s the work I’m proud of</h2>
 
       <ul className="wfeat" aria-label="Featured projects" data-reveal>
         {featuredProjects.map((p, i) => <FeaturedCard key={p.slug} project={p} index={i} />)}

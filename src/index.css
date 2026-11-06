@@ -448,9 +448,9 @@ main .back:not(.next .back) { display: none; }
 /* ---------- Hero: the headline on a design canvas ---------- */
 
 .hero {
-  /* --h: headline size. "DESIGNER" at regular weight is ~5em, the frame adds 0.6em, and
-     the corner labels hang ~7rem past each side; capped by height so the CTA stays on screen */
-  --h: min(calc((100vw - 2 * var(--gutter) - 15rem) / 5.6), 21svh, 220px);
+  /* --h: headline size. "A little structure." at regular weight is ~6.5em, the frame adds 0.6em,
+     and the corner labels hang ~7rem past each side; capped by height so the CTA stays on screen */
+  --h: min(calc((100vw - 2 * var(--gutter) - 15rem) / 7.8), 17svh, 170px);
   position: relative;
   isolation: isolate;
   display: flex;
@@ -506,7 +506,6 @@ main .back:not(.next .back) { display: none; }
   font-weight: 400;
   line-height: 0.9;
   letter-spacing: -0.035em;
-  text-transform: uppercase;
   white-space: nowrap;
 }
 /* the original headline, invisible, gives the selection its size whatever the tools do */
@@ -519,19 +518,19 @@ main .back:not(.next .back) { display: none; }
   top: 50%;
   isolation: isolate;
   color: var(--blue);
+  text-align: center;
   translate: -50% -50%;
   scale: var(--s, 1);
 }
 .hero__line { display: block; overflow: hidden; padding-block: 0.02em; }
 .hero__line > span { display: block; }
-.hero__line:first-child { color: var(--title-1); } /* "PRODUCT" in dark navy, "DESIGNER" in blue */
+.hero__line:first-child { color: var(--title-1); } /* the first line in dark navy, the second in blue */
 
 /* the Text tool's fonts (loaded on demand, regular or medium) */
 .hero__title[data-font='serif'] { font-family: 'Instrument Serif', Georgia, serif; letter-spacing: -0.01em; }
 .hero__title[data-font='mono'] { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-weight: 500; letter-spacing: -0.06em; }
 .hero__title[data-font='round'] { font-family: 'Nunito', var(--font); font-weight: 500; letter-spacing: -0.03em; }
-/* the Components tool's second composition: one line, in title case */
-.hero__title[data-inline] { text-transform: none; }
+/* the Components tool's second composition: one line */
 .hero__title[data-inline] .hero__line { display: inline-block; }
 
 /* Rectangle tool: a soft blue shape behind the headline, inside the frame's padding */
@@ -547,10 +546,10 @@ main .back:not(.next .back) { display: none; }
 }
 .hero__title[data-rect]::before { transform: none; }
 
-/* Pen tool: a short hand-drawn underline under DESIGNER (under "Designer" when on one line) */
+/* Pen tool: a hand-drawn underline centred under the second line (under its end when on one line) */
 .hero__pen {
   position: absolute;
-  left: 0.02em;
+  left: 10%;
   top: calc(100% - 0.05em);
   width: 80%;
   height: auto;
@@ -631,12 +630,10 @@ main .back:not(.next .back) { display: none; }
 [data-theme='dark'] .hero__tag { box-shadow: 0 6px 16px -12px rgb(0 0 0 / 0.6); }
 .hero__tag-head { color: var(--tag-head); font-size: 0.8rem; font-weight: 500; margin-bottom: 0.4rem; }
 
-/* upper right: beside "PRODUCT" (the shorter line), straddling the top edge */
+/* lower right: beside "A lot of impact." (the shorter line), hanging over the bottom edge */
 .hero__tag--skills {
-  /* straddles the top edge; on smaller headlines it rises so its foot (~9.5rem down) stays
-     above the second line */
-  top: min(calc(var(--h) * -0.12 - 1.5rem), calc(var(--h) * 1.05 - 9.5rem));
-  left: calc(100% - var(--h) * 0.36);
+  top: calc(100% - var(--h) * 0.95);
+  left: calc(100% - var(--h) * 0.2);
   padding: 0.85rem 1.1rem 0.95rem;
   rotate: 3deg;
 }
@@ -700,38 +697,34 @@ main .back:not(.next .back) { display: none; }
 [data-theme='dark'] .hero__tag--skills .hero__tag-head { color: #e3cf6a; }
 [data-theme='dark'] .hero__chip { color: #f4f1e6; }
 
-/* lower left: the tools as three stickers, below the "DESIGNER" glyphs */
-.hero__tag--tools {
-  top: calc(100% - var(--h) * 0.06);
-  right: calc(100% - var(--h) * 0.75);
+/* lower left: a comment pinned below the first letters of the second line */
+.hero__tag--ask {
+  top: calc(100% - var(--h) * 0.08);
+  right: calc(100% - var(--h) * 1.6);
   display: flex;
-  gap: 0.4rem;
-  background: none;
-  outline: 0;
-  box-shadow: none;
-  rotate: -3deg;
-}
-.hero__tool-chip {
-  display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  padding: 0.45rem 0.85rem 0.45rem 0.65rem;
-  border: 1px solid var(--tint-edge);
-  border-radius: 999px;
-  background: linear-gradient(var(--tint), var(--tint)) var(--paper); /* solid, so the frame never shows through */
+  gap: 0.6rem;
+  padding: 0.45rem 1rem 0.45rem 0.45rem;
+  border-radius: 999px 999px 999px 4px;
+  background: var(--paper);
+  outline-color: var(--line);
   color: var(--ink);
   font-size: 0.95rem;
   font-weight: 500;
-  box-shadow: 0 8px 18px -12px rgb(0 0 0 / 0.35);
+  box-shadow: 0 10px 24px -14px rgb(0 0 0 / 0.4);
+  rotate: -2deg;
 }
-.hero__tool-chip::before { content: ''; width: 0.6em; height: 0.6em; border-radius: 50%; background: var(--dot); }
-.hero__tool-chip:nth-child(3) { rotate: 4deg; translate: 0 -2px; }
-.hero__tool-chip--figma { --dot: #a259ff; --tint: #f1e6ff; --tint-edge: #ddc8fb; }
-.hero__tool-chip--claude { --dot: #d97757; --tint: #ffe9e0; --tint-edge: #f6cdbd; }
-.hero__tool-chip--codex { --dot: #17171a; --tint: #eceef1; --tint-edge: #d6d9de; }
-[data-theme='dark'] .hero__tool-chip--figma { --tint: rgb(162 89 255 / 0.18); --tint-edge: rgb(162 89 255 / 0.35); }
-[data-theme='dark'] .hero__tool-chip--claude { --tint: rgb(217 119 87 / 0.18); --tint-edge: rgb(217 119 87 / 0.35); }
-[data-theme='dark'] .hero__tool-chip--codex { --dot: #f4f4f5; --tint: rgb(255 255 255 / 0.08); --tint-edge: rgb(255 255 255 / 0.16); }
+.hero__ask-pin {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: var(--blue);
+  color: var(--paper);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
 
 /* the toolbar row: a hint (and what the last tool did) on the left, Reset on the right */
 .hero__play {
@@ -893,7 +886,7 @@ html.has-intro { --in: 0.8s; }
   .hero__lede { animation: lift-sm 0.7s calc(var(--in) + 0.5s) var(--ease) both; }
   .hero__cta { animation: lift-sm 0.7s calc(var(--in) + 0.6s) var(--ease) both; }
   .hero__tag--skills { animation: settle 0.8s calc(var(--in) + 1.1s) var(--ease) both; }
-  .hero__tag--tools { animation: settle 0.8s calc(var(--in) + 1.2s) var(--ease) both; }
+  .hero__tag--ask { animation: settle 0.8s calc(var(--in) + 1.2s) var(--ease) both; }
 }
 /* phones: the same entrance in the column's order, the skills line before the toolbar */
 @media (max-width: 760px) and (prefers-reduced-motion: no-preference) {
@@ -3602,9 +3595,9 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
   /* Phone hero, one column on the gutter: greeting, the headline in a straight frame, the
      copy and CTA, a line of skills, then the toolbar centred as a finishing detail. The
      group and stage dissolve (display: contents) so the pieces can be ordered; the DOM keeps
-     the desktop reading order. --h sizes "DESIGNER" plus the frame's padding to the column. */
+     the desktop reading order. --h sizes "A little structure." plus the frame's padding to the column. */
   .hero {
-    --h: calc((100vw - 2 * var(--gutter)) / 5.4);
+    --h: calc((100vw - 2 * var(--gutter)) / 6.85);
     display: block;
     min-height: 0;
     padding-block: 1.75rem 2.5rem;
@@ -3654,7 +3647,8 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
   .hero__tag--skills::before, .hero__chip { display: none; }
   .hero__tag--skills li { font-weight: 400; }
   .hero__tag--skills li + li { margin-top: 0; }
-  .hero__tag--tools { display: none; }
+  /* the comment sits straight under the headline */
+  .hero__tag--ask { position: static; order: 2; margin-top: 1rem; font-size: 0.9rem; white-space: normal; rotate: none; }
   /* the canvas grid, simplified: larger plain cells, no major lines or plus marks */
   :root { --cell: 56px; }
   :is(body, .hero, .work, .about, .contact, .footer, .phead, .dv-top) { --g-major: transparent; --g-plus: none; }
@@ -5064,11 +5058,6 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
 .cp-hand { font-family: var(--hand); font-size: 1.35rem !important; line-height: 1.15 !important; color: var(--ink) !important; }
 
 /* problem, what I did, impact: three taped notes under the title */
-.cp-trio { list-style: none; padding: 0; margin: clamp(1.75rem, 3.5vw, 2.5rem) 0 clamp(2rem, 4vw, 2.75rem); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1rem, 2.5vw, 1.75rem); }
-.cp-trio__card { position: relative; display: grid; gap: 0.5rem; align-content: start; padding: 1.3rem 1.25rem 1.25rem; border-radius: 4px 4px 14px 4px; background: var(--tint); color: #17171a; box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 18px 32px -22px rgb(0 0 0 / 0.4); transform: rotate(var(--r, 0deg)); }
-.cp-trio__kind { display: flex; gap: 0.5rem; align-items: center; font-size: 0.78rem !important; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: #3b3b40 !important; }
-.cp-trio__kind span { display: inline-grid; place-items: center; width: 1.4rem; height: 1.4rem; border-radius: 50%; background: #17171a; color: #fff; font-size: 0.72rem; letter-spacing: 0; }
-.cp-trio__text { font-size: 1.02rem !important; line-height: 1.45 !important; color: #17171a !important; }
 
 /* what a match is: MOG → article → a person decides */
 .cp-match { margin: 0; display: grid; gap: 0.9rem; }
@@ -5213,9 +5202,7 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
   .cp-decision { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'title' 'shot' 'beats'; }
 }
 @media (max-width: 760px) {
-  .cp-trio { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
-  .cp-trio__card { --r: 0deg !important; transform: rotate(-0.6deg); }
-  .cp-two1 { grid-template-columns: minmax(0, 1fr); justify-items: center; }
+      .cp-two1 { grid-template-columns: minmax(0, 1fr); justify-items: center; }
   .cp-two1__arrow { width: 3rem; transform: rotate(90deg); }
   .cp-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .cp-queues { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -5226,4 +5213,64 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
 @media (max-width: 420px) {
   .cp-strip, .cp-queues { grid-template-columns: minmax(0, 1fr); }
 }
-.dv .cp-final { margin: clamp(2.5rem, 5vw, 3.25rem) 0 0; }
+
+/* Compass: a screen cropped to the part its text is about, a ring on the detail, the rest a click away */
+.dv-focus { position: relative; overflow: hidden; background: #fff; }
+.dv-focus__frame { position: relative; display: block; overflow: hidden; aspect-ratio: var(--ar); }
+.dv-focus__frame--crop img { position: absolute; width: var(--iw); max-width: none; height: auto; left: var(--il); top: var(--it); }
+.dv-focus__ring {
+  position: absolute;
+  left: var(--rl);
+  top: var(--rt);
+  width: var(--rw);
+  height: var(--rh);
+  border: 2.5px solid #e0532f;
+  border-radius: 10px;
+  box-shadow: 0 0 0 100vmax rgb(20 22 28 / 0.14);
+  transform: rotate(-0.4deg);
+  pointer-events: none;
+}
+.dv-focus__full {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: rgb(20 22 28 / 0.78);
+  color: #fff;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  opacity: 0;
+  transform: translateY(3px);
+  transition: opacity 0.2s, transform 0.2s;
+}
+.dv-focus:hover .dv-focus__full, .dv-focus:focus-visible .dv-focus__full { opacity: 1; transform: none; }
+/* on touch the chip is always there, so it shrinks to the icon */
+@media (hover: none) {
+  .dv-focus__full { opacity: 1; transform: none; padding: 0.1rem 0.4rem; }
+  .dv-focus__word { display: none; }
+}
+@media (max-width: 760px) {
+  .dv-focus__frame { aspect-ratio: var(--ar-s, var(--ar)); }
+  .dv-focus__full { padding: 0.1rem 0.4rem; }
+  .dv-focus__word { display: none; }
+  .dv-focus__frame--crop img { width: var(--iw-s, var(--iw)); left: var(--il-s, var(--il)); top: var(--it-s, var(--it)); }
+  .dv-focus__ring { left: var(--rl-s, var(--rl)); top: var(--rt-s, var(--rt)); width: var(--rw-s, var(--rw)); height: var(--rh-s, var(--rh)); }
+}
+
+/* Compass opening: the title, one line of what it is, and one line of facts */
+.cp-facts { list-style: none; margin: 1.25rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem 0; font-size: 0.92rem; color: var(--graphite); }
+.cp-facts li:not(:last-child)::after { content: '·'; margin: 0 0.6rem; opacity: 0.6; }
+@media (max-width: 600px) {
+  .cp-facts { flex-direction: column; gap: 0.3rem; font-size: 0.88rem; }
+  .cp-facts li:not(:last-child)::after { content: none; }
+}
+
+/* Compass opening: the client's logo beside the product name; a light-ink copy for dark mode */
+.cp-client { display: flex; align-items: center; gap: 0.85rem; }
+.cp-client__logo { height: clamp(2.6rem, 4vw, 3.2rem); width: auto; }
+.cp-client span { padding-left: 0.85rem; border-left: 1px solid var(--line, currentColor); line-height: 1.2; }
+.cp-client__logo--dark { display: none; }
+[data-theme='dark'] .cp-client__logo { display: none; }
+[data-theme='dark'] .cp-client__logo--dark { display: block; }
