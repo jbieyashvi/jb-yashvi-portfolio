@@ -1,5 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { Analytics } from '@vercel/analytics/react'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import { preloadPages, preloadRoute } from './components/lazyPage'
@@ -13,6 +14,7 @@ preloadRoute(location.pathname).then(() => {
       <BrowserRouter>
         <App />
       </BrowserRouter>
+      <Analytics />
     </StrictMode>,
   )
   const later = () => ('requestIdleCallback' in window ? requestIdleCallback(() => preloadPages()) : setTimeout(preloadPages, 1500))
