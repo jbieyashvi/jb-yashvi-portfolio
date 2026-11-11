@@ -4,7 +4,7 @@ import { useTheme } from '../theme'
 import SceneVideo from './SceneVideo'
 
 const MOTION_QUERY = '(prefers-reduced-motion: no-preference)'
-// light dots over both films: warm whites by day over the poppies, cool ones under the stars
+// light dots over both films: warm whites by day over the tulips, cool ones under the stars
 const NIGHT = ['#ffffff', '#fff3c4', '#e7dcff', '#d6ecff']
 const DAY = ['#ffffff', '#fff7d6', '#ffe0e6', '#fffbe8']
 
@@ -147,7 +147,7 @@ const LINKS: [label: string, href: string][] = [
 const CREDITS: [what: string, who: string, href: string][] = [
   ['Lupin meadow', 'Yogendra Singh', 'https://www.pexels.com/video/39727545/'],
   ['Night meadow', 'Luz Calor Som', 'https://www.pexels.com/video/12628818/'],
-  ['Poppy field', 'Yakup Tuğ', 'https://www.pexels.com/video/38752672/'],
+  ['Tulip field', 'Faizan Meer', 'https://www.pexels.com/video/36832456/'],
   ['Milky Way', 'Dmitry Varennikov', 'https://www.pexels.com/video/5170522/'],
 ]
 
@@ -175,7 +175,7 @@ export default function RvFooter() {
         </ul>
       </div>
       <div className="rv-end__land">
-        <SceneVideo name="poppies" on={!night} className="rv-end__clip" />
+        <SceneVideo name="tulips" on={!night} className="rv-end__clip" />
         <SceneVideo name="milkyway" on={night} className="rv-end__clip" />
         <DotName />
         <p className="rv-end__credit">

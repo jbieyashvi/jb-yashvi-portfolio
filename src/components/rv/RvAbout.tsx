@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import { useRef, useState, type CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
 import { art } from '../../data/art'
 import { roles } from '../../data/journey'
@@ -7,45 +7,42 @@ import RvGame from './RvGame'
 
 const MOTION_QUERY = '(prefers-reduced-motion: no-preference)'
 
-/** Profile: photo, hello, and the résumé's roles as rows that open to their summary */
+/** Profile: photo, hello, and the résumé's roles on a timeline; each switch opens its summary */
 function Profile() {
-  const [open, setOpen] = useState<number | null>(0)
+  const [open, setOpen] = useState<number | null>(null)
   return (
     <div className="rv-cell rv-prof">
-      <div className="rv-prof__top">
+      <div className="rv-mat">
         <img className="rv-prof__photo" src="/about/portrait-purple-sari-700.webp" width={700} height={875} alt="Jb Yashvi in a purple sari, smiling in a sunlit room" loading="lazy" decoding="async" />
-        <div>
-          <h3 className="rv-prof__hey">Hey, I’m Jb</h3>
-          <p className="rv-prof__line">A senior product designer at Heizen, designing web and mobile experiences across SaaS, <span className="keep">e-commerce</span>, logistics and operations.</p>
-        </div>
       </div>
-      <p className="rv-label">Experience</p>
+      <h3 className="rv-cell__title">Hey, I’m Jb.</h3>
+      <p className="rv-prof__line">A senior product designer at Heizen, designing web and mobile experiences across SaaS, <span className="keep">e-commerce</span>, logistics and operations.</p>
+      <p className="rv-label rv-prof__label">Experience</p>
       <ol className="rv-roles">
-        {roles.map((r, k) => (
-          <li key={r.company} className="rv-role" data-open={open === k || undefined}>
-            <button type="button" className="rv-role__btn" aria-expanded={open === k} onClick={() => setOpen(open === k ? null : k)}>
-              <span className="rv-role__logo" aria-hidden="true">{r.company[0]}</span>
-              <span className="rv-role__main">
-                <span className="rv-role__co">{r.company.replace(/ \(.*\)$/, '')}</span>
+        {roles.map((r, k) => {
+          const co = r.company.replace(/ \(.*\)$/, '')
+          return (
+            <li key={r.company} className="rv-role" data-open={open === k || undefined}>
+              <span className="rv-role__logo" aria-hidden="true">{co[0]}</span>
+              <div className="rv-role__main">
+                <span className="rv-role__co">{co}</span>
                 <span className="rv-role__title">{r.role}</span>
-              </span>
-              <span className="rv-role__when">{r.from.split(' ').at(-1)}{r.from.split(' ').at(-1) !== r.to.split(' ').at(-1) ? `–${r.to.split(' ').at(-1)}` : ''}</span>
-              <span className="rv-role__toggle" aria-hidden="true" />
-            </button>
-            <div className="rv-role__body">
-              <p>{r.from} – {r.to}. {r.summary}</p>
-            </div>
-          </li>
-        ))}
+                <span className="rv-role__when">{r.from} – {r.to}</span>
+              </div>
+              <button type="button" className="rv-switch" aria-expanded={open === k} aria-label={`${co}: what I did`} onClick={() => setOpen(open === k ? null : k)} />
+              <div className="rv-role__body">
+                <p>{r.summary}</p>
+              </div>
+            </li>
+          )
+        })}
         <li className="rv-role rv-role--edu">
-          <span className="rv-role__btn">
-            <span className="rv-role__logo" aria-hidden="true">M</span>
-            <span className="rv-role__main">
-              <span className="rv-role__co">MNIT Jaipur</span>
-              <span className="rv-role__title">B.Arch</span>
-            </span>
+          <span className="rv-role__logo" aria-hidden="true">M</span>
+          <div className="rv-role__main">
+            <span className="rv-role__co">MNIT Jaipur</span>
+            <span className="rv-role__title">B.Arch</span>
             <span className="rv-role__when">2025</span>
-          </span>
+          </div>
         </li>
       </ol>
     </div>
@@ -54,71 +51,29 @@ function Profile() {
 
 /* How I got here, split into three stops; the words are the story's own */
 const STEPS = [
-  { tag: 'Architecture', text: 'I studied architecture, where I learned how people move through spaces', img: '/story/mnit-thesis-460.webp', cap: 'B.Arch · MNIT Jaipur · 2025' },
+  { tag: 'Architecture', text: 'I studied architecture, where I learned how people move through spaces', img: '/story/mnit-thesis-460.webp', cap: 'B.Arch · MNIT Jaipur' },
   { tag: 'Small changes', text: 'and how small design changes shape what they feel.', img: '/about/assembling-a-model-700.webp', cap: 'Assembling a model' },
   { tag: 'Product design', text: 'Now I bring that to product design: making complex work clear, so it has a real impact.', img: '/about/desk-warm-light.webp', cap: 'My desk' },
 ]
-const HOLD_MS = 900
 
-/** How I got into design: hold the button to move to the next stop (or tap a stop on the line) */
+/** How I got into design: the whole story at once; a stop on the line lights up its part */
 function Story() {
   const [at, setAt] = useState(0)
-  const [fill, setFill] = useState(0)
-  const raf = useRef(0)
-  const stop = () => {
-    cancelAnimationFrame(raf.current)
-    setFill(0)
-  }
-  const hold = () => {
-    const t0 = performance.now()
-    const step = (t: number) => {
-      const f = Math.min(1, (t - t0) / HOLD_MS)
-      setFill(f)
-      if (f < 1) raf.current = requestAnimationFrame(step)
-      else {
-        setAt((a) => (a + 1) % STEPS.length)
-        setFill(0)
-      }
-    }
-    cancelAnimationFrame(raf.current)
-    raf.current = requestAnimationFrame(step)
-  }
-  useEffect(() => () => cancelAnimationFrame(raf.current), [])
   const s = STEPS[at]
   return (
     <div className="rv-cell rv-story">
-      <p className="rv-label">How I got into design</p>
-      <div className="rv-story__body">
-        <figure className="rv-story__fig" key={s.img}>
-          <span className="rv-paper">
-            <img src={s.img} alt="" loading="lazy" decoding="async" />
-            <figcaption>{s.cap}</figcaption>
-          </span>
-        </figure>
-        <div>
-          <p className="rv-story__text" key={at} aria-live="polite">{s.text}</p>
-          <button
-            type="button"
-            className="rv-hold"
-            style={{ '--f': fill } as CSSProperties}
-            onPointerDown={hold}
-            onPointerUp={stop}
-            onPointerLeave={stop}
-            onPointerCancel={stop}
-            onKeyDown={(e) => {
-              if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) {
-                e.preventDefault()
-                hold()
-              }
-            }}
-            onKeyUp={stop}
-            onContextMenu={(e) => e.preventDefault()}
-          >
-            <span className="rv-hold__ring" aria-hidden="true" />
-            {at === STEPS.length - 1 ? 'Hold to start over' : 'Tap and hold'}
-          </button>
-        </div>
-      </div>
+      <figure className="rv-story__fig" key={s.img}>
+        <span className="rv-paper">
+          <img src={s.img} alt="" loading="lazy" decoding="async" />
+          <figcaption>{s.cap}</figcaption>
+        </span>
+      </figure>
+      <h3 className="rv-cell__title">How I got into design</h3>
+      <p className="rv-story__text">
+        {STEPS.map((x, k) => (
+          <span key={x.tag} data-on={k === at || undefined}>{x.text} </span>
+        ))}
+      </p>
       <ol className="rv-steps">
         {STEPS.map((x, k) => (
           <li key={x.tag} data-past={k < at || undefined}>
@@ -133,7 +88,7 @@ function Story() {
   )
 }
 
-/** Hands on, inside a little TV: plays when switched on, muted, in a loop */
+/** My reel, playing on a real TV: the video sits over the photo's screen, muted, in a loop */
 function Tv() {
   const ref = useRef<HTMLVideoElement>(null)
   const [on, setOn] = useState(false)
@@ -148,31 +103,34 @@ function Tv() {
   }
   return (
     <div className="rv-cell rv-tv">
-      <p className="rv-label">Hands on</p>
-      <div className="rv-tv__set" data-on={on || undefined}>
-        <span className="rv-tv__ant" aria-hidden="true" />
-        <div className="rv-tv__screen">
-          <video
-            ref={ref}
-            muted
-            loop
-            playsInline
-            preload="none"
-            poster="/reel/hands-poster.webp"
-            width={1280}
-            height={778}
-            aria-label="Screen recording: photos and a poster floating over my webcam view, picked up and moved with my hands"
-          >
-            <source src="/reel/hands.webm" type="video/webm" />
-            <source src="/reel/hands.mp4" type="video/mp4" />
-          </video>
+      <div className="rv-mat rv-tv__set" data-on={on || undefined}>
+        <div className="rv-tv__pic">
+          <img className="rv-tv__photo" src="/reel/tv.webp" width={900} height={600} alt="" loading="lazy" decoding="async" />
+          <div className="rv-tv__screen">
+            <video
+              ref={ref}
+              muted
+              loop
+              playsInline
+              preload="none"
+              poster="/reel/hands-poster.webp"
+              width={1280}
+              height={778}
+              aria-label="Screen recording: photos and a poster floating over my webcam view, picked up and moved with my hands"
+            >
+              <source src="/reel/hands.webm" type="video/webm" />
+              <source src="/reel/hands.mp4" type="video/mp4" />
+            </video>
+            <button type="button" className="rv-tv__play" aria-pressed={on} onClick={toggle}>
+              <span aria-hidden="true">{on ? '❚❚' : '▶'}</span> {on ? 'Pause' : 'Play my reel'}
+            </button>
+          </div>
         </div>
-        <div className="rv-tv__panel" aria-hidden="true"><i /><i /></div>
       </div>
-      <button type="button" className="rv-pill rv-pill--sm" aria-pressed={on} onClick={toggle}>
-        {on ? 'Pause the reel' : 'Play my reel'} <span aria-hidden="true">{on ? '❚❚' : '▶'}</span>
-      </button>
-      <p className="rv-note">Moving my photos around with hand gestures, live on my webcam. Made with Claude Code.</p>
+      <p className="rv-note">
+        Moving my photos around with hand gestures, live on my webcam. Made with Claude Code.
+        <span className="rv-credit"> TV photo: <a href="https://www.pexels.com/photo/39485791/" target="_blank" rel="noreferrer">Sóc Năng Động, Pexels</a></span>
+      </p>
     </div>
   )
 }
@@ -195,30 +153,31 @@ function Roll() {
   const top = ROLL[order[0]]
   return (
     <div className="rv-cell rv-roll">
-      <p className="rv-label">My camera roll</p>
+      <h3 className="rv-cell__title">My camera roll</h3>
       <div className="rv-roll__stack">
-        {order.slice(0, 4).reverse().map((k) => {
-          const depth = order.indexOf(k)
-          const a = ROLL[k]
-          return (
-            <figure key={a.slug} className="rv-print" data-depth={depth} data-leaving={(depth === 0 && leaving) || undefined} style={{ '--r': `${(((k * 37) % 7) - 3) * 0.8}deg`, '--z': 4 - depth } as CSSProperties}>
-              <span className="rv-paper">
-                <img src={`${a.src}-800.webp`} width={a.w} height={a.h} alt={depth === 0 ? a.alt : ''} loading="lazy" decoding="async" />
-                <figcaption>{a.caption}</figcaption>
-              </span>
-            </figure>
-          )
-        })}
+        <div className="rv-roll__deck">
+          {order.slice(0, 4).reverse().map((k) => {
+            const depth = order.indexOf(k)
+            const a = ROLL[k]
+            return (
+              <figure key={a.slug} className="rv-print" data-depth={depth} data-leaving={(depth === 0 && leaving) || undefined} style={{ '--r': `${(((k * 37) % 7) - 3) * 0.8}deg`, '--z': 4 - depth } as CSSProperties}>
+                <span className="rv-paper">
+                  <img src={`${a.src}-800.webp`} width={a.w} height={a.h} alt={depth === 0 ? a.alt : ''} loading="lazy" decoding="async" />
+                  <figcaption>{a.caption}</figcaption>
+                </span>
+              </figure>
+            )
+          })}
+          <button type="button" className="rv-shutter" onClick={next} aria-label={`Next photo (now: ${top.caption})`}>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" aria-hidden="true">
+              <path d="M4 8h3l1.6-2.4h6.8L17 8h3v11H4z" />
+              <circle cx="12" cy="13.2" r="3.4" />
+            </svg>
+          </button>
+        </div>
+        <p className="rv-note rv-roll__cap">A few photos from my camera roll. Tap the camera for the next one.</p>
       </div>
-      <div className="rv-roll__bar">
-        <button type="button" className="rv-shutter" onClick={next} aria-label={`Next photo (now: ${top.caption})`}>
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" aria-hidden="true">
-            <path d="M4 8h3l1.6-2.4h6.8L17 8h3v11H4z" />
-            <circle cx="12" cy="13.2" r="3.4" />
-          </svg>
-        </button>
-        <Link to="/gallery" className="rv-pill rv-pill--ghost rv-pill--sm">See the whole gallery <span aria-hidden="true">→</span></Link>
-      </div>
+      <Link to="/gallery" className="rv-pill rv-pill--ghost rv-pill--sm rv-roll__all">See the whole gallery <span aria-hidden="true">→</span></Link>
     </div>
   )
 }
