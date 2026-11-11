@@ -715,8 +715,7 @@
   grid-template-areas:
     'prof story roll'
     'prof tv roll'
-    'hello hello play'
-    'kit kit play';
+    'hello hello play';
   gap: 1px;
 }
 /* a ruled sheet, not cards: the 1px gaps show the rule colour behind, so every cell is edged by a
@@ -740,8 +739,6 @@
 .rv-roll { grid-area: roll; display: flex; flex-direction: column; align-items: center; text-align: center; }
 .rv-hello { grid-area: hello; }
 .rv-play { grid-area: play; display: grid; align-content: start; gap: 0.8rem; }
-.rv-kit { grid-area: kit; display: grid; align-content: start; justify-items: start; }
-.rv-kit .rv-chips { margin-bottom: 1rem; }
 
 /* a framed photo: a thin pale mat around a rounded picture */
 .rv-mat { padding: 6px; border: 1px solid var(--rv-cell-edge); border-radius: 18px; background: var(--pale); }
@@ -1083,8 +1080,7 @@
       'prof story'
       'prof tv'
       'roll play'
-      'hello hello'
-      'kit kit';
+      'hello hello';
   }
   .rv-steps li:not(:last-child)::after { margin: 0 0.45rem; min-width: 12px; }
   .rv-steps button { gap: 0.4rem; font-size: 0.8rem; line-height: 1.15; text-align: left; white-space: normal; }
@@ -1100,7 +1096,7 @@
   .rv-letter__cols { grid-template-columns: 1fr; }
 }
 @media (max-width: 680px) {
-  .rv-bento { grid-template-columns: 1fr; grid-template-areas: 'prof' 'story' 'tv' 'roll' 'hello' 'play' 'kit'; }
+  .rv-bento { grid-template-columns: 1fr; grid-template-areas: 'prof' 'story' 'tv' 'roll' 'hello' 'play'; }
   .rv-cell { padding: 1.1rem; }
   .rv-scene { border-radius: 14px; }
   .rv-me { left: 12px; bottom: 12px; }

@@ -240,26 +240,6 @@ function Hello() {
   )
 }
 
-/** Toolkit: what I do, the tools, and the résumé */
-function Kit() {
-  return (
-    <div className="rv-cell rv-kit">
-      <p className="rv-label">Skills</p>
-      <ul className="rv-chips rv-chips--plain">
-        {['Product Design', 'User Research', 'UI Design', 'AI Prototyping'].map((s) => <li key={s}>{s}</li>)}
-      </ul>
-      <p className="rv-label">Tools</p>
-      <ul className="rv-chips rv-chips--plain">
-        {['Figma', 'Claude', 'Codex'].map((s) => <li key={s}>{s}</li>)}
-      </ul>
-      <a className="rv-textlink" href={contact.resume} target="_blank" rel="noreferrer">
-        View résumé <span aria-hidden="true">↗</span>
-        <span className="sr-only"> (opens in a new tab)</span>
-      </a>
-    </div>
-  )
-}
-
 /**
  * A little more about me, as a bento of small things to play with: the profile and the roles,
  * the story behind the switch from architecture, the Hands on reel, a camera roll, a mail
@@ -286,7 +266,6 @@ export default function RvAbout() {
             <p className="rv-note">Architect by training, so here’s a small one. Drop each floor on the last; what hangs over gets cut.</p>
             <RvGame />
           </div>
-          <Kit />
         </div>
       </div>
     </section>
