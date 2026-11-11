@@ -3,7 +3,7 @@
    plain paper, Geist for headings and labels, Google Sans for text,
    square cards, and plain grey labels in place of coloured pills.
    A case study opts in with `dv dv--rv` on its article; the simpler project pages
-   (ProjectHeader or a bare title) opt in with `rv-case`.
+   (ProjectHeader or a bare title) and the gallery opt in with `rv-case`.
    --------------------------------------------------------------- */
 
 .dv--rv,
@@ -20,6 +20,8 @@
 }
 :root:has(.dv--rv, .rv-case) :is(body, .footer, .dv-top, .phead) { background-image: none; }
 :root:has(.dv--rv, .rv-case) .nav { border-bottom: 0; }
+/* the column's own lines replace the inner content-edge hairlines */
+:root:has(.dv--rv, .rv-case) :is(.reel, .phead)::before { content: none; }
 :root:has(.dv--rv, .rv-case) .nav__inner,
 :root:has(.dv--rv, .rv-case) main {
   width: var(--rv-col);
@@ -127,3 +129,12 @@
   box-shadow: none !important;
 }
 .rv-case :is(.plan, .plans > *, .stage, .surfaces li) { border-radius: 0; box-shadow: none; }
+
+/* ---------- the gallery ---------- */
+
+.rv-case .opening__title { font-weight: 300; letter-spacing: -0.04em; }
+.rv-case :is(.jr-title, .jr-end__line) { color: var(--ink); font-family: var(--rv-geist); font-weight: 300; letter-spacing: -0.02em; }
+.rv-case .jr-bar__inner { border-top-color: var(--rule); border-bottom-color: var(--rule); }
+.rv-case .jr-head { border-top-color: var(--rule); }
+.rv-case .jr-bar__link { color: var(--ink); font-family: var(--rv-geist); font-weight: 400; }
+.rv-case .art-rail__caps .is-hot { color: var(--ink); }

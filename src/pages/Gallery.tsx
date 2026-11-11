@@ -1,3 +1,4 @@
+import '../case-rv.css'
 import GalleryJourney from '../components/GalleryJourney'
 import GalleryOpening from '../components/GalleryOpening'
 import useTitle from '../components/useTitle'
@@ -9,7 +10,7 @@ import useTitle from '../components/useTitle'
 export default function Gallery() {
   useTitle('Outside the brief | Jb Yashvi')
   return (
-    <article className="gallery-page outside-page">
+    <article className="gallery-page outside-page rv-case">
       <GalleryOpening />
       <GalleryJourney />
     </article>
