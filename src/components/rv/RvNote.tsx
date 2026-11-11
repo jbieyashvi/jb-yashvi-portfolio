@@ -14,7 +14,7 @@ export default function RvNote() {
           </h2>
           <div className="rv-letter__cols">
             <p>
-              I studied architecture, where I learned how people move through spaces and how small design changes shape what they feel. Now I bring that to product design: making complex work clear, so it has a real impact.
+              I’m observant. I notice how an app makes me feel, and how other people use it. I notice buildings, homes, monuments, even the shape of a window, and wonder why it looks that way.
             </p>
             <p>
               It starts with asking the right questions. I tend to notice the small things and ask questions to understand what people need. Those conversations often shape where I start.

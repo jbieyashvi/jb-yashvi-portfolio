@@ -26,7 +26,7 @@ const QA: { q: string; a: string; from: [label: string, href: string][] }[] = [
   },
   {
     q: 'Why architecture?',
-    a: 'I studied architecture at {MNIT Jaipur}, where I learned how people move through spaces and how small design changes shape what they feel. Now I bring that to product design: making complex work clear, so it has a real impact.',
+    a: 'I studied architecture at {MNIT Jaipur}. It taught me how people move through spaces, and how small design tweaks change the way they feel. Now I use that in product design, to make complex things clear and useful.',
     from: [['My story', '#about'], ['B.Arch · MNIT Jaipur', '#about']],
   },
 ]
