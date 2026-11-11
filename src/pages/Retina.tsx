@@ -1,3 +1,4 @@
+import '../case-rv.css'
 import DeviceMockup from '../components/DeviceMockup'
 import External from '../components/External'
 import Flow from '../components/Flow'
@@ -12,7 +13,7 @@ const R = { w: 680, h: 1400 }
 export default function Retina() {
   useTitle('Retina.ai, store staff mobile app | Jb Yashvi')
   return (
-    <article>
+    <article className="rv-case">
       <ProjectHeader
         name="Retina.ai"
         type="Store staff mobile app"

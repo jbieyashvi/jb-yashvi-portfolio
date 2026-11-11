@@ -1,3 +1,4 @@
+import '../case-rv.css'
 import CaseNav from '../components/CaseNav'
 import CaseStudyViewer from '../components/CaseStudyViewer'
 import NextProject from '../components/NextProject'
@@ -47,7 +48,7 @@ export default function CaseStudyPage({ slug }: { slug: 'nutrio' }) {
   const c = content[slug]
   useTitle(`${c.name}, product design case study | Jb Yashvi`)
   return (
-    <article>
+    <article className="rv-case">
       <ProjectHeader name={c.name} type={c.type} intro={c.intro} meta={[...c.meta]} actions={c.actions} />
       <CaseNav sections={nutrioSections} />
       <NutrioStory />

@@ -1,3 +1,4 @@
+import '../case-rv.css'
 import { Link } from 'react-router-dom'
 import slices from '../data/caseSlices.json'
 import { personalProjects } from '../data/projects'
@@ -19,7 +20,7 @@ export default function PersonalProject({ slug }: { slug: Slug }) {
   useTitle(`${name} | Jb Yashvi`)
 
   return (
-    <article>
+    <article className="rv-case">
       <header className="phead">
         <div className="wrap">
           <Link to="/#work" className="back"><span aria-hidden="true">←</span> Back to work</Link>

@@ -88,7 +88,7 @@ function Story() {
   )
 }
 
-/** My reel, playing on a real TV: the video sits over the photo's screen, muted, in a loop */
+/** My reel, playing on a TV: the video sits behind the set's cut-out screen, muted, in a loop */
 function Tv() {
   const ref = useRef<HTMLVideoElement>(null)
   const [on, setOn] = useState(false)
@@ -105,7 +105,6 @@ function Tv() {
     <div className="rv-cell rv-tv">
       <div className="rv-mat rv-tv__set" data-on={on || undefined}>
         <div className="rv-tv__pic">
-          <img className="rv-tv__photo" src="/reel/tv.webp" width={900} height={600} alt="" loading="lazy" decoding="async" />
           <div className="rv-tv__screen">
             <video
               ref={ref}
@@ -125,11 +124,11 @@ function Tv() {
               <span aria-hidden="true">{on ? '❚❚' : '▶'}</span> {on ? 'Pause' : 'Play my reel'}
             </button>
           </div>
+          <img className="rv-tv__photo" src="/reel/tv-yellow.webp" width={576} height={512} alt="" loading="lazy" decoding="async" />
         </div>
       </div>
       <p className="rv-note">
         Moving my photos around with hand gestures, live on my webcam. Made with Claude Code.
-        <span className="rv-credit"> TV photo: <a href="https://www.pexels.com/photo/39485791/" target="_blank" rel="noreferrer">Sóc Năng Động, Pexels</a></span>
       </p>
     </div>
   )

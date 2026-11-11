@@ -1,3 +1,4 @@
+import '../case-rv.css'
 import DeviceMockup from '../components/DeviceMockup'
 import External from '../components/External'
 import NextProject from '../components/NextProject'
@@ -55,7 +56,7 @@ const workflows = [
 export default function Flowtech() {
   useTitle('Flowtech, RFQ-to-PO web platform | Jb Yashvi')
   return (
-    <article>
+    <article className="rv-case">
       <ProjectHeader
         name="Flowtech"
         type="RFQ-to-PO web platform"

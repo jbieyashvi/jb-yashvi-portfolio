@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
+import '../case-rv.css'
 import CaseSidebar from '../components/CaseSidebar'
 import CompassStory from '../components/CompassStory'
 import External from '../components/External'
@@ -742,7 +743,7 @@ export default function Compass() {
   useCaseReveal()
 
   return (
-    <article className="dv">
+    <article className="dv dv--rv">
       <header className="dv-top">
         <div className="dv-shell__inner">
           <Link to="/#work" className="back">

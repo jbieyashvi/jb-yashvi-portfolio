@@ -1,3 +1,4 @@
+import '../case-rv.css'
 import DeviceMockup from '../components/DeviceMockup'
 import NextProject from '../components/NextProject'
 import ProjectHeader from '../components/ProjectHeader'
@@ -17,7 +18,7 @@ const PARTS = [
 export default function Moss() {
   useTitle('Moss, landing page design | Jb Yashvi')
   return (
-    <article>
+    <article className="rv-case">
       <ProjectHeader
         name="Moss"
         type="Landing page design"

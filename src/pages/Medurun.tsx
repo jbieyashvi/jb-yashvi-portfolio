@@ -1,3 +1,4 @@
+import '../case-rv.css'
 import DeviceMockup from '../components/DeviceMockup'
 import External from '../components/External'
 import MotionPreview from '../components/MotionPreview'
@@ -51,7 +52,7 @@ const highlights = [
 export default function Medurun() {
   useTitle('Medurun, ambulance-booking platform landing page | Jb Yashvi')
   return (
-    <article>
+    <article className="rv-case">
       <ProjectHeader
         name="Medurun"
         type="Ambulance-booking platform landing page"

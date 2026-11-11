@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import '../case-rv.css'
 import CaseSidebar from '../components/CaseSidebar'
 import External from '../components/External'
 import NextProject from '../components/NextProject'
@@ -306,7 +307,7 @@ export default function RiderPickupDelay() {
   const { open, lightbox } = useLightbox(items)
 
   return (
-    <article className="dv rp">
+    <article className="dv dv--rv rp">
       <header className="dv-top">
         <div className="dv-shell__inner">
           <Link to="/#work" className="back">

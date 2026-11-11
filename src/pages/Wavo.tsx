@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import '../case-rv.css'
 import { Link } from 'react-router-dom'
 import CaseSidebar from '../components/CaseSidebar'
 import NextProject from '../components/NextProject'
@@ -379,7 +380,7 @@ export default function Wavo() {
   }, [])
 
   return (
-    <article className="dv wv">
+    <article className="dv dv--rv wv">
       <header className="dv-top">
         <div className="dv-shell__inner">
           <Link to="/#work" className="back">

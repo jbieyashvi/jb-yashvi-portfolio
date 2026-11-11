@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import '../case-rv.css'
 import CaseSidebar from '../components/CaseSidebar'
 import ShipwayStory from '../components/ShipwayStory'
 import External from '../components/External'
@@ -430,7 +431,7 @@ export default function Shipway() {
   useCaseReveal()
 
   return (
-    <article className="dv">
+    <article className="dv dv--rv">
       <header className="dv-top">
         <div className="dv-shell__inner">
           <Link to="/#work" className="back">

@@ -1,0 +1,129 @@
+/* ---------------------------------------------------------------
+   Case study, in the home page's about style: one ruled column on
+   plain paper, Geist for headings and labels, Google Sans for text,
+   square cards, and plain grey labels in place of coloured pills.
+   A case study opts in with `dv dv--rv` on its article; the simpler project pages
+   (ProjectHeader or a bare title) opt in with `rv-case`.
+   --------------------------------------------------------------- */
+
+.dv--rv,
+.rv-case {
+  --rv-geist: 'Geist', var(--font);
+  --rv-gsans: 'Google Sans', var(--font);
+  font-family: var(--rv-gsans);
+}
+
+/* the same column as the home page: 1240px wide, a thin line down each side, no canvas grid */
+:root:has(.dv--rv, .rv-case) {
+  --gutter: clamp(16px, 2.4vw, 32px);
+  --rv-col: min(1240px, calc(100% - 20px));
+}
+:root:has(.dv--rv, .rv-case) :is(body, .footer, .dv-top, .phead) { background-image: none; }
+:root:has(.dv--rv, .rv-case) .nav { border-bottom: 0; }
+:root:has(.dv--rv, .rv-case) .nav__inner,
+:root:has(.dv--rv, .rv-case) main {
+  width: var(--rv-col);
+  max-width: none;
+  margin-inline: auto;
+  border-inline: 1px solid var(--rule);
+}
+:root:has(.dv--rv, .rv-case) .nav__inner { padding-inline: var(--gutter); }
+.dv--rv .dv-shell__inner { max-width: none; }
+
+/* ---------- type ---------- */
+
+.dv--rv :is(h1, h2, h3, h4) { font-family: var(--rv-geist); }
+.dv--rv .dv-top__title { font-weight: 300; letter-spacing: -0.04em; }
+.dv--rv .dv-h2 { font-size: clamp(2rem, 3.2vw, 2.5rem); font-weight: 300; line-height: 1.08; letter-spacing: -0.032em; }
+.dv--rv h3 { font-weight: 400; letter-spacing: -0.015em; }
+
+/* labels: small grey Geist, sentence case, no pill */
+.dv--rv :is(.dv-kicker, .route__kicker, .dv-diagram-label, .cside__title, .cside-menu__label, .dv-top__meta dt) {
+  font-family: var(--rv-geist);
+  font-size: 0.82rem !important;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--graphite);
+}
+.dv--rv .cs-kicker,
+.dv--rv .cp-impact__kicker { padding: 0; border-radius: 0; background: none; }
+.dv--rv .cp-impact__kicker { color: #a2a2a8 !important; }
+.dv--rv .cp-impact__star { display: none; }
+
+/* the marked phrase in a title turns grey, like "about me" on the home page */
+.dv--rv .cs-mark { padding: 0; background: none; color: var(--graphite); }
+.dv--rv .cs-mark--stars { margin-right: 0; }
+.dv--rv .cs-doodle { display: none; }
+.dv--rv mark { padding: 0; margin: 0; background: none; color: var(--ink); font-weight: 500; }
+
+.dv--rv .cside__list a { font-family: var(--rv-geist); }
+
+/* ---------- the ruled sheet ---------- */
+
+/* the contents run down the left, ruled off from the case study; each section's rule runs from
+   that line to the column's edge, so the sections carry the side padding instead of the column */
+.dv--rv { --pl: var(--gutter); }
+.dv--rv .dv-main { margin-inline: calc(-1 * var(--gutter)); }
+.dv--rv .dv-main > :not(.cp-impact) { padding-left: var(--pl); padding-right: var(--gutter); }
+.dv--rv .dv-main > .cp-impact { margin-inline: var(--pl) var(--gutter); }
+@media (min-width: 1100px) {
+  .dv--rv { --pl: clamp(2rem, 4vw, 3.5rem); }
+  .dv--rv .dv-shell__grid { column-gap: 0; }
+  .dv--rv .cside { margin-left: calc(-1 * var(--gutter)); padding-left: var(--gutter); border-right: 1px solid var(--rule); }
+  .dv--rv .dv-main { margin-left: 0; }
+}
+
+/* square corners and no lift on the cards */
+.dv--rv .dv-main :is(div, figure, ul, ol, li, aside, blockquote, details, dl, section, p):not(.dev-phone, .dev-phone *) {
+  border-radius: 0;
+}
+
+/* photos and screens sit flat and square on a hairline: no tape, no tilt, no shadow
+   (a phone mockup keeps its own rounded screen) */
+.dv--rv .cs-tape { display: none; }
+.dv--rv .cs-pin { transform: none !important; }
+.dv--rv :is(img, video, .dv-screen__zoom, .sw-zoom, .lp-frame, .reel__frame):not(.dev-phone, .dev-phone *) {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.dv--rv :is(.cs-pin .dv-screen__zoom, .cp-photo img) { border: 1px solid var(--rule); }
+.dv--rv :is(.wv-stage, .wv-hero) { border-radius: 0; }
+.dv--rv .cs-note { transform: none !important; border-radius: 0; box-shadow: none; }
+.dv--rv .dv-main > .cp-impact { border-radius: 0; box-shadow: none; }
+.dv--rv .cp-glance__card { border-width: 1px; }
+.dv--rv .cp-glance__value { font-family: var(--rv-geist); font-weight: 300; }
+
+/* the story's cards: square, on a hairline, no lift */
+.dv--rv .rcard { border-radius: 0; box-shadow: none; }
+.dv--rv :is(.rcard__top, .rcard__facts > *) { border-radius: 0; }
+.dv--rv :is(.rcard__name, .rcard__title, .rcard__value, .route__title) { font-family: var(--rv-geist); }
+.dv--rv .route__title { font-weight: 300; letter-spacing: -0.032em; }
+
+/* ---------- the simpler project pages ---------- */
+
+.rv-case :is(h1, h2, h3, h4) { font-family: var(--rv-geist); }
+.rv-case .phead__title { font-weight: 300; letter-spacing: -0.04em; }
+.rv-case .phead__grid { border-top-color: var(--rule); }
+.rv-case .section-title { font-size: clamp(2rem, 3.2vw, 2.5rem); font-weight: 300; line-height: 1.08; letter-spacing: -0.032em; }
+.rv-case h3 { font-weight: 400; letter-spacing: -0.015em; }
+.rv-case :is(.phead__meta dd, .glance__list dd) { font-weight: 400; }
+
+/* labels: small grey Geist, sentence case */
+.rv-case :is(.phead__type, .phead__meta dt, .glance__list dt, .plan__tag, .flow__step, .next__label) {
+  font-family: var(--rv-geist);
+  font-size: 0.82rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--graphite);
+}
+.rv-case :is(.glance__list > div, .act) { border-top-width: 1px; border-top-color: var(--rule); }
+.rv-case .casenav__list a { font-family: var(--rv-geist); }
+
+/* screens sit flat and square on a hairline; device mockups keep their own shape */
+.rv-case :is(img, video, .shot, .lp-frame, .motion, .ds__zoom, .detail__frame, .act__btn):not(.mock *) {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.rv-case :is(.plan, .plans > *, .stage, .surfaces li) { border-radius: 0; box-shadow: none; }
