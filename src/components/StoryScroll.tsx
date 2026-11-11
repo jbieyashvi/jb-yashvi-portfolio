@@ -140,7 +140,7 @@ export default function StoryScroll() {
           <figure className="scard scard--compass" style={at('stars')}>
             <span className="scard__tape scard__tape--sky" />
             <img src={`/work/featured/compass-640.webp${COVER_V}`} width={640} height={427} alt="" loading="lazy" decoding="async" />
-            <figcaption>Compass Group, CMP Autobot<span className="scard__impact">30+ users · 7 sites</span></figcaption>
+            <figcaption>Compass Group, CMP Autobot<span className="scard__impact">30+ users · 7+ sites</span></figcaption>
           </figure>
           <figure className="scard scard--shipway" style={at('stars', 3)}>
             <span className="scard__tape scard__tape--rose" />

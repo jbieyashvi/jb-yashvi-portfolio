@@ -56,6 +56,27 @@ const shots = {
     label: FINAL,
     alt: 'CMP Autobot My Tasks worklist. Status filters across the top: All 677, Matches 499, Likely Matches 5, No Match 172 and Mapped 1, with Expand All, a search field, Columns and Filter. Each row shows an ingredient (MOG), its suggested article with pack size, code and category path, a status pill and Confirm, Reject and Link APL buttons. A Retired row for Barley Whole shows a faded Resolve and Link APL. Veg Nuggets Frozen has an expand arrow and “+1”. Footer: Showing 504 of 676 open mappings.',
   },
+  'deep-bulkconfirm': {
+    w: 1300,
+    h: 604,
+    caption: 'Bulk confirm previews every pairing first',
+    label: LIVE_CAPTURE,
+    alt: 'Confirm mapping dialog, “2 articles”: “Review the MOG → Article pairings below. This action maps each selected article to its parent ingredient.” A table lists Schezwan Sauce RTU and Falafel Frozen with their articles and codes. Cancel and Confirm 2 mappings.',
+  },
+  'deep-bulkreject': {
+    w: 1300,
+    h: 1102,
+    caption: 'Bulk reject: one reason for every selected article',
+    label: LIVE_CAPTURE,
+    alt: 'Reject articles dialog for 2 articles: “Review the rejections below, then pick a reason. The reason applies to every selected article.” A table of the two MOGs and articles, a required Reason list (Price too high, Wrong pack size, Incorrect category, Duplicate article, Not available at site, Quality concerns), optional Additional notes, Cancel and Reject 2 articles.',
+  },
+  'deep-nomatch': {
+    w: 1800,
+    h: 556,
+    caption: 'No Match: Link APL is the only way forward',
+    label: LIVE_CAPTURE,
+    alt: 'The No Match tab, 172 rows. Each row, such as Chicken Spring Roll Frozen, Apricot Jam and Tomato Juice, reads “No Articles”. Confirm and Reject are faded on every row and Link APL is the only active action. Expand All is faded and rows have no checkbox.',
+  },
   'deep-toggle': {
     w: 1800,
     h: 156,
@@ -211,6 +232,8 @@ type Box = readonly [number, number, number, number]
  * ring marks the detail inside it. The enlarged view still opens the full screen.
  */
 const focus: Partial<Record<Shot, { crop?: Box; small?: Box; file?: { name: string; w: number; h: number }; ring?: Box }>> = {
+  'deep-bulkreject': { crop: [40, 120, 1220, 640], small: [40, 440, 1220, 320], ring: [58, 486, 1188, 262] },
+  'deep-nomatch': { file: { name: 'focus-nomatch', w: 996, h: 320 }, ring: [672, 50, 194, 264] },
   'deep-toggle': { file: { name: 'focus-toggle', w: 736, h: 156 }, ring: [404, 22, 324, 114] },
   'deep-default': { file: { name: 'focus-default', w: 960, h: 86 }, ring: [714, 12, 48, 40] },
   'deep-dashboard': { crop: [320, 70, 1460, 500], small: [1276, 66, 502, 176], ring: [1286, 76, 482, 156] },
@@ -422,7 +445,7 @@ function Approaches({ open }: { open: (i: number) => void }) {
 /** My part, end to end; each card points to where it is shown */
 const role = [
   { icon: 'flow', title: 'Workflow', body: 'One flow, three screens, four queues.', href: '#flow', link: 'How it works' },
-  { icon: 'layout', title: 'Interface', body: 'Four layouts explored, and a table chosen for My Tasks.', href: '#approaches', link: 'Approaches' },
+  { icon: 'layout', title: 'Interface', body: 'Four layouts explored, then three key decisions in My Tasks.', href: '#approaches', link: 'Approaches' },
   { icon: 'system', title: 'Design system', body: 'Built on shadcn/ui and Radix, documented in a PDF.', href: '#system', link: 'Design system' },
   { icon: 'code', title: 'Built with AI', body: 'I implemented the interface myself, with AI.', href: LIVE, link: 'Open the prototype' },
   { icon: 'fix', title: 'After testing', body: 'Fixed the two problems the client’s team found.', href: '#after', link: 'After testing' },
@@ -447,6 +470,32 @@ function Beats({ need, does, why, did = 'What I did' }: { need: string; does: st
     </dl>
   )
 }
+
+/** Three decisions in My Tasks: how much checking each action asks for */
+const decisions = [
+  {
+    title: 'One click for one row, a preview for many',
+    shot: 'deep-bulkconfirm',
+    need: 'A pop-up on every Confirm slows people down, but one wrong row in a batch of twenty is easy to miss.',
+    does: 'Confirm on one row works straight away. Confirming several first lists every pairing.',
+    why: 'The bigger the possible mistake, the more checking it gets.',
+  },
+  {
+    title: 'Every rejection has a reason',
+    shot: 'deep-bulkreject',
+    need: 'A plain “no” doesn’t say what went wrong.',
+    does: 'Reject asks for a reason from a short list. In bulk, one reason covers every selected row.',
+    why: 'The reasons match the Autobot’s checks, so each one says which check failed.',
+  },
+  {
+    title: 'No Match rows only offer what helps',
+    shot: 'deep-nomatch',
+    wide: true,
+    need: 'With no suggestion, there’s nothing to confirm or reject.',
+    does: 'Confirm and Reject are greyed out. Link APL is the only action.',
+    why: 'The buttons stay in the same place on every row, so nobody has to look for them.',
+  },
+] as const
 
 /** What changed once the client's team tested it; reported by them, not measured */
 const changes = [
@@ -502,7 +551,7 @@ function Head({ id, kicker, title, mark, children }: { id: string; kicker: strin
 /** The operator's brief, phrase by phrase, each tied to the part of the design that answers it */
 const brief = [
   { text: 'see why', tone: 'sky', answer: 'An optional Reason column with the Autobot’s checks', href: '#approaches' },
-  { text: 'decide quickly', tone: 'sun', answer: 'One click per row, a preview for many', href: '#approaches' },
+  { text: 'decide quickly', tone: 'sun', answer: 'One click per row, a preview for many', href: '#decisions' },
   { text: 'fix it if I get it wrong', tone: 'rose', answer: 'Any decision can be switched on the row', href: '#after' },
 ] as const
 
@@ -584,6 +633,7 @@ const sections = [
   { id: 'role', label: 'What I did' },
   { id: 'flow', label: 'How it works' },
   { id: 'approaches', label: 'Approaches' },
+  { id: 'decisions', label: 'Design decisions' },
   { id: 'after', label: 'After testing' },
   { id: 'progress', label: 'Progress & targets' },
   { id: 'system', label: 'Design system' },
@@ -593,7 +643,7 @@ const sections = [
 /** Impact: user and site counts as of November 2026; the rest is from the shipped screens */
 const impact = [
   { tone: 'sun', value: '30+', label: 'People using the platform' },
-  { tone: 'mint', value: '7 sites', label: 'Running their mapping review on it' },
+  { tone: 'mint', value: '7+ sites', label: 'Running their mapping review on it' },
   { tone: 'sky', value: '1 table', label: 'Replaced a review split across Excel and another tool' },
   { tone: 'rose', value: '6 reasons', label: 'Every rejection now says what went wrong' },
 ] as const
@@ -666,7 +716,7 @@ export default function Compass() {
           <div className="dv-main">
             <CaseImpact
               title="One place for the review, used every day."
-              lede="More than 30 people across 7 sites now do their mapping review here, every day, instead of in Excel and another tool. Each decision carries its reason, and a wrong click can be undone on the same row."
+              lede="More than 30 people across 7+ sites now do their mapping review here, every day, instead of in Excel and another tool. Each decision carries its reason, and a wrong click can be undone on the same row."
               stats={impact}
               note="User and site counts as of November 2026. I don’t have measured figures for time saved or accuracy."
             />
@@ -806,6 +856,22 @@ export default function Compass() {
                   ))}
                 </ol>
               </More>
+            </section>
+
+            {/* Design decisions */}
+            <section id="decisions" className="dv-sec" aria-labelledby="decisions-title" tabIndex={-1}>
+              <Head id="decisions" kicker="Design decisions" title="Three decisions in the worklist." mark={{ text: 'Three decisions', tone: 'lilac', doodle: 'under' }}>
+                <p>Small, safe actions take one click. Bigger ones ask you to check first.</p>
+              </Head>
+              <ol className="cp-decisions">
+                {decisions.map((d, i) => (
+                  <li key={d.title} className={`cp-decision${'wide' in d ? ' cp-decision--wide' : ''}`} data-reveal>
+                    <h3><span className="dv-badge">{String.fromCharCode(65 + i)}</span> {d.title}</h3>
+                    <Screen slug={d.shot} open={open} sizes={'wide' in d ? WIDE : '(max-width: 760px) 100vw, 560px'} />
+                    <Beats need={d.need} does={d.does} why={d.why} />
+                  </li>
+                ))}
+              </ol>
             </section>
 
             {/* After testing */}
