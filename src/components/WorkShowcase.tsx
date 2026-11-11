@@ -160,6 +160,9 @@ function FeaturedCard({ project: p, index }: { project: FeaturedProject; index: 
           <span className="wcard__kind">{p.kind}</span>
           <span className="wcard__name">{p.name}</span>
           <span className="wcard__summary">{p.summary}</span>
+          <span className="wcard__tags">
+            {p.tags.map((t) => <span key={t} className="wcard__tag">{t}</span>)}
+          </span>
           {p.highlight && (
             <span className="wcard__stat">
               <span className="wcard__value">{p.highlight.value}</span>
@@ -167,7 +170,7 @@ function FeaturedCard({ project: p, index }: { project: FeaturedProject; index: 
             </span>
           )}
           <span className="wcard__cta" aria-hidden="true">
-            Read case study <span className="wrow__arrow wrow__arrow--page">→</span>
+            Explore the work <span className="wrow__arrow wrow__arrow--page">→</span>
           </span>
         </span>
       </Link>

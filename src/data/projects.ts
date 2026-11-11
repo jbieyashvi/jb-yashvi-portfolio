@@ -214,7 +214,7 @@ export const getProject = (slug: string) => projects.find((p) => p.slug === slug
  *  while, so bump this whenever a cover image is replaced or visitors keep seeing the old one. */
 export const COVER_V = '?v=6'
 
-/** Shown first in Selected Work as large cards, and left out of the index below them. Covers
+/** The three shown first in Selected Work as tabs, and left out of the index below them. Covers
  *  live in public/work/featured/ as `${slug}-640` / `-1200`, .avif and .webp (scripts/featured-covers.mjs).
  *  `highlight`: the one proof point shown large on the card, a short value and what it counts;
  *  left out when there's no proof point yet. */
@@ -224,6 +224,8 @@ export interface FeaturedProject {
   kind: string
   summary: string
   highlight?: { value: string; label: string }
+  /** a few short labels for what the work involved, each one stated in the case study */
+  tags: string[]
 }
 
 export const featuredProjects: FeaturedProject[] = [
@@ -231,6 +233,7 @@ export const featuredProjects: FeaturedProject[] = [
     slug: 'compass',
     name: 'Compass Group — CMP Autobot',
     kind: 'Client · B2B web tool',
+    tags: ['Worklist UX', 'AI suggestions', 'Design system'],
     highlight: { value: 'Daily', label: 'in use by kitchen operators' },
     summary: 'A worklist where kitchen operators check AI-suggested ingredient matches and confirm, reject or fix them, hundreds at a time.',
   },
@@ -238,6 +241,7 @@ export const featuredProjects: FeaturedProject[] = [
     slug: 'shipway',
     name: 'Shipway',
     kind: 'Client · Android app',
+    tags: ['Desktop to Android', 'Mobile redesign', 'Figma'],
     highlight: { value: '10K+', label: 'downloads on Google Play' },
     summary: 'A desktop shipping platform redesigned as an Android app: orders, couriers, pickups and tracking.',
   },
@@ -245,14 +249,9 @@ export const featuredProjects: FeaturedProject[] = [
     slug: 'drive-sharing',
     name: 'Google Drive access',
     kind: 'Personal study · Web prototype',
+    tags: ['Interviews', 'Study prototype', 'Sharing & permissions'],
     highlight: { value: '3', label: 'people tested the prototype' },
     summary: 'A guided way to restrict a selected file, preserve team access, and review the consequences.',
-  },
-  {
-    slug: 'wavo',
-    name: 'WAVO',
-    kind: 'Independent concept',
-    summary: 'Hourly electric scooty rentals',
   },
 ]
 
@@ -273,6 +272,8 @@ export const moreProjects: { slug: string; name: string; meta: string; group: 'c
   ...clientProjects.filter((p) => !isFeatured(p.slug) && p.track === 'ai').map((p) => ({ slug: p.slug, name: p.name, meta: p.tagline, group: 'ai' as const, cover: p.cover })),
   // personal tiles use the 3:2 covers made by scripts/featured-covers.mjs
   ...listedPersonalProjects.filter((p) => !isFeatured(p.slug)).map((p) => ({ slug: p.slug, name: p.name, meta: p.subtitle, group: 'personal' as const, cover: `/work/featured/${p.slug}` })),
+  // WAVO is an independent concept with its own page, not one of the personal studies
+  { slug: 'wavo', name: 'WAVO', meta: 'Hourly electric scooty rentals', group: 'personal', cover: '/work/featured/wavo' },
 ]
 
 /** Every project visitors are shown, as one Next-project loop in home-page order: the featured

@@ -32,8 +32,11 @@ function subscribe(onChange: () => void) {
 
 export const useTheme = () => useSyncExternalStore(subscribe, read)
 
-/** switch to a theme and remember the choice on this device */
-export function setTheme(t: Theme) {
+/**
+ * switch to a theme and remember the choice on this device. Given a point on screen (`from`),
+ * the new theme spreads out from it in a circle instead of cross-fading.
+ */
+export function setTheme(t: Theme, from?: { x: number; y: number }) {
   if (t === read()) return
   try {
     localStorage.setItem(KEY, t)
@@ -41,7 +44,17 @@ export function setTheme(t: Theme) {
     /* private mode: the choice lasts for this page only */
   }
   // a short cross-fade where the browser supports it, and only with motion allowed
-  if (document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.startViewTransition(() => apply(t))
-  } else apply(t)
+  if (!document.startViewTransition || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return apply(t)
+  const html = document.documentElement
+  if (from) html.classList.add('vt-spread')
+  const vt = document.startViewTransition(() => apply(t))
+  if (!from) return
+  vt.ready.then(() => {
+    const r = Math.hypot(Math.max(from.x, innerWidth - from.x), Math.max(from.y, innerHeight - from.y))
+    html.animate(
+      { clipPath: [`circle(0px at ${from.x}px ${from.y}px)`, `circle(${r}px at ${from.x}px ${from.y}px)`] },
+      { duration: 900, easing: 'cubic-bezier(0.65, 0, 0.35, 1)', pseudoElement: '::view-transition-new(root)' },
+    )
+  }, () => {})
+  vt.finished.finally(() => html.classList.remove('vt-spread'))
 }

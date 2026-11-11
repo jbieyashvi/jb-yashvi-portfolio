@@ -1,10 +1,13 @@
 import { useLayoutEffect, useState, type CSSProperties } from 'react'
 
 const COLS = 5
+/** ms from the first paint the sheet stays up: long enough for its lines and count to finish */
+const HOLD = 1600
 
 /**
- * Opening panel: "JB YASHVI" rises into view, then the black panel lifts away in a few
- * slightly staggered columns to reveal the hero. index.html decides whether it plays
+ * Opening panel, drawn as a drafting sheet: "Jb Yashvi" rises into view over a faint grid, a
+ * dimension line draws out beneath it and a title block counts to 100%; then the black panel
+ * lifts away in a few slightly staggered columns to reveal the hero. index.html decides whether it plays
  * (html.has-intro) and holds the name, which shows from the first paint while the code
  * downloads; this lifts the panel once the app is up, giving the name its moment only if the
  * code was quicker than that. The motion is CSS only and the panel never takes pointer
@@ -17,6 +20,8 @@ export default function Intro() {
   })
 
   const finish = () => {
+    const move = (window as { __introMove?: (e: PointerEvent) => void }).__introMove
+    if (move) removeEventListener('pointermove', move)
     document.documentElement.classList.add('intro-done')
     setOn(false)
   }
@@ -31,9 +36,9 @@ export default function Intro() {
     if (!on) return
     // the app is up, so the page's own failsafe is no longer needed; this one replaces it
     clearTimeout((window as { __introFailsafe?: number }).__introFailsafe)
-    // the name rises in at the first paint and holds 0.6s, less whatever the code took after it
+    // the sheet draws itself from the first paint and holds 1.6s, less whatever the code took
     const paint = performance.getEntriesByName('first-paint')[0]?.startTime ?? 0
-    const wait = Math.max(0, 600 - (performance.now() - paint)) / 1000
+    const wait = Math.max(0, HOLD - (performance.now() - paint)) / 1000
     const root = document.documentElement
     root.style.setProperty('--wait', `${wait}s`)
     root.style.setProperty('--in', `${wait + 0.2}s`) // the hero's entrance follows the panel

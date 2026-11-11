@@ -959,6 +959,108 @@ html.has-intro:not(.intro-done) .boot { display: block; position: fixed; inset: 
 
 @keyframes intro-lift { to { transform: translateY(-100%); } }
 
+/* the drafting sheet around the name: a faint grid, a dimension line under the name with its
+   note, a title block that counts to 100% and a crosshair on the pointer. All of it is in
+   index.html, drawn from the first paint, and fades as the panel lifts (html.intro-go). */
+.boot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.045) 1px, transparent 1px);
+  background-size: var(--cell) var(--cell);
+  background-position: center;
+}
+.boot__center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  display: grid;
+  justify-items: center;
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+.boot__center .boot__name { position: relative; top: auto; left: auto; translate: none; }
+/* a dimension line as wide as the name, with end ticks, drawn out from the middle */
+.boot__dim {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding-top: 0.9rem;
+  color: var(--night-text);
+  font-size: clamp(0.7rem, 1.1vw, 0.85rem);
+  letter-spacing: 0.14em;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.boot__dim::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 9px;
+  border-inline: 1px solid rgb(255 255 255 / 0.55);
+  background: linear-gradient(rgb(255 255 255 / 0.55), rgb(255 255 255 / 0.55)) center / 100% 1px no-repeat;
+  animation: boot-draw 0.8s 0.3s cubic-bezier(0.6, 0, 0.2, 1) both;
+}
+.boot__dim > span { display: inline-block; animation: fade 0.5s 0.75s ease-out both; }
+@keyframes boot-draw { from { clip-path: inset(0 50%); } }
+/* the title block, bottom right, as on a drawing sheet */
+.boot__block {
+  position: absolute;
+  right: var(--gutter);
+  bottom: var(--gutter);
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  margin: 0;
+  border: 1px solid rgb(255 255 255 / 0.3);
+  color: var(--on-night);
+  font-size: 0.75rem;
+  animation: fade 0.5s 0.45s ease-out both;
+}
+.boot__block > div { display: grid; gap: 0.3rem; padding: 0.55rem 0.85rem; }
+.boot__block > div + div { border-left: 1px solid rgb(255 255 255 / 0.3); }
+.boot__block dt { color: var(--night-text); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; }
+.boot__block dd { margin: 0; font-variant-numeric: tabular-nums; }
+@property --pct { syntax: '<integer>'; inherits: false; initial-value: 0; }
+.boot__pct { min-width: 4ch; }
+.boot__pct::after {
+  counter-reset: pct var(--pct);
+  content: counter(pct) '%';
+  animation: boot-count 1.4s 0.1s cubic-bezier(0.3, 0.1, 0.2, 1) forwards;
+}
+@keyframes boot-count { to { --pct: 100; } }
+/* the crosshair: two hairlines through the pointer and its position beside it */
+.boot__cross { display: none; }
+@media (hover: hover) {
+  html.intro-cursor .boot__cross {
+    display: block;
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(rgb(255 255 255 / 0.22), rgb(255 255 255 / 0.22)) 0 var(--cy) / 100% 1px no-repeat,
+      linear-gradient(rgb(255 255 255 / 0.22), rgb(255 255 255 / 0.22)) var(--cx) 0 / 1px 100% no-repeat;
+  }
+}
+.boot__xy {
+  position: absolute;
+  top: calc(var(--cy) + 10px);
+  left: calc(var(--cx) + 12px);
+  color: var(--night-text);
+  font-size: 0.7rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+  white-space: pre;
+}
+.intro-go .boot__dim,
+.intro-go .boot__block,
+.intro-go .boot__cross,
+.intro-go .boot::before { animation: boot-out 0.3s calc(var(--wait, 0.6s) - 0.05s) ease-in forwards; }
+@keyframes boot-out { to { opacity: 0; } }
+
 /* ---------- Project transition (see ProjectTransition) ---------- */
 
 /* cover: the panel rises from below and the name lifts into its mask */
@@ -1112,6 +1214,24 @@ html.has-intro:not(.intro-done) .boot { display: block; position: fixed; inset: 
 .wcard__kind { color: var(--night-text); font-size: 0.8rem; letter-spacing: 0.04em; text-transform: uppercase; }
 .wcard__name { font-size: clamp(1.75rem, 2.8vw, 2.5rem); letter-spacing: -0.015em; line-height: 1.08; }
 .wcard__summary { color: var(--night-text); font-size: 1rem; line-height: 1.55; max-width: 40ch; }
+.wcard__tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.2rem; }
+/* the story's marker colours (set on .story, so repeated here) */
+.wcard__tag { --dot: #ffe58f; }
+/* small pills for what the work involved, each with a dot in one of the marker colours */
+.wcard__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 0.75rem;
+  border: 1px solid var(--night-rule);
+  border-radius: 999px;
+  color: var(--on-night);
+  font-size: 0.8rem;
+  line-height: 1.2;
+}
+.wcard__tag::before { content: ''; width: 0.45rem; height: 0.45rem; border-radius: 50%; background: var(--dot); }
+.wcard__tag:nth-child(2) { --dot: #c7e3ff; }
+.wcard__tag:nth-child(3) { --dot: #ffd0c8; }
 @media (hover: hover) {
   .wcard:hover .wcard__media img { transform: scale(1.03); }
   .wcard:hover .wrow__arrow--page { transform: translateX(4px); }
@@ -2583,13 +2703,16 @@ html.has-intro:not(.intro-done) .boot { display: block; position: fixed; inset: 
   grid-template-columns: minmax(0, 5fr) minmax(0, 4fr) minmax(0, 3fr);
   grid-template-areas:
     'intro intro portrait'
-    'model meta  desk';
+    'model meta  desk'
+    'peek  peek  hello';
 }
 .about__intro-cell { grid-area: intro; display: grid; align-content: space-between; gap: 2.5rem; }
 .about__portrait { grid-area: portrait; }
 .about__model { grid-area: model; }
 .about__meta { grid-area: meta; display: grid; align-content: space-between; gap: 2rem; }
 .about__desk { grid-area: desk; }
+.about__peek { grid-area: peek; }
+.about__hello { grid-area: hello; }
 
 .about__label { font-size: 1rem; font-weight: 500; color: var(--night-text); }
 .about__intro {
@@ -2636,6 +2759,58 @@ html.has-intro:not(.intro-done) .boot { display: block; position: fixed; inset: 
   background: var(--pale);
   font-size: 0.9rem;
   font-weight: 500;
+}
+
+/* the gallery peek: the text on the left, three photos pinned up at slight angles on the right,
+   fanning out a little when the cell is hovered */
+.about__peek {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: 2rem;
+  color: inherit;
+  text-decoration: none;
+  overflow: hidden;
+}
+.about__peek-text { display: grid; gap: 1rem; justify-items: start; }
+.about__peek .about__label { color: var(--graphite); }
+.about__peek-title { max-width: 18ch; font-size: clamp(1.5rem, 2.4vw, 2.25rem); line-height: 1.12; letter-spacing: -0.015em; }
+.about__peek-cta { color: var(--blue); font-weight: 500; }
+.about__peek-cta span { display: inline-block; transition: transform 0.3s var(--ease); }
+.about__peek-pins { position: relative; height: clamp(12rem, 20vw, 16rem); }
+.about__pin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 42%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  padding: 0.35rem 0.35rem 1.1rem;
+  background: #fff;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.08), 0 14px 28px -14px rgb(0 0 0 / 0.4);
+  --x: calc((var(--i) - 1) * 62%);
+  --r: calc((var(--i) - 1) * 7deg);
+  transform: translate(calc(-50% + var(--x)), -50%) rotate(var(--r));
+  transition: transform 0.5s var(--ease);
+}
+/* the middle one is the cliff photo, which the gallery shows in black and white */
+.about__pin:nth-child(2) { z-index: 1; --r: -2deg; filter: grayscale(1); }
+@media (hover: hover) {
+  .about__peek:hover .about__pin { transform: translate(calc(-50% + var(--x) * 1.18), -54%) rotate(calc(var(--r) * 1.6)); }
+  .about__peek:hover .about__peek-cta span { transform: translateX(4px); }
+}
+.about__peek:focus-visible { outline: 2px solid var(--focus); outline-offset: -4px; }
+
+/* say hello: a short line, the booking button and the email */
+.about__hello { display: grid; align-content: space-between; gap: 1.5rem; }
+.about__hello-line { max-width: 22ch; font-size: clamp(1.35rem, 2vw, 1.75rem); line-height: 1.2; }
+.about__hello-actions { display: grid; gap: 0.9rem; justify-items: start; }
+.about__hello-mail { color: var(--on-night); font-size: 0.95rem; text-underline-offset: 0.2em; overflow-wrap: anywhere; }
+@media (max-width: 760px) {
+  .about__peek { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about__pin, .about__peek-cta span { transition: none; }
 }
 
 /* résumé */
@@ -3469,7 +3644,7 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
 
   .mod--about {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    grid-template-areas: 'intro intro' 'portrait meta' 'model desk';
+    grid-template-areas: 'intro intro' 'portrait meta' 'model desk' 'peek peek' 'hello hello';
   }
 
 
@@ -3688,7 +3863,7 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
 
   .mod--about {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    grid-template-areas: 'intro intro' 'portrait portrait' 'meta meta' 'model desk';
+    grid-template-areas: 'intro intro' 'portrait portrait' 'meta meta' 'model desk' 'peek peek' 'hello hello';
   }
 
   .phead__meta { grid-template-columns: 1fr; }
@@ -5276,3 +5451,9 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
 .cp-client__logo--dark { display: none; }
 [data-theme='dark'] .cp-client__logo { display: none; }
 [data-theme='dark'] .cp-client__logo--dark { display: block; }
+
+
+/* a theme switch that spreads out in a circle from where it was pressed (setTheme with a point) */
+.vt-spread::view-transition-old(root),
+.vt-spread::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+.vt-spread::view-transition-new(root) { z-index: 1; }

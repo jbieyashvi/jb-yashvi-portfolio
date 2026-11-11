@@ -21,7 +21,9 @@
          #hash, on another page, after a reload or with reduced motion. Decided before first
          paint (so it sits before the stylesheets). The name below is plain HTML, so it shows
          from the first paint while the app's code downloads; the app lifts the panel when it
-         mounts (Intro), and if it never mounts, the failsafe ends the intro state. -->
+         mounts (Intro), and if it never mounts, the failsafe ends the intro state. The panel is
+         drawn as a drafting sheet: a dimension line under the name, a title block counting up,
+         and a crosshair on the pointer. -->
     <style>html.has-intro:not(.intro-done) { background: #17171a; } html[data-theme="dark"].has-intro:not(.intro-done) { background: #111113; }</style>
     <script>
       (function () {
@@ -32,17 +34,38 @@
           if (!window.matchMedia || matchMedia('(prefers-reduced-motion: reduce)').matches) return
           var root = document.documentElement
           root.classList.add('has-intro')
-          window.__introFailsafe = setTimeout(function () { root.classList.add('intro-done') }, 9000)
+          window.__introFailsafe = setTimeout(function () { root.classList.add('intro-done'); removeEventListener('pointermove', window.__introMove) }, 9000)
+          // a drafting crosshair follows the pointer over the sheet, with its position read out
+          var xy
+          window.__introMove = function (e) {
+            root.style.setProperty('--cx', e.clientX + 'px')
+            root.style.setProperty('--cy', e.clientY + 'px')
+            root.classList.add('intro-cursor')
+            xy = xy || document.querySelector('.boot__xy')
+            if (xy) xy.textContent = 'x ' + Math.round(e.clientX) + '  y ' + Math.round(e.clientY)
+          }
+          addEventListener('pointermove', window.__introMove, { passive: true })
         } catch (e) {}
       })()
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Caveat:wght@500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Caveat:wght@500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
     <title>Jb Yashvi, Product Designer</title>
   </head>
   <body>
-    <div class="boot" aria-hidden="true"><p class="boot__name"><span>Jb Yashvi</span></p></div>
+    <div class="boot" aria-hidden="true">
+      <div class="boot__center">
+        <p class="boot__name"><span>Jb Yashvi</span></p>
+        <p class="boot__dim"><span>Product designer · Architect by training</span></p>
+      </div>
+      <dl class="boot__block">
+        <div><dt>Sheet</dt><dd>01</dd></div>
+        <div><dt>Drawn by</dt><dd>Jb Yashvi</dd></div>
+        <div><dt>Loading</dt><dd class="boot__pct"></dd></div>
+      </dl>
+      <span class="boot__cross"><span class="boot__xy"></span></span>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
