@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { contact } from '../data/projects'
+import SoundToggle from './SoundToggle'
 import ThemeToggle from './ThemeToggle'
 
 type Area = 'work' | 'gallery' | 'about' | 'contact'
@@ -55,8 +56,8 @@ function useSectionInView(on: boolean) {
 }
 
 /**
- * The header: name and role on the left; the links, theme switch and a Contact now button on
- * the right. On phones the bar keeps the name, a shorter Contact button, the theme switch and a
+ * The header: name and role on the left; the links, sound and theme switches and a Contact now button on
+ * the right. On phones the bar keeps the name, a shorter Contact button, the sound and theme switches and a
  * menu control; the links fold into a menu that opens below the bar. On a case study an All work
  * link sits beside the name, so the way back is on screen however far down the page is read.
  * The menu closes on a link, Escape, a tap outside it, or when the screen grows wide enough
@@ -131,6 +132,7 @@ export default function Nav() {
           </ul>
           {/* beside the links on wider screens; on phones the bar's own switch takes over */}
           <div className="nav__theme">
+            <SoundToggle />
             <ThemeToggle />
           </div>
         </nav>
@@ -138,8 +140,9 @@ export default function Nav() {
           Contact<span className="nav__cta-long"> now</span>
           <span className="nav__cta-arrow" aria-hidden="true">↗</span>
         </Link>
-        {/* phones only: the switch stays in the bar, between Contact and the menu */}
+        {/* phones only: the switches stay in the bar, between Contact and the menu */}
         <div className="nav__theme nav__theme--bar">
+          <SoundToggle />
           <ThemeToggle />
         </div>
         <button

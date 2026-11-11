@@ -380,7 +380,10 @@ main .back:not(.next .back) { display: none; }
 .nav__name { color: var(--blue); font-size: 1.05rem; font-weight: 500; letter-spacing: -0.01em; white-space: nowrap; }
 .nav__role { color: var(--graphite); font-size: 0.8rem; white-space: nowrap; }
 
-/* the phone menu's button and scrim, the bar's own theme switch and the CTA's arrow; hidden
+/* the sound and theme switches, side by side */
+.nav__theme { display: flex; gap: 0.5rem; }
+
+/* the phone menu's button and scrim, the bar's own switches and the CTA's arrow; hidden
    while the links fit in the bar */
 .nav__menu-btn, .nav__scrim, .nav__theme--bar, .nav__cta-arrow { display: none; }
 
@@ -443,6 +446,12 @@ main .back:not(.next .back) { display: none; }
 .theme-toggle__sun { opacity: 0; transform: rotate(-60deg) scale(0.5); }
 [data-theme='dark'] .theme-toggle__sun { opacity: 1; transform: none; }
 [data-theme='dark'] .theme-toggle__moon { opacity: 0; transform: rotate(40deg) scale(0.5); }
+
+/* the sound switch beside it: waves while on, a cross while off */
+.sound-toggle__body { fill: currentColor; }
+.sound-toggle__waves { opacity: 0; transform: scale(0.6); }
+.sound-toggle[data-on] .sound-toggle__waves { opacity: 1; transform: none; }
+.sound-toggle[data-on] .sound-toggle__off { opacity: 0; transform: scale(0.5); }
 
 .nav__links { display: flex; gap: clamp(1rem, 2.4vw, 2.25rem); color: var(--blue); }
 .nav__links a {
@@ -3746,7 +3755,7 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
   }
   /* the menu is links only; the theme switch sits in the bar, beside a shorter Contact */
   .nav__theme { display: none; }
-  .nav__theme--bar { display: block; }
+  .nav__theme--bar { display: flex; gap: 0.35rem; }
   .nav__cta-long { display: none; }
   .nav__cta-arrow { display: inline; margin-left: 0.3em; }
   /* 40px like the CTA; the outline below stretches its tap area to 44px */
@@ -3757,6 +3766,13 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
 }
 
 /* the narrowest phones: a tighter Contact button keeps a clear gap after the two-line role */
+/* narrow phones: the bar keeps the theme switch; the sound switch moves into the menu, under the links */
+@media (max-width: 420px) {
+  .nav__theme--bar .sound-toggle { display: none; }
+  .nav nav .nav__theme { display: flex; padding: 0.25rem var(--gutter) 1rem; }
+  .nav nav .nav__theme .theme-toggle:not(.sound-toggle) { display: none; }
+}
+
 @media (max-width: 340px) {
   .nav__cta { padding-inline: 0.6rem; }
   .nav__inner:has(.nav__back) { gap: 0.35rem; }
