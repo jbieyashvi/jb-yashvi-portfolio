@@ -6,7 +6,7 @@ import { playground } from '../../data/playground'
 import { useLightbox } from '../Lightbox'
 
 type Kind = 'product' | 'ui' | 'logo' | 'art' | 'studio' | 'personal'
-type Tile = { key: string; kind: Kind; img: string; ratio: number; title: string; meta: string; to?: string; lb?: number; mono?: boolean }
+type Tile = { key: string; kind: Kind; img: string; ratio: number; title: string; meta: string; to?: string; lb?: number }
 
 const FILTERS: [Kind | 'all', string][] = [
   ['all', 'All'],
@@ -26,7 +26,7 @@ const tiles: Tile[] = [
     return { key: m.slug, kind: 'product' as const, img: `${m.cover}-640.webp${COVER_V}`, ratio: size ? size[1] / size[0] : 2 / 3, title: m.name, meta: m.meta, to: `/work/${m.slug}` }
   }),
   ...playground.map((p, k) => ({ key: p.slug, kind: p.kind, img: `${p.src}-800.webp`, ratio: Math.min(1.25, p.h / p.w), title: p.caption, meta: p.label, lb: k })),
-  ...art.map((a, k) => ({ key: a.slug, kind: a.kind, img: `${a.src}-800.webp`, ratio: a.h / a.w, title: a.caption, meta: a.label, lb: playground.length + k, mono: a.mono })),
+  ...art.map((a, k) => ({ key: a.slug, kind: a.kind, img: `${a.src}-800.webp`, ratio: a.h / a.w, title: a.caption, meta: a.label, lb: playground.length + k })),
 ]
 // interleave the kinds so the board reads as a mix, not in blocks
 const mixed = [...tiles].sort((a, b) => ((tiles.indexOf(a) * 7) % 11) - ((tiles.indexOf(b) * 7) % 11))
@@ -231,7 +231,7 @@ export default function RvValley() {
                 draggable={false}
               >
                 <span className="rv-tile__img" style={{ aspectRatio: `1 / ${t.ratio}` }}>
-                  <img src={t.img} alt="" loading="lazy" decoding="async" draggable={false} data-mono={t.mono || undefined} />
+                  <img src={t.img} alt="" loading="lazy" decoding="async" draggable={false} />
                 </span>
                 <span className="rv-tile__title">{t.title}</span>
                 <span className="rv-tile__meta">{t.meta}{t.to && <span aria-hidden="true"> →</span>}</span>

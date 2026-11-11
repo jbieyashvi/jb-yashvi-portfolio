@@ -19,8 +19,7 @@ export const artKinds: { kind: ArtKind; label: string; intro: string }[] = [
  * materials, places or dates, and personal photos are never credited as "photography by" Jb.
  * Files are optimised copies in public/gallery; a few screenshots are cropped to drop
  * interface chrome (a "1/2" counter, a "•••" menu, a scrollbar, white side bars) without
- * touching the artwork. `mono` photos are grayscale only where shown outside the Gallery
- * page; the Gallery shows every piece in its original colour.
+ * touching the artwork. Every piece is shown in its original colour.
  */
 const items: (Omit<ArtItem, 'label' | 'src'> & { file: string })[] = [
   // Art
@@ -102,32 +101,32 @@ const items: (Omit<ArtItem, 'label' | 'src'> & { file: string })[] = [
     alt: 'A steel lattice roof hung with dark perforated panels, over a tiled courtyard with people walking below',
   },
   {
-    kind: 'personal', slug: 'cliff', file: 'cliff-above-the-sea', w: 1350, h: 1800, mono: true,
+    kind: 'personal', slug: 'cliff', file: 'cliff-above-the-sea', w: 1350, h: 1800,
     caption: 'Above the sea',
     alt: 'Jb Yashvi sitting on a rocky cliff edge, seen from behind, looking out over the sea',
   },
   {
-    kind: 'personal', slug: 'window', file: 'working-by-the-window', w: 1800, h: 1350, mono: true,
+    kind: 'personal', slug: 'window', file: 'working-by-the-window', w: 1800, h: 1350,
     caption: 'Working by the window',
     alt: 'Jb Yashvi working on a laptop at a window desk, with forested hills outside',
   },
   {
-    kind: 'personal', slug: 'swing', file: 'red-ball-swing', w: 1350, h: 1800, mono: true,
+    kind: 'personal', slug: 'swing', file: 'red-ball-swing', w: 1350, h: 1800,
     caption: 'On a ball swing',
     alt: 'Jb Yashvi sitting on a ball swing hanging from a chain, head bowed, in a courtyard',
   },
   {
-    kind: 'personal', slug: 'sunset', file: 'beach-sunset', w: 1800, h: 1350, mono: true,
+    kind: 'personal', slug: 'sunset', file: 'beach-sunset', w: 1800, h: 1350,
     caption: 'Sunset at the beach',
     alt: 'Legs stretched out on a beach towards the sea at sunset, with a cap resting in the lap',
   },
   {
-    kind: 'personal', slug: 'shoreline', file: 'shoreline-under-clouds', w: 1350, h: 1800, mono: true,
+    kind: 'personal', slug: 'shoreline', file: 'shoreline-under-clouds', w: 1350, h: 1800,
     caption: 'Shoreline under clouds',
     alt: 'Jb Yashvi standing barefoot at the water’s edge under a cloudy sky',
   },
   {
-    kind: 'personal', slug: 'water', file: 'beside-the-water', w: 1350, h: 1800, mono: true,
+    kind: 'personal', slug: 'water', file: 'beside-the-water', w: 1350, h: 1800,
     caption: 'Beside the water',
     alt: 'Jb Yashvi sitting on the grass beside the water, with palm trees and houses on the far bank',
   },

@@ -85,7 +85,6 @@ function Lightbox({ items, index, onIndex, onClose }: Props) {
       <div className="lightbox__stage">
         <img
           key={item.slug}
-          className={item.mono ? 'is-mono' : undefined}
           src={`${item.src}-1800.webp`}
           width={item.w}
           height={item.h}

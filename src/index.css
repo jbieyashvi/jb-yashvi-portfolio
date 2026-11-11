@@ -386,24 +386,39 @@ main .back:not(.next .back) { display: none; }
 
 .nav nav { display: flex; align-items: center; gap: clamp(1.25rem, 2.4vw, 2.25rem); margin-inline: 1.5rem 0.6rem; }
 
-/* the header's call to action: a compact outline button beside the theme switch, secondary to
-   the hero's solid Explore my work */
+/* the header's call to action: a compact graphite bevel pill beside the theme switch, with a
+   dark band inside its lower edge and a gloss across its top, secondary to the hero's violet one */
 .nav__cta {
+  position: relative;
+  isolation: isolate;
   display: inline-flex;
   align-items: center;
-  min-height: 36px;
-  padding: 0 1rem;
-  border: 1px solid var(--blue);
+  min-height: 38px;
+  padding: 0 1.05rem;
+  border: 1px solid #8f8d8a;
   border-radius: 999px;
-  background: transparent;
-  color: var(--blue);
+  background: linear-gradient(0deg, #3b3936, #272624 42%, #272624);
+  box-shadow: 0 8px 18px -6px rgb(17 17 22 / 0.35), inset 0 -8px 6px 4px rgb(17 17 22 / 0.4), inset 0 -13px 2px -10px rgb(255 255 255 / 0.16);
+  color: #fdfdfd;
   font-size: 0.9rem;
   font-weight: 500;
   white-space: nowrap;
   text-decoration: none;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  transition: transform 0.1s cubic-bezier(0.23, 1, 0.32, 1), filter 0.2s ease;
 }
-.nav__cta:hover { background: var(--pale); }
+.nav__cta::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 2px;
+  inset-inline: 10px;
+  height: 45%;
+  border-radius: 999px;
+  background: linear-gradient(rgb(255 255 255 / 0.18), transparent);
+  pointer-events: none;
+}
+.nav__cta:hover { filter: brightness(1.15); }
+.nav__cta:active { transform: scale(0.97); }
 /* keeps the space before "now", which the flex row would otherwise drop */
 .nav__cta-long { white-space: pre; }
 
@@ -1946,9 +1961,6 @@ html.has-intro:not(.intro-done) .boot { display: block; position: fixed; inset: 
 .gallery-page__back:hover { text-decoration: underline; }
 /* ---------- Outside the brief: a short preview of the Gallery ---------- */
 
-/* photos of Jb in grayscale in the enlarged view where marked; the files keep their colour */
-.lightbox img.is-mono { filter: grayscale(1); }
-
 .outside { padding-block: clamp(3.5rem, 7vw, 6rem); }
 
 /* Hands on: a short muted recording after My journey, full width under a heading */
@@ -2793,8 +2805,7 @@ html.has-intro:not(.intro-done) .boot { display: block; position: fixed; inset: 
   transform: translate(calc(-50% + var(--x)), -50%) rotate(var(--r));
   transition: transform 0.5s var(--ease);
 }
-/* the middle one is the cliff photo, which the gallery shows in black and white */
-.about__pin:nth-child(2) { z-index: 1; --r: -2deg; filter: grayscale(1); }
+.about__pin:nth-child(2) { z-index: 1; --r: -2deg; }
 @media (hover: hover) {
   .about__peek:hover .about__pin { transform: translate(calc(-50% + var(--x) * 1.18), -54%) rotate(calc(var(--r) * 1.6)); }
   .about__peek:hover .about__peek-cta span { transform: translateX(4px); }
@@ -3901,34 +3912,6 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
   .reveal-on .teaser__mask { transition-duration: 0.5s; transition-delay: calc(var(--delay, 0s) * 0.4); }
   .reveal-on .teaser__mask img { transition-duration: 0.65s, 0.4s; transition-delay: calc(var(--delay, 0s) * 0.4), 0s; }
 }
-
-/* ---------- Homepage images ---------- */
-
-/* Outside the brief previews, About photos and Ideas in motion: black and
-   white (CSS only; the files keep their colour), taking back their colour over 0.4s while the
-   image or its card is hovered, while it has keyboard focus, or during a press on a touch
-   screen. Hover is left to real pointers, as a tap would otherwise leave a sticky colour.
-   These classes appear only on the home page; the Gallery and Selected Work keep their colours. The
-   transition of the previews and About photos sits beside their own scale transitions above; reduced motion (below)
-   makes the change immediate. */
-.teaser__mask img,
-.mod__photo img,
-.about__avatar,
-.ideas__tile img { filter: grayscale(1); }
-.about__avatar,
-.ideas__tile img { transition: filter 0.4s ease; }
-@media (hover: hover) {
-  .teaser__btn:hover img,
-  .mod__photo:hover img,
-  .about__avatar:hover,
-  .ideas__tile:hover img { filter: grayscale(0); }
-}
-.teaser__btn:focus-visible img,
-.ideas__tile:focus-visible img,
-.teaser__btn:active img,
-.mod__photo:active img,
-.about__avatar:active,
-.ideas__tile:active img { filter: grayscale(0); }
 
 /* ---------- Reduced motion ---------- */
 

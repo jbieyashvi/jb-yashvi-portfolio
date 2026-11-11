@@ -11,6 +11,4 @@ export interface ImageItem {
   caption: string
   /** What kind of work it is, shown with the caption */
   label: string
-  /** A photo of Jb: shown in grayscale with CSS, the file keeps its colour */
-  mono?: boolean
 }

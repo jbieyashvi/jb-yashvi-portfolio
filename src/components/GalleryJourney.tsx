@@ -4,8 +4,7 @@ import { art, artKinds, type ArtItem, type ArtKind } from '../data/art'
 import { useLightbox } from './Lightbox'
 import { mid } from './srcset'
 
-/** every piece in its original colour here, including the photos shown in grayscale elsewhere */
-const pieces = art.map((i) => ({ ...i, mono: false }))
+const pieces = art
 const bySlug = new Map(pieces.map((p) => [p.slug, p]))
 
 /**
@@ -20,7 +19,7 @@ const LAYOUT: Record<ArtKind, string[][]> = {
   personal: [['window'], ['roof', 'cliff'], ['sunset'], ['swing', 'shoreline'], ['water']],
 }
 
-type Piece = ArtItem & { mono: boolean }
+type Piece = ArtItem
 
 const chapters = artKinds.map((k) => {
   const own = pieces.filter((p) => p.kind === k.kind)

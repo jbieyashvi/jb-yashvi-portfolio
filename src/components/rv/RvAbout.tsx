@@ -60,7 +60,7 @@ const STEPS = [
 ]
 const HOLD_MS = 900
 
-/** How I got into design: hold the button to move to the next stop (or tap a stop) */
+/** How I got into design: hold the button to move to the next stop (or tap a stop on the line) */
 function Story() {
   const [at, setAt] = useState(0)
   const [fill, setFill] = useState(0)
@@ -90,8 +90,10 @@ function Story() {
       <p className="rv-label">How I got into design</p>
       <div className="rv-story__body">
         <figure className="rv-story__fig" key={s.img}>
-          <img src={s.img} alt="" loading="lazy" decoding="async" />
-          <figcaption>{s.cap}</figcaption>
+          <span className="rv-paper">
+            <img src={s.img} alt="" loading="lazy" decoding="async" />
+            <figcaption>{s.cap}</figcaption>
+          </span>
         </figure>
         <div>
           <p className="rv-story__text" key={at} aria-live="polite">{s.text}</p>
@@ -119,9 +121,9 @@ function Story() {
       </div>
       <ol className="rv-steps">
         {STEPS.map((x, k) => (
-          <li key={x.tag}>
+          <li key={x.tag} data-past={k < at || undefined}>
             <button type="button" aria-current={k === at ? 'step' : undefined} onClick={() => setAt(k)}>
-              <span aria-hidden="true">{k + 1}</span>
+              <span className="rv-steps__dot" aria-hidden="true" />
               {x.tag}
             </button>
           </li>
@@ -177,7 +179,7 @@ function Tv() {
 
 const ROLL = art.filter((a) => a.kind !== 'art').slice(0, 8)
 
-/** My camera roll: a stack of prints; the shutter sends the top one to the back */
+/** My camera roll: a stack of deckle-edged prints; the camera button sends the top one to the back */
 function Roll() {
   const [order, setOrder] = useState(() => ROLL.map((_, k) => k))
   const [leaving, setLeaving] = useState(false)
@@ -199,18 +201,23 @@ function Roll() {
           const depth = order.indexOf(k)
           const a = ROLL[k]
           return (
-            <figure key={a.slug} className="rv-print" data-depth={depth} data-leaving={(depth === 0 && leaving) || undefined} style={{ '--r': `${((k * 37) % 13) - 6}deg`, '--z': 4 - depth } as CSSProperties}>
-              <img src={`${a.src}-800.webp`} width={a.w} height={a.h} alt={depth === 0 ? a.alt : ''} loading="lazy" decoding="async" data-mono={a.mono || undefined} />
-              <figcaption>{a.caption}</figcaption>
+            <figure key={a.slug} className="rv-print" data-depth={depth} data-leaving={(depth === 0 && leaving) || undefined} style={{ '--r': `${(((k * 37) % 7) - 3) * 0.8}deg`, '--z': 4 - depth } as CSSProperties}>
+              <span className="rv-paper">
+                <img src={`${a.src}-800.webp`} width={a.w} height={a.h} alt={depth === 0 ? a.alt : ''} loading="lazy" decoding="async" />
+                <figcaption>{a.caption}</figcaption>
+              </span>
             </figure>
           )
         })}
       </div>
       <div className="rv-roll__bar">
         <button type="button" className="rv-shutter" onClick={next} aria-label={`Next photo (now: ${top.caption})`}>
-          <span aria-hidden="true" />
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" aria-hidden="true">
+            <path d="M4 8h3l1.6-2.4h6.8L17 8h3v11H4z" />
+            <circle cx="12" cy="13.2" r="3.4" />
+          </svg>
         </button>
-        <Link to="/gallery" className="rv-link">See the whole gallery <span aria-hidden="true">→</span></Link>
+        <Link to="/gallery" className="rv-pill rv-pill--ghost rv-pill--sm">See the whole gallery <span aria-hidden="true">→</span></Link>
       </div>
     </div>
   )
