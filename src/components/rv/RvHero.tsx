@@ -176,7 +176,8 @@ const FLIES = Array.from({ length: 14 }, (_, k) => ({ x: (k * 61.8) % 100, y: 55
 /**
  * The valley under the hero: a lupin meadow under the mountains by day and the Milky Way over a
  * meadow by night, crossfading with the site's theme. The sun (or moon) in the sky is the theme
- * switch: rings spread from it and the new theme spreads with them. The view leans with the
+ * switch: rings spread from it and the new theme spreads with them. A press anywhere on the valley
+ * works too (the orb stays the keyboard's way in). The view leans with the
  * pointer, fireflies come out at night, and the clips stay still with reduced motion.
  */
 function Scene() {
@@ -190,6 +191,12 @@ function Scene() {
     const r = e.currentTarget.getBoundingClientRect()
     setRings((n) => n + 1)
     setTheme(night ? 'light' : 'dark', { x: r.left + r.width / 2, y: r.top + r.height / 2 })
+  }
+  // a press anywhere else on the valley does the same, spreading the new theme from that point
+  const flipHere = (e: MouseEvent<HTMLDivElement>) => {
+    if ((e.target as Element).closest('.rv-me, .rv-orb')) return
+    setRings((n) => n + 1)
+    setTheme(night ? 'light' : 'dark', { x: e.clientX, y: e.clientY })
   }
 
   const lean = (e: PointerEvent) => {
@@ -205,7 +212,7 @@ function Scene() {
   }
 
   return (
-    <div ref={ref} className="rv-scene" onPointerMove={lean} onPointerLeave={rest}>
+    <div ref={ref} className="rv-scene" data-tap="" onClick={flipHere} onPointerMove={lean} onPointerLeave={rest}>
       <div className="rv-scene__view">
         <SceneVideo name="meadow-day" on={!night} className="rv-scene__clip" />
         <SceneVideo name="meadow-night" on={night} className="rv-scene__clip" />

@@ -438,9 +438,13 @@
   border-radius: 16px;
   background: #0d1530;
   box-shadow: 0 30px 60px -36px rgb(30 60 120 / 0.55);
+  cursor: pointer;
 }
+/* the whole valley is the theme switch: on hover the sun glows, its label shows and the view brightens */
+.rv-scene:hover .rv-scene__clip[data-on] { filter: saturate(1.25) brightness(1.1); }
+:root[data-theme='dark'] .rv-scene:hover .rv-scene__clip[data-on] { filter: brightness(1.18); }
 .rv-scene__view { position: absolute; inset: -3%; transform: translate(calc(var(--px) * -14px), calc(var(--py) * -8px)) scale(1.02); transition: transform 0.8s var(--ease); }
-.rv-scene__clip { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1s ease; }
+.rv-scene__clip { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1s ease, filter 0.4s ease; }
 .rv-scene__clip[data-on] { opacity: 1; }
 /* a bright, slightly warm grade by day; the night clip keeps its own deep blues */
 :root:not([data-theme='dark']) .rv-scene__clip { filter: saturate(1.18) brightness(1.04); }
@@ -530,7 +534,7 @@
 }
 :root[data-theme='dark'] .rv-orb__sun { opacity: 0; transform: translateY(60%) scale(0.5); }
 :root[data-theme='dark'] .rv-orb__moon { opacity: 1; transform: none; }
-.rv-orb:hover .rv-orb__sun, .rv-orb:focus-visible .rv-orb__sun { box-shadow: 0 0 8px 3px #fffbe6, 0 0 24px 9px rgb(255 236 160 / 0.9), 0 0 60px 22px rgb(255 214 120 / 0.55); }
+.rv-scene:hover .rv-orb__sun, .rv-orb:focus-visible .rv-orb__sun { box-shadow: 0 0 8px 3px #fffbe6, 0 0 24px 9px rgb(255 236 160 / 0.9), 0 0 60px 22px rgb(255 214 120 / 0.55); }
 .rv-orb:focus-visible { outline: 2px solid #fff; outline-offset: 6px; }
 
 .rv-orb__tip {
@@ -550,7 +554,7 @@
   transition: opacity 0.25s ease, transform 0.35s var(--ease);
   pointer-events: none;
 }
-.rv-orb:hover .rv-orb__tip, .rv-orb:focus-visible .rv-orb__tip { opacity: 1; transform: translate(-50%, 0); }
+.rv-scene:hover .rv-orb__tip, .rv-orb:focus-visible .rv-orb__tip { opacity: 1; transform: translate(-50%, 0); }
 
 /* rings that spread out from the orb when it is pressed */
 .rv-orb__rings { position: absolute; inset: 19%; pointer-events: none; }
@@ -629,6 +633,36 @@
 .rv-mcard__group { color: var(--graphite); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; }
 .rv-mcard__name { font-size: 0.94rem; font-weight: 500; }
 .rv-mcard__meta { color: var(--graphite); font-size: 0.85rem; }
+
+/* phones: the featured three stacked as cards in place of the tabs, the rest in a sideways row */
+.rv-flist { display: none; }
+@media (max-width: 760px) {
+  .rv-tabs, .rv-panel { display: none; }
+  .rv-flist { display: grid; gap: 1.25rem; margin: 0; padding: 0; list-style: none; }
+  .rv-fcard { display: grid; border: 1px solid var(--rule); color: var(--ink); text-decoration: none; }
+  .rv-fcard__img { display: block; aspect-ratio: 3 / 2; overflow: hidden; border-bottom: 1px solid var(--rule); background: var(--pale); }
+  .rv-fcard__img img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .rv-fcard__kind { padding: 1rem 1rem 0; color: var(--graphite); font-size: 0.85rem; }
+  .rv-fcard__n { margin-right: 0.3rem; color: var(--rv-lilac-2); font-variant-numeric: tabular-nums; }
+  .rv-fcard__sum { padding: 0.5rem 1rem 0; font-family: var(--rv-serif); font-size: 1.45rem; line-height: 1.12; letter-spacing: -0.015em; text-wrap: pretty; }
+  .rv-fcard__name { padding: 0.6rem 1rem 0; color: var(--graphite); font-size: 0.88rem; line-height: 1.45; }
+  .rv-fcard__go { padding: 1rem; color: var(--rv-lilac-2); font-size: 0.92rem; font-weight: 500; }
+
+  /* the row runs to the screen's edges and stops on each card */
+  .rv-more__row {
+    display: flex;
+    gap: 0.9rem;
+    margin-inline: calc(-1 * var(--gutter));
+    padding: 0 var(--gutter) 0.5rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+  }
+  .rv-more__row::-webkit-scrollbar { display: none; }
+  .rv-more__row > li { flex: 0 0 min(68%, 260px); scroll-snap-align: start; }
+}
 
 /* ---------- about bento ---------- */
 

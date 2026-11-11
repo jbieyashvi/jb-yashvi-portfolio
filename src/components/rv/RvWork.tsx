@@ -9,6 +9,8 @@ const GROUP = { client: 'Client', ai: 'Built with AI', personal: 'Personal' }
  * filling the left and what it is in a ruled column on the right, the link pinned to its foot. The tabs advance on their own (a bar fills under the current one)
  * until a visitor picks one; hovering or focusing the section holds them. Arrow keys move
  * between tabs. Under the tabs, the rest of the projects as a row of small cards.
+ * On phones the tabs give way to all three featured projects stacked as cards, and the rest
+ * become a row that scrolls sideways.
  */
 export default function RvWork() {
   const [at, setAt] = useState(0)
@@ -87,6 +89,30 @@ export default function RvWork() {
           </div>
         </div>
       </div>
+
+      {/* phones: the three featured projects, one under another */}
+      <ul className="rv-flist" aria-label="Featured projects">
+        {featuredProjects.map((f, k) => (
+          <li key={f.slug}>
+            <Link to={`/work/${f.slug}`} className="rv-fcard">
+              <span className="rv-fcard__img">
+                <picture>
+                  <source type="image/avif" srcSet={`/work/featured/${f.slug}-640.avif${COVER_V}`} />
+                  <img src={`/work/featured/${f.slug}-640.webp${COVER_V}`} width={640} height={427} alt="" loading="lazy" decoding="async" />
+                </picture>
+              </span>
+              <span className="rv-fcard__kind">
+                <span className="rv-fcard__n">{String(k + 1).padStart(2, '0')}</span> {f.name}
+              </span>
+              <span className="rv-fcard__sum">{f.summary}</span>
+              <span className="rv-fcard__name">{f.kind}</span>
+              <span className="rv-fcard__go">
+                Explore the work <span aria-hidden="true">→</span>
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
 
       <div className="rv-more">
         <p className="rv-more__head">More projects</p>

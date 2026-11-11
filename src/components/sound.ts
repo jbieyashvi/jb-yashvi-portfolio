@@ -77,7 +77,9 @@ function tap(kind: 'link' | 'button') {
 
 function startBed() {
   const c = audio()
-  if (!c || !master || bed) return
+  if (!c || !master) return
+  if (c.state === 'suspended') void c.resume()
+  if (bed) return
   bed = c.createGain()
   bed.gain.setValueAtTime(0, c.currentTime)
   bed.gain.linearRampToValueAtTime(1, c.currentTime + 4)
@@ -150,22 +152,26 @@ export function setSound(next: boolean) {
   } else stopBed()
 }
 
-/** listen once, for the whole page: a tap or key press wakes the audio, and clicks play the tap */
+/** listen once, for the whole page: the first tap or key press wakes the audio, and clicks play the tap */
 let wired = false
 export function wireSound() {
   if (wired) return
   wired = true
+  // browsers count only some events as a gesture that may start audio (a touch's pointerdown
+  // isn't one, a click or key press is), so keep listening until the audio is actually running
+  const gestures = ['pointerdown', 'pointerup', 'touchend', 'click', 'keydown'] as const
   const wake = () => {
-    if (on) startBed()
-    else if (ctx?.state === 'suspended') void ctx.resume()
+    if (!on) return
+    startBed()
+    if (ctx?.state === 'running') gestures.forEach((g) => document.removeEventListener(g, wake, true))
+    else void ctx?.resume()
   }
-  document.addEventListener('pointerdown', wake, { once: true })
-  document.addEventListener('keydown', wake, { once: true })
+  gestures.forEach((g) => document.addEventListener(g, wake, true))
   document.addEventListener(
     'click',
     (e) => {
       if (!on) return
-      const el = (e.target as Element | null)?.closest('a, button, [role="button"], summary')
+      const el = (e.target as Element | null)?.closest('a, button, [role="button"], summary, [data-tap]')
       // the sound switch plays its own chime
       if (!el || el.closest('[data-sound-switch]')) return
       tap(el.tagName === 'A' ? 'link' : 'button')
