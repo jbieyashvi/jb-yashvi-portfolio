@@ -11,22 +11,22 @@ const MOTION_QUERY = '(prefers-reduced-motion: no-preference)'
 const QA: { q: string; a: string; from: [label: string, href: string][] }[] = [
   {
     q: 'Who are you?',
-    a: 'I’m Jb Yashvi. I trained as an architect, and now I design products. I’m creative and observant, I notice the small things, and I care about how people feel. I design to make a real difference for the people who use what I make.',
+    a: 'Hey, I’m Jb Yashvi! An architect turned product designer who loves turning complex things into simple, thoughtful experiences. I’m curious by nature, a little obsessed with the tiny details, and always wondering how people think, feel, and interact with the world around them. I believe good design should make life a little easier, a little happier, and a lot more human. ✨',
     from: [['About me', '#about'], ['Résumé', contact.resume]],
   },
   {
     q: 'What do you design?',
-    a: 'I design web and mobile products that make everyday work clearer and easier, and I use AI-assisted prototyping to bring ideas to life.',
+    a: 'I design web and mobile experiences that make complicated things feel simple and everyday tasks a little easier. And with a little help from AI, I love turning ideas into something real, interactive, and fun to explore.',
     from: [['Selected work', '#work']],
   },
   {
     q: 'How do you start?',
-    a: 'It starts with asking the right questions. I tend to notice the small things and ask questions to understand what people need. Those conversations often shape where I start.',
+    a: 'I like to start by asking questions, noticing the little things, and having real conversations with people. Because sometimes, the smallest details tell the biggest stories. And that’s usually where the best ideas begin.',
     from: [['About me', '#about']],
   },
   {
     q: 'Why architecture?',
-    a: 'I studied architecture at {MNIT Jaipur}. It taught me how people move through spaces, and how small design tweaks change the way they feel. Now I use that in product design, to make complex things clear and useful.',
+    a: 'It all started with architecture at {MNIT Jaipur}, where I learned how people move through spaces and how even the smallest details can change the way something feels. Somewhere along the way, my curiosity moved from physical spaces to digital ones. Different spaces, same love for making things feel simple, thoughtful, and human.',
     from: [['My story', '#about'], ['B.Arch · MNIT Jaipur', '#about']],
   },
 ]

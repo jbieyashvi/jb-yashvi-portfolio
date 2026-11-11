@@ -56,87 +56,17 @@ const shots = {
     label: FINAL,
     alt: 'CMP Autobot My Tasks worklist. Status filters across the top: All 677, Matches 499, Likely Matches 5, No Match 172 and Mapped 1, with Expand All, a search field, Columns and Filter. Each row shows an ingredient (MOG), its suggested article with pack size, code and category path, a status pill and Confirm, Reject and Link APL buttons. A Retired row for Barley Whole shows a faded Resolve and Link APL. Veg Nuggets Frozen has an expand arrow and “+1”. Footer: Showing 504 of 676 open mappings.',
   },
-  'deep-columns': {
-    w: 1800,
-    h: 1102,
-    caption: 'A row, with the Reason and Last updated columns switched on',
-    label: LIVE_CAPTURE,
-    alt: 'My Tasks with the optional Reason and Last updated columns turned on. Each row: a checkbox, the MOG, the suggested article with its code, a star and its category path, then reason chips such as “✓ Quality ✗ Duplicate” or “✓ Availability ✓ Price”, a status pill, “197d ago”, and Confirm, Reject and Link APL. The Barley Whole row is Retired: its checkbox is faded, Resolve and Link APL are faded and Reject is active. Veg Nuggets Frozen has an expand arrow and “+1”.',
-  },
-  'deep-bulkbar': {
-    w: 1800,
-    h: 332,
-    caption: 'Selecting rows brings up the bulk bar',
-    label: LIVE_CAPTURE,
-    alt: 'Two rows selected. A bar above the table reads “2 Articles selected”, with Clear, Reject selected and an amber Confirm Mapping button. The header checkbox shows a dash for a partial selection.',
-  },
-  'deep-bulkconfirm': {
-    w: 1300,
-    h: 604,
-    caption: 'Bulk confirm previews every pairing first',
-    label: LIVE_CAPTURE,
-    alt: 'Confirm mapping dialog, “2 articles”: “Review the MOG → Article pairings below. This action maps each selected article to its parent ingredient.” A table lists Schezwan Sauce RTU and Falafel Frozen with their articles and codes. Cancel and Confirm 2 mappings.',
-  },
-  'deep-bulkreject': {
-    w: 1300,
-    h: 1102,
-    caption: 'Bulk reject: one reason for every selected article',
-    label: LIVE_CAPTURE,
-    alt: 'Reject articles dialog for 2 articles: “Review the rejections below, then pick a reason. The reason applies to every selected article.” A table of the two MOGs and articles, a required Reason list (Price too high, Wrong pack size, Incorrect category, Duplicate article, Not available at site, Quality concerns), optional Additional notes, Cancel and Reject 2 articles.',
-  },
-  'deep-nomatch': {
-    w: 1800,
-    h: 556,
-    caption: 'No Match: Link APL is the only way forward',
-    label: LIVE_CAPTURE,
-    alt: 'The No Match tab, 172 rows. Each row, such as Chicken Spring Roll Frozen, Apricot Jam and Tomato Juice, reads “No Articles”. Confirm and Reject are faded on every row and Link APL is the only active action. Expand All is faded and rows have no checkbox.',
-  },
-  'deep-link': {
-    w: 1800,
-    h: 1385,
-    caption: 'Link APL: search the Article master and attach',
-    label: LIVE_CAPTURE,
-    alt: 'Link APL to Apricot Jam dialog: “Search the Article master and pick one or more Articles to attach.” The search reads “jam”. A table with checkboxes, description, code and hierarchy path, for example BT Jam Kissan Mixed Fruit 1X1Kg PET, #641704, General › Apricot, which is ticked. The footer reads “1 Article selected”, with Cancel and Link 1.',
-  },
-  'final-states-crop': {
-    w: 1779,
-    h: 292,
-    caption: 'Retired, beside two ordinary rows',
-    label: FINAL,
-    alt: 'Three worklist rows. Almond Flakes · 1X1Kg, Likely Matches, with Confirm, Reject and Link APL. Barley · 1X1Kg marked Retired, with a blue Retired pill, a faded Resolve, Reject, and a faded Link APL. SauceMrs foodrite · 12X1KG, Matches, with Confirm, Reject and Link APL.',
-  },
-  'deep-filter': {
-    w: 1344,
-    h: 782,
-    caption: 'Filter: status, category and last updated',
-    label: LIVE_CAPTURE,
-    alt: 'The Filter menu open over the worklist. STATUS checkboxes for Matches, Likely Matches, No Match and Retired, each with its icon; a CATEGORY select reading All categories; LAST UPDATED from and to dates; and Clear filters.',
-  },
-  'deep-export': {
-    w: 1044,
-    h: 452,
-    caption: 'Export Excel asks which rows you mean',
-    label: LIVE_CAPTURE,
-    alt: 'The Export Excel menu, CHOOSE SCOPE: Export all data (Everything), Export filtered data (Current view) and Export selected rows (Bulk-bar set). Beside it, Last refresh · 04:12 IST · 16/04/2026.',
-  },
-  'deep-site': {
-    w: 660,
-    h: 660,
-    caption: 'The site switcher',
-    label: LIVE_CAPTURE,
-    alt: 'The sidebar site switcher open under CMP Autobot: HYD 119A (selected), NOIDA 123R and BLR 111C.',
-  },
   'deep-toggle': {
     w: 1800,
     h: 156,
-    caption: 'After launch: a decision can be switched',
+    caption: 'After testing: a decision can be switched',
     label: LIVE_CAPTURE,
     alt: 'Two rows after a decision. Pizza Sauce RTU was confirmed: its Confirm is faded and Reject is still active. Chicken Patty Frozen was rejected: its Reject is faded and Confirm is still active. Both keep Link APL.',
   },
   'deep-default': {
     w: 1800,
     h: 86,
-    caption: 'After launch: the star sets the default article',
+    caption: 'After testing: the star sets the default article',
     label: LIVE_CAPTURE,
     alt: 'The Veg Nuggets Frozen row, “+1”, after starring its second candidate. The row now leads with Nuggets … #977279, with a filled yellow star, reason chips “✗ Pack size ✓ Price”, a Matches pill, and Confirm, Reject and Link APL.',
   },
@@ -281,15 +211,6 @@ type Box = readonly [number, number, number, number]
  * ring marks the detail inside it. The enlarged view still opens the full screen.
  */
 const focus: Partial<Record<Shot, { crop?: Box; small?: Box; file?: { name: string; w: number; h: number }; ring?: Box }>> = {
-  'deep-columns': { crop: [700, 118, 660, 335], small: [920, 118, 420, 335], ring: [935, 156, 245, 292] },
-  'deep-bulkreject': { crop: [40, 120, 1220, 640], small: [40, 440, 1220, 320], ring: [58, 486, 1188, 262] },
-  'deep-nomatch': { file: { name: 'focus-nomatch', w: 996, h: 320 }, ring: [672, 50, 194, 264] },
-  'deep-link': { crop: [40, 140, 1720, 530], small: [60, 140, 1300, 530], ring: [696, 300, 650, 366] },
-  'final-states-crop': { ring: [6, 96, 1768, 88] },
-  'deep-filter': { crop: [770, 85, 570, 690] },
-  'deep-export': { crop: [88, 0, 432, 432] },
-  'deep-site': { crop: [10, 115, 460, 290] },
-  'deep-bulkbar': { file: { name: 'focus-bulkbar', w: 754, h: 62 } },
   'deep-toggle': { file: { name: 'focus-toggle', w: 736, h: 156 }, ring: [404, 22, 324, 114] },
   'deep-default': { file: { name: 'focus-default', w: 960, h: 86 }, ring: [714, 12, 48, 40] },
   'deep-dashboard': { crop: [320, 70, 1460, 500], small: [1276, 66, 502, 176], ring: [1286, 76, 482, 156] },
@@ -498,69 +419,13 @@ function Approaches({ open }: { open: (i: number) => void }) {
   )
 }
 
-/** Each final decision, with the screen that shows it */
-const decisions = [
-  {
-    title: 'Everything needed to decide, in one row',
-    shot: 'deep-columns',
-    wide: true,
-    need: 'Two articles can share a name and differ only in pack size or category.',
-    does: 'Each row shows the article’s code and category. An optional Reason column shows the Autobot’s checks, like “✓ Price ✗ Pack size”.',
-    why: 'The ✓ and ✗ show where to look. It’s optional because experienced operators mostly read the name and code.',
-    cost: 'More to read on every row, so the Reason column stays off until you turn it on.',
-  },
-  {
-    title: 'One click for one row, a preview for many',
-    shot: 'deep-bulkconfirm',
-    need: 'A pop-up on every Confirm slows people down, but one wrong row in a batch of twenty is easy to miss.',
-    does: 'Confirm on one row works straight away. Confirming several first lists every pairing.',
-    why: 'The bigger the possible mistake, the more checking it gets.',
-    cost: 'Confirming many rows takes one extra step.',
-  },
-  {
-    title: 'Every rejection has a reason',
-    shot: 'deep-bulkreject',
-    need: 'A plain “no” doesn’t say what went wrong.',
-    does: 'Reject asks for a reason from a short list. In bulk, one reason covers every selected row.',
-    why: 'The reasons match the Autobot’s checks, so each one says which check failed.',
-    cost: 'Every Reject takes one more click.',
-  },
-  {
-    title: 'No Match rows only offer what helps',
-    shot: 'deep-nomatch',
-    wide: true,
-    need: 'With no suggestion, there’s nothing to confirm or reject.',
-    does: 'Confirm and Reject are greyed out. Link APL is the only action.',
-    why: 'The buttons stay in the same place on every row, so nobody has to look for them.',
-    cost: 'The faded buttons still take up room on rows where they can’t be used.',
-  },
-  {
-    title: 'Link APL: search for the right article',
-    shot: 'deep-link',
-    wide: true,
-    need: 'When the suggestion is wrong or missing, the operator has to find the right article.',
-    does: 'A search of all articles, with code and category to tell similar ones apart. More than one can be picked.',
-    why: 'One ingredient can be bought in more than one pack size.',
-    cost: 'Searching is slower than accepting a suggestion, so it’s only for when the suggestion is wrong or missing.',
-  },
-  {
-    title: 'Retired items get their own action',
-    shot: 'final-states-crop',
-    wide: true,
-    need: 'A retired article was right once. Now it needs a replacement.',
-    does: 'Retired rows are blue, and Resolve takes the place of Confirm. They can’t be bulk-selected.',
-    why: 'A different job gets a different button, in the same row layout.',
-    cost: 'Retired rows have to be handled one at a time.',
-  },
-] as const
-
 /** My part, end to end; each card points to where it is shown */
 const role = [
   { icon: 'flow', title: 'Workflow', body: 'One flow, three screens, four queues.', href: '#flow', link: 'How it works' },
-  { icon: 'layout', title: 'Interface', body: 'Four layouts explored, then six decisions in My Tasks.', href: '#approaches', link: 'Approaches' },
+  { icon: 'layout', title: 'Interface', body: 'Four layouts explored, and a table chosen for My Tasks.', href: '#approaches', link: 'Approaches' },
   { icon: 'system', title: 'Design system', body: 'Built on shadcn/ui and Radix, documented in a PDF.', href: '#system', link: 'Design system' },
   { icon: 'code', title: 'Built with AI', body: 'I implemented the interface myself, with AI.', href: LIVE, link: 'Open the prototype' },
-  { icon: 'fix', title: 'After launch', body: 'Fixed the two problems the client’s team reported.', href: '#after', link: 'After launch' },
+  { icon: 'fix', title: 'After testing', body: 'Fixed the two problems the client’s team found.', href: '#after', link: 'After testing' },
 ] as const
 
 /** Small line icons for the role strip, drawn on a 24px grid */
@@ -573,26 +438,17 @@ const ICONS: Record<(typeof role)[number]['icon'], string> = {
 }
 
 /** Problem, what I did, why: the same three beats for every decision, as three coloured notes */
-function Beats({ need, does, why, cost, did = 'What I did' }: { need: string; does: string; why: string; cost?: string; did?: string }) {
+function Beats({ need, does, why, did = 'What I did' }: { need: string; does: string; why: string; did?: string }) {
   return (
     <dl className="cp-beats">
       <div className="cp-beat cp-tone--rose"><dt>Problem</dt><dd>{need}</dd></div>
       <div className="cp-beat cp-tone--sky"><dt>{did}</dt><dd>{does}</dd></div>
       <div className="cp-beat cp-tone--sun"><dt>Why</dt><dd>{why}</dd></div>
-      {cost && <div className="cp-beat cp-beat--cost"><dt>Trade-off</dt><dd>{cost}</dd></div>}
     </dl>
   )
 }
 
-/** The tools around the table for narrowing down the work */
-const finding = [
-  { shot: 'deep-filter', title: 'Filter', body: 'By status, category and date.' },
-  { shot: 'deep-export', title: 'Export to Excel', body: 'Everything, the current view, or only the selected rows.' },
-  { shot: 'deep-site', title: 'Site switcher', body: 'Switch between kitchen sites.' },
-  { shot: 'deep-bulkbar', title: 'Select many', body: 'Tick rows to confirm or reject them together.' },
-] as const
-
-/** What changed once operators were using it every day; reported by the client's team, not measured */
+/** What changed once the client's team tested it; reported by them, not measured */
 const changes = [
   {
     title: 'Decisions can be switched',
@@ -645,8 +501,8 @@ function Head({ id, kicker, title, mark, children }: { id: string; kicker: strin
 
 /** The operator's brief, phrase by phrase, each tied to the part of the design that answers it */
 const brief = [
-  { text: 'see why', tone: 'sky', answer: 'An optional Reason column with the Autobot’s checks', href: '#decisions' },
-  { text: 'decide quickly', tone: 'sun', answer: 'One click per row, a preview for many', href: '#decisions' },
+  { text: 'see why', tone: 'sky', answer: 'An optional Reason column with the Autobot’s checks', href: '#approaches' },
+  { text: 'decide quickly', tone: 'sun', answer: 'One click per row, a preview for many', href: '#approaches' },
   { text: 'fix it if I get it wrong', tone: 'rose', answer: 'Any decision can be switched on the row', href: '#after' },
 ] as const
 
@@ -728,9 +584,7 @@ const sections = [
   { id: 'role', label: 'What I did' },
   { id: 'flow', label: 'How it works' },
   { id: 'approaches', label: 'Approaches' },
-  { id: 'decisions', label: 'Design decisions' },
-  { id: 'after', label: 'After launch' },
-  { id: 'finding', label: 'Finding the work' },
+  { id: 'after', label: 'After testing' },
   { id: 'progress', label: 'Progress & targets' },
   { id: 'system', label: 'Design system' },
   { id: 'reflection', label: 'Reflection' },
@@ -773,7 +627,7 @@ export default function Compass() {
             </div>
             <div>
               <dt>Time</dt>
-              <dd>5 weeks, then fixes after launch</dd>
+              <dd>5 weeks, then fixes after testing</dd>
             </div>
             <div>
               <dt>My part</dt>
@@ -788,6 +642,18 @@ export default function Compass() {
               <dd>Used every day by the client’s team</dd>
             </div>
           </dl>
+          <figure className="cp-cover">
+            <img
+              src={`${DIR}/cover-1200.webp`}
+              srcSet={`${DIR}/cover-800.webp 800w, ${DIR}/cover-1200.webp 1200w, ${DIR}/cover-1600.webp 1600w`}
+              sizes="(max-width: 1200px) 92vw, 1120px"
+              width={1600}
+              height={1000}
+              alt="The CMP Autobot dashboard in a browser window, beside a card of design tokens: the amber brand colour, Inter, four queue status pills and Confirm and Reject buttons. The signed-in name is blurred."
+              fetchPriority="high"
+              decoding="async"
+            />
+          </figure>
         </div>
       </header>
 
@@ -942,26 +808,10 @@ export default function Compass() {
               </More>
             </section>
 
-            {/* Final design decisions */}
-            <section id="decisions" className="dv-sec" aria-labelledby="decisions-title" tabIndex={-1}>
-              <Head id="decisions" kicker="Design decisions" title="Six decisions in the worklist." mark={{ text: 'Six decisions', tone: 'lilac', doodle: 'under' }}>
-                <p>Small, safe actions take one click. Bigger ones ask you to check first.</p>
-              </Head>
-              <ol className="cp-decisions">
-                {decisions.map((d, i) => (
-                  <li key={d.title} className={`cp-decision${'wide' in d ? ' cp-decision--wide' : ''}`} data-reveal>
-                    <h3><span className="dv-badge">{String.fromCharCode(65 + i)}</span> {d.title}</h3>
-                    <Screen slug={d.shot} open={open} sizes={'wide' in d ? WIDE : '(max-width: 760px) 100vw, 560px'} />
-                    <Beats need={d.need} does={d.does} why={d.why} cost={d.cost} />
-                  </li>
-                ))}
-              </ol>
-            </section>
-
-            {/* After launch */}
+            {/* After testing */}
             <section id="after" className="dv-sec" aria-labelledby="after-title" tabIndex={-1}>
-              <Head id="after" kicker="After launch" title="What changed once people used it every day." mark={{ text: 'every day.', tone: 'rose', doodle: 'double' }}>
-                <p>The client’s team reported two problems. Both were fixed in the row itself, with no new screens.</p>
+              <Head id="after" kicker="After testing" title="What changed once the team tried it." mark={{ text: 'tried it.', tone: 'rose', doodle: 'double' }}>
+                <p>The client’s team found two problems while testing. Both were fixed in the row itself, with no new screens.</p>
               </Head>
               <ol className="cp-decisions">
                 {changes.map((c, i) => (
@@ -971,22 +821,6 @@ export default function Compass() {
                       <Screen slug={c.shot} open={open} sizes={WIDE} />
                     </Pin>
                     <Beats need={c.saw} does={c.did} why={c.why} did="What changed" />
-                  </li>
-                ))}
-              </ol>
-            </section>
-
-            {/* Finding the work */}
-            <section id="finding" className="dv-sec" aria-labelledby="finding-title" tabIndex={-1}>
-              <Head id="finding" kicker="Finding the work" title="Finding the right rows." mark={{ text: 'right rows.', tone: 'sky', doodle: 'under' }}>
-                <p>Nobody works top to bottom. Operators pick a queue, a category or a date, and clear that.</p>
-              </Head>
-              <ol className="dv-grid">
-                {finding.map((f) => (
-                  <li key={f.shot} className="dv-grid__item">
-                    <Screen slug={f.shot} open={open} sizes="(max-width: 760px) 100vw, 440px" />
-                    <h3>{f.title}</h3>
-                    <p>{f.body}</p>
                   </li>
                 ))}
               </ol>
@@ -1061,19 +895,11 @@ export default function Compass() {
                   What I learned
                 </p>
                 <p className="dv-signal__text">
-                  I spent most of the time helping people make the right call. The biggest change after launch was
+                  I spent most of the time helping people make the right call. The biggest change after testing was
                   about the wrong one. With hundreds of quick decisions, <mark>undo matters as much as getting it
                   right</mark>. Next time I’d plan for it from day one.
                 </p>
               </div>
-              <h3 className="dv-h3">What I’d tighten next</h3>
-              <ul className="ticks">
-                <li>Update the counts after a single Confirm, not only after bulk.</li>
-                <li>Show “Mapped” on rows confirmed in bulk.</li>
-                <li>Show who decided, and when, on each row.</li>
-                <li>Show which rejection reasons come up most.</li>
-                <li>Bring the CookBook step into the table.</li>
-              </ul>
               <div className="dv-end cp-end">
                 <External href={LIVE}>Open the prototype</External>
                 <External href={PDF}>Design system PDF</External>

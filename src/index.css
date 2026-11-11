@@ -5320,11 +5320,11 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
 .cp-beat { position: relative; padding: 0.8rem 0.95rem 0.9rem; border-radius: 10px; background: var(--tint); color: #17171a; }
 .cp-beat dt { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: #4a4a52; }
 .cp-beat dd { margin: 0.25rem 0 0; font-size: 0.95rem; line-height: 1.45; }
-.cp-beat--cost { grid-column: 1 / -1; border: 1px dashed var(--rule); background: none; color: var(--ink); }
-.cp-beat--cost dt { color: var(--graphite); }
-.cp-decision--wide .cp-beat:not(:last-child, :has(+ .cp-beat--cost))::after { content: '→'; position: absolute; right: -0.72rem; top: 50%; z-index: 1; width: 0.7rem; transform: translateY(-50%); color: var(--graphite); font-size: 0.85rem; text-align: center; }
+.cp-decision--wide .cp-beat:not(:last-child)::after { content: '→'; position: absolute; right: -0.72rem; top: 50%; z-index: 1; width: 0.7rem; transform: translateY(-50%); color: var(--graphite); font-size: 0.85rem; text-align: center; }
 
 .cp-lesson { max-width: 62ch; margin-bottom: 0.5rem; }
+/* the note stays light in dark mode, so its highlight keeps the note's dark text */
+.dv--rv .cs-note mark { color: inherit; }
 
 @media (prefers-reduced-motion: reduce) {
   .cp-scroll__shot, .cp-scroll__step, .cp-scroll__dots span { transition: none; }
@@ -5405,6 +5405,9 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
 
 /* Compass opening: the facts grid sits under the lede, a little apart from it */
 .cp-meta { margin-top: 1.5rem; max-width: 760px; }
+/* Compass cover: the dashboard and its design tokens, under the facts */
+.dv--rv .cp-cover { margin: clamp(1.75rem, 4vw, 2.75rem) 0 0; }
+.dv--rv .cp-cover img { display: block; width: 100%; height: auto; border: 1px solid var(--rule); }
 
 /* Compass opening: the client's logo beside the product name; a light-ink copy for dark mode */
 .cp-client { display: flex; align-items: center; gap: 0.85rem; }

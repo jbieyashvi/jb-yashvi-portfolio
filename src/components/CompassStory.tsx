@@ -65,7 +65,7 @@ function table(door: Pt) {
   return k.out
 }
 
-/** after launch: a workshop with an undo arrow and a star on its sign */
+/** after testing: a workshop with an undo arrow and a star on its sign */
 function workshop(door: Pt) {
   const k = kit(door, 54, 54)
   k.box(0, 0, 0, 54, 54, 38)
@@ -103,8 +103,8 @@ function kitchen(door: Pt) {
   return k.out
 }
 
-// every word here is from the Compass case study below: the brief, the approaches, the six
-// decisions, what changed after launch and the outcome; nothing is measured
+// every word here is from the Compass case study below: the brief, the approaches, the final
+// table, what changed after testing and the outcome; nothing is measured
 const stops: RouteStop[] = [
   {
     name: 'Problem',
@@ -149,10 +149,10 @@ const stops: RouteStop[] = [
   },
   {
     name: 'Refine',
-    sub: 'After launch',
-    meta: 'Reported by the client’s team',
-    title: 'Fixed two problems after launch.',
-    body: 'The team found two problems once they used it every day. Now you can undo a wrong Confirm or Reject on the same row, and a star picks which match comes first.',
+    sub: 'After testing',
+    meta: 'Found by the client’s team',
+    title: 'Fixed two problems after testing.',
+    body: 'The team found two problems while testing it. Now you can undo a wrong Confirm or Reject on the same row, and a star picks which match comes first.',
     tone: 'mint',
     at: [780, 560],
     via: 'vuv',
@@ -171,7 +171,7 @@ const stops: RouteStop[] = [
     facts: [
       { value: '2 → 1', label: 'Excel plus another tool became one table' },
       { value: 'Daily', label: 'In use by the client’s operators' },
-      { value: '5 weeks', label: 'Of design, then changes after launch' },
+      { value: '5 weeks', label: 'Of design, then changes after testing' },
     ],
   },
 ]
@@ -188,7 +188,7 @@ const walkers: { at: Pt; to: Pt; t: number }[] = [
 
 /**
  * The Compass story before the case study: the problem, how I understood it, what I explored,
- * what I made, what changed after launch and where it ended up, walked as a little ink town.
+ * what I made, what changed after testing and where it ended up, walked as a little ink town.
  */
 export default function CompassStory() {
   return (
