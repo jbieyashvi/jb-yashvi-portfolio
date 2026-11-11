@@ -176,7 +176,7 @@ function Roll() {
         </div>
         <p className="rv-note rv-roll__cap">A few photos from my camera roll. Tap the camera for the next one.</p>
       </div>
-      <Link to="/gallery" className="rv-pill rv-pill--ghost rv-pill--sm rv-roll__all">See the whole gallery <span aria-hidden="true">→</span></Link>
+      <Link to="/gallery" className="rv-textlink rv-roll__all">See the whole gallery <span aria-hidden="true">→</span></Link>
     </div>
   )
 }
@@ -254,7 +254,7 @@ function Kit() {
       <ul className="rv-chips rv-chips--plain">
         {['Figma', 'Claude', 'Codex'].map((s) => <li key={s}>{s}</li>)}
       </ul>
-      <a className="rv-pill rv-pill--ghost rv-pill--sm" href={contact.resume} target="_blank" rel="noreferrer">
+      <a className="rv-textlink" href={contact.resume} target="_blank" rel="noreferrer">
         View résumé <span aria-hidden="true">↗</span>
         <span className="sr-only"> (opens in a new tab)</span>
       </a>

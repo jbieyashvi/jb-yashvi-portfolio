@@ -383,47 +383,10 @@ main .back:not(.next .back) { display: none; }
 /* the sound and theme switches, side by side */
 .nav__theme { display: flex; gap: 0.5rem; }
 
-/* the phone menu's button and scrim, the bar's own switches and the CTA's arrow; hidden
-   while the links fit in the bar */
-.nav__menu-btn, .nav__scrim, .nav__theme--bar, .nav__cta-arrow { display: none; }
+/* the phone menu's button and scrim and the bar's own switches; hidden while the links fit in the bar */
+.nav__menu-btn, .nav__scrim, .nav__theme--bar { display: none; }
 
 .nav nav { display: flex; align-items: center; gap: clamp(1.25rem, 2.4vw, 2.25rem); margin-inline: 1.5rem 0.6rem; }
-
-/* the header's call to action: a compact graphite bevel pill beside the theme switch, with a
-   dark band inside its lower edge and a gloss across its top, secondary to the hero's violet one */
-.nav__cta {
-  position: relative;
-  isolation: isolate;
-  display: inline-flex;
-  align-items: center;
-  min-height: 38px;
-  padding: 0 1.05rem;
-  border: 1px solid #8f8d8a;
-  border-radius: 999px;
-  background: linear-gradient(0deg, #3b3936, #272624 42%, #272624);
-  box-shadow: 0 8px 18px -6px rgb(17 17 22 / 0.35), inset 0 -8px 6px 4px rgb(17 17 22 / 0.4), inset 0 -13px 2px -10px rgb(255 255 255 / 0.16);
-  color: #fdfdfd;
-  font-size: 0.9rem;
-  font-weight: 500;
-  white-space: nowrap;
-  text-decoration: none;
-  transition: transform 0.1s cubic-bezier(0.23, 1, 0.32, 1), filter 0.2s ease;
-}
-.nav__cta::before {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  top: 2px;
-  inset-inline: 10px;
-  height: 45%;
-  border-radius: 999px;
-  background: linear-gradient(rgb(255 255 255 / 0.18), transparent);
-  pointer-events: none;
-}
-.nav__cta:hover { filter: brightness(1.15); }
-.nav__cta:active { transform: scale(0.97); }
-/* keeps the space before "now", which the flex row would otherwise drop */
-.nav__cta-long { white-space: pre; }
 
 /* sun and moon theme switch: the moon in light mode, the sun in dark */
 .theme-toggle {
@@ -3697,8 +3660,6 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
   .nav__role { white-space: normal; }
   .nav__role > span { white-space: nowrap; }
   /* 40px to look compact in the bar; the outline below stretches its tap area to 44px */
-  .nav__cta { position: relative; min-height: 40px; padding-inline: 0.85rem; }
-  .nav__cta::after { content: ''; position: absolute; inset: -2px 0; }
   /* room for All work: the role gives way, and the link becomes a round arrow button like the
      theme switch, its words kept for screen readers; the outline stretches its tap area to 44px */
   .nav__brand:has(+ .nav__back) .nav__role { display: none; }
@@ -3762,19 +3723,16 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
     font-size: 1.15rem;
     background: none;
   }
-  /* the menu is links only; the theme switch sits in the bar, beside a shorter Contact */
+  /* the menu is links only; the theme switch sits in the bar */
   .nav__theme { display: none; }
   .nav__theme--bar { display: flex; gap: 0.35rem; }
-  .nav__cta-long { display: none; }
-  .nav__cta-arrow { display: inline; margin-left: 0.3em; }
-  /* 40px like the CTA; the outline below stretches its tap area to 44px */
+  /* 40px; the outline below stretches its tap area to 44px */
   .theme-toggle { position: relative; width: 40px; height: 40px; }
   .theme-toggle::after { content: ''; position: absolute; inset: -3px; }
   /* inline padding grows the footer résumé link's tap area to 44px without moving the row */
   .footer__link { padding-block: 14px; }
 }
 
-/* the narrowest phones: a tighter Contact button keeps a clear gap after the two-line role */
 /* narrow phones: the bar keeps the theme switch; the sound switch moves into the menu, under the links */
 @media (max-width: 420px) {
   .nav__theme--bar .sound-toggle { display: none; }
@@ -3783,7 +3741,6 @@ main:not(:has(> .contact:last-child)) + .footer { padding-top: clamp(1.5rem, 3vw
 }
 
 @media (max-width: 340px) {
-  .nav__cta { padding-inline: 0.6rem; }
   .nav__inner:has(.nav__back) { gap: 0.35rem; }
   .nav__back { margin-left: 0.25rem; }
 }

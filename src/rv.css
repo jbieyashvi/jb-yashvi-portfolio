@@ -148,6 +148,42 @@
 .rv-pill--sm { min-height: 40px; padding: 0.5rem 1.15rem; font-size: 0.9rem; }
 .rv-pill--sm::before { inset-inline: 10px; }
 
+/* the quieter actions beside a pill: a text link with an arrow that nudges on hover, and an
+   outlined button for controls (the building game), so one bevel pill per area leads */
+.rv-textlink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  color: var(--ink);
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--ink) 30%, transparent);
+  text-underline-offset: 4px;
+  transition: text-decoration-color 0.2s ease;
+}
+.rv-textlink > span[aria-hidden] { transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1); }
+.rv-textlink:hover { text-decoration-color: currentColor; }
+.rv-textlink:hover > span[aria-hidden] { transform: translateX(3px); }
+.rv-textlink:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+.rv-quiet {
+  min-height: 40px;
+  padding: 0.5rem 1.15rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 28%, transparent);
+  border-radius: 999px;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+.rv-quiet:hover { background: color-mix(in srgb, var(--ink) 7%, transparent); }
+.rv-quiet:active { transform: scale(0.97); }
+.rv-quiet:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+
 .rv-chips { display: flex; flex-wrap: wrap; gap: 0.45rem; margin: 0; padding: 0; list-style: none; }
 .rv-chips li {
   display: inline-flex;
@@ -841,7 +877,7 @@
 .rv-print[data-leaving] { opacity: 0; transform: translate(70%, -10%) rotate(14deg); }
 .rv-roll .rv-shutter { position: absolute; z-index: 6; bottom: 0; left: 50%; translate: -50% 50%; }
 .rv-roll__cap { margin: 2.2rem 0 0; text-wrap: balance; }
-.rv-roll__all { align-self: stretch; justify-content: center; margin-top: auto; }
+.rv-roll__all { align-self: center; margin-top: auto; }
 /* the camera button: a round violet bevel, like the pills */
 .rv-shutter {
   position: relative;

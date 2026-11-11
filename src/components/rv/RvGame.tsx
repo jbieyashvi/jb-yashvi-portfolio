@@ -153,7 +153,7 @@ export default function RvGame() {
           <strong>{score}</strong> {score === 1 ? 'floor' : 'floors'}
           <span className="rv-game__best">Best {best}</span>
         </p>
-        <button type="button" className="rv-pill rv-pill--sm" onClick={drop}>
+        <button type="button" className="rv-quiet" onClick={drop}>
           {state === 'play' ? 'Drop' : state === 'over' ? 'Build again' : 'Start building'}
         </button>
       </div>

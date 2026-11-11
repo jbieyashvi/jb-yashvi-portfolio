@@ -56,9 +56,8 @@ function useSectionInView(on: boolean) {
 }
 
 /**
- * The header: name and role on the left; the links, sound and theme switches and a Contact now button on
- * the right. On phones the bar keeps the name, a shorter Contact button, the sound and theme switches and a
- * menu control; the links fold into a menu that opens below the bar. On a case study an All work
+ * The header: name and role on the left; the links and the sound and theme switches on the right.
+ * On phones the bar keeps the name, the sound and theme switches and a menu control; the links fold into a menu that opens below the bar. On a case study an All work
  * link sits beside the name, so the way back is on screen however far down the page is read.
  * The menu closes on a link, Escape, a tap outside it, or when the screen grows wide enough
  * to show the links again.
@@ -136,11 +135,7 @@ export default function Nav() {
             <ThemeToggle />
           </div>
         </nav>
-        <Link to={to('contact')} className="nav__cta" onClick={close}>
-          Contact<span className="nav__cta-long"> now</span>
-          <span className="nav__cta-arrow" aria-hidden="true">↗</span>
-        </Link>
-        {/* phones only: the switches stay in the bar, between Contact and the menu */}
+        {/* phones only: the switches stay in the bar, beside the menu */}
         <div className="nav__theme nav__theme--bar">
           <SoundToggle />
           <ThemeToggle />
