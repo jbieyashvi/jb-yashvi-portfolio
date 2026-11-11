@@ -11,7 +11,7 @@ const MOTION_QUERY = '(prefers-reduced-motion: no-preference)'
 const QA: { q: string; a: string; from: [label: string, href: string][] }[] = [
   {
     q: 'Who are you?',
-    a: 'Hey, I’m Jb Yashvi! An architect turned product designer who loves turning complex things into simple, thoughtful experiences. I’m curious by nature, a little obsessed with the tiny details, and always wondering how people think, feel, and interact with the world around them. I believe good design should make life a little easier, a little happier, and a lot more human. ✨',
+    a: 'Hey, I’m Jb Yashvi! An architect turned product designer, curious by nature and a little obsessed with the tiny details. I love making complex things feel simple and creating experiences that make life a little easier, happier, and more human. ✨',
     from: [['About me', '#about'], ['Résumé', contact.resume]],
   },
   {
