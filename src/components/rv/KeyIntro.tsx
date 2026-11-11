@@ -41,7 +41,7 @@ export default function KeyIntro() {
     html.style.overflow = 'hidden'
     const onKey = (e: KeyboardEvent) => (e.key === 'Escape' ? skip() : go())
     window.addEventListener('keydown', onKey)
-    const t = window.setTimeout(go, 5000)
+    const t = window.setTimeout(go, 2500)
     return () => {
       html.style.overflow = ''
       window.removeEventListener('keydown', onKey)
