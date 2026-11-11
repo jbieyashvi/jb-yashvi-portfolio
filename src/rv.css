@@ -742,7 +742,6 @@
 .rv-play { grid-area: play; display: grid; align-content: start; gap: 0.8rem; }
 .rv-kit { grid-area: kit; display: grid; align-content: start; justify-items: start; }
 .rv-kit .rv-chips { margin-bottom: 1rem; }
-.rv-kit__now { margin: 0 0 1.2rem; font-family: var(--rv-geist); font-size: 1.5rem; font-weight: 300; letter-spacing: -0.025em; line-height: 1.15; }
 
 /* a framed photo: a thin pale mat around a rounded picture */
 .rv-mat { padding: 6px; border: 1px solid var(--rv-cell-edge); border-radius: 18px; background: var(--pale); }

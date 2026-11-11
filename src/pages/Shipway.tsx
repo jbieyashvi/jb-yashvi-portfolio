@@ -396,7 +396,7 @@ const glance = [
   { tone: 'sky', value: '9 → 1', label: 'Desktop columns reworked into one order card' },
   { tone: 'rose', value: '8 couriers', label: 'Compared in a list instead of a grid' },
   { tone: 'mint', value: '5 stages', label: 'Of an order’s journey brought to the phone' },
-  { tone: 'sun', value: '10K+', label: 'Google Play downloads for the whole app, October 2026' },
+  { tone: 'sun', value: 'Live', label: 'On Google Play, for Android' },
 ] as const
 
 /** My part; each card points to where it is shown */
@@ -818,13 +818,9 @@ export default function Shipway() {
                 </div>
               </div>
               <a className="cp-inuse sw-live" href={PLAY} target="_blank" rel="noopener noreferrer">
-                <span className="cp-inuse__dot" aria-hidden="true" /> Live on Google Play · 10K+ downloads, as of October 2026
+                <span className="cp-inuse__dot" aria-hidden="true" /> Live on Google Play
                 <span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span>
               </a>
-              <p className="sw-src">
-                The download count is from the Google Play listing. It covers the whole app, not just my design, and is
-                not a measure of it.
-              </p>
               <h3 className="dv-h3 cp-gap">Reflection: adapting is not shrinking</h3>
               <p className="cp-reflect">
                 Bringing a desktop platform to a phone wasn’t about making screens smaller. It meant{' '}

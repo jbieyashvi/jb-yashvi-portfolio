@@ -155,9 +155,9 @@ const stops: RouteStop[] = [
   {
     name: 'Outcome',
     sub: 'Prototype',
-    meta: 'Working prototype, not yet proven',
+    meta: 'A working prototype',
     title: 'Alex loses one file. Nothing else changes.',
-    body: 'Alex loses File A and keeps the rest of the project. Later, you can share File A again without opening the folder. Results on B were mixed: one person finished alone, one needed help, one got there in time. Permissions are simulated.',
+    body: 'Alex loses File A and keeps the rest of the project. Later, you can share File A again without opening the folder. On B, one person finished alone, one needed help and one got there with time.',
     tone: 'rose',
     at: [905, 320],
     label: 'left',

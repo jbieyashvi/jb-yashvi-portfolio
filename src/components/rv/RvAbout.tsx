@@ -16,7 +16,7 @@ function Profile() {
         <img className="rv-prof__photo" src="/about/portrait-purple-sari-700.webp" width={700} height={875} alt="Jb Yashvi in a purple sari, smiling in a sunlit room" loading="lazy" decoding="async" />
       </div>
       <h3 className="rv-cell__title">Hey, I’m Jb.</h3>
-      <p className="rv-prof__line">A senior product designer at Heizen, designing web and mobile experiences across SaaS, <span className="keep">e-commerce</span>, logistics and operations.</p>
+      <p className="rv-prof__line">Trained as an architect, now designing products. I’m creative and observant, and I care about how things feel for the people using them.</p>
       <p className="rv-label rv-prof__label">Experience</p>
       <ol className="rv-roles">
         {roles.map((r, k) => {
@@ -244,8 +244,6 @@ function Hello() {
 function Kit() {
   return (
     <div className="rv-cell rv-kit">
-      <p className="rv-label">Currently</p>
-      <p className="rv-kit__now">Senior product designer at Heizen</p>
       <p className="rv-label">Skills</p>
       <ul className="rv-chips rv-chips--plain">
         {['Product Design', 'User Research', 'UI Design', 'AI Prototyping'].map((s) => <li key={s}>{s}</li>)}

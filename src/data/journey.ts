@@ -21,7 +21,7 @@ export interface Role {
 export const roles: Role[] = [
   {
     company: 'Heizen (Gamma Opengig Work Pvt Ltd)',
-    role: 'Product Designer → Senior Product Designer',
+    role: 'Product Designer',
     from: 'May 2025',
     to: 'Oct 2026',
     summary:

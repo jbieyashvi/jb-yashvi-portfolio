@@ -16,7 +16,7 @@ const DIR = '/work/drive-sharing'
 const FROM_PROTO = 'My study prototype: a proposed design, not current Google Drive.'
 
 const sections = [
-  { id: 'impact', label: 'Impact' },
+  { id: 'impact', label: 'Results' },
   { id: 'problem', label: 'The problem' },
   { id: 'research', label: 'Research' },
   { id: 'direction', label: 'Drive’s method' },
@@ -541,7 +541,7 @@ function Head({ id, kicker, title, children }: { id: string; kicker: string; tit
 const impact = [
   { tone: 'sky', value: '3 people', label: 'Interviewed, then tested on both versions' },
   { tone: 'rose', value: '2 → 1', label: 'Screens to choose the folder and people, after testing' },
-  { tone: 'mint', value: '1 of 3', label: 'Finished Version B without help' },
+  { tone: 'mint', value: 'A → B', label: 'A second version, shaped by what people said' },
   { tone: 'sun', value: 'Before saving', label: 'A review shows who keeps and who loses access' },
 ] as const
 
@@ -556,7 +556,7 @@ export default function DriveSharing() {
           <Link to="/#work" className="back">
             <span aria-hidden="true">←</span> All work
           </Link>
-          <p className="dv-top__type">Independent product study. Not work for Google, and not affiliated with it.</p>
+          <p className="dv-top__type">Independent product study</p>
           <h1 className="dv-top__title">Share the project. Keep a few files private.</h1>
           <p className="dv-top__lede">
             A clearer way to <mark>keep one file private</mark>, <mark>keep access for the rest of the team</mark>, and see
@@ -565,8 +565,16 @@ export default function DriveSharing() {
           <div className="dv-top__grid">
             <dl className="dv-top__meta">
               <div>
+                <dt>Type</dt>
+                <dd>My own study. Not done for Google, and not linked to it.</dd>
+              </div>
+              <div>
+                <dt>When</dt>
+                <dd>Interviews and testing on 26–27 October 2026</dd>
+              </div>
+              <div>
                 <dt>My part</dt>
-                <dd>Research, problem framing, the flow design and testing.</dd>
+                <dd>Research, framing the problem, designing the flow and testing it.</dd>
               </div>
               <div>
                 <dt>Prototype</dt>
@@ -581,9 +589,8 @@ export default function DriveSharing() {
             <div className="dv-signal">
               <p className="dv-signal__kind">In short</p>
               <p className="dv-signal__text">
-                Research made the problem smaller. Testing changed the design: one person felt Version A had too many
-                clicks, so <mark>Version B puts the folder and people choices on one screen</mark>. Three people,
-                mixed results on B, nothing timed.
+                Research made the problem smaller, and testing changed the design. One person felt Version A took too
+                many clicks, so <mark>Version B puts the folder and the people on one screen</mark>.
               </p>
             </div>
           </div>
@@ -601,7 +608,8 @@ export default function DriveSharing() {
               title="Testing changed the design."
               lede="Feedback on Version A led to Version B: fewer screens, and a review that shows who keeps and loses access before anything is saved."
               stats={impact}
-              note="A small study: three people, A before B, nothing timed and permissions simulated. It shows how the design changed, not that B is proven better."
+              kicker="Results"
+              note="A small study with three people. It shows how the design changed, not that B is better."
             />
 
             {/* The problem, the words, and my part */}

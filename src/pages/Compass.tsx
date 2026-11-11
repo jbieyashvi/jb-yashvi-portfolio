@@ -173,7 +173,7 @@ const shots = {
     h: 1023,
     caption: 'Exploration: a separate CookBook Entry page',
     label: EXPLORATION,
-    alt: 'An earlier CMP Autobot CookBook Entry page. Tabs Pending 32 and Completed 0 over a list of ingredients. The main card, under “Manual entry queue — Enter these in CookBook”, shows Granular Sugar marked Green · Confirmed, “No APL to enter — log the action in CookBook”, what was acted on, and “Reviewed by Aman Verma”. A Mark entered in CookBook button with arrows to move between cards.',
+    alt: 'An earlier CMP Autobot CookBook Entry page. Tabs Pending 32 and Completed 0 over a list of ingredients. The main card, under “Manual entry queue — Enter these in CookBook”, shows Granular Sugar marked Green · Confirmed, “No APL to enter — log the action in CookBook”, what was acted on, and who reviewed it. A Mark entered in CookBook button with arrows to move between cards.',
   },
   'v1-review': {
     w: 1800,
@@ -507,6 +507,7 @@ const decisions = [
     need: 'Two articles can share a name and differ only in pack size or category.',
     does: 'Each row shows the article’s code and category. An optional Reason column shows the Autobot’s checks, like “✓ Price ✗ Pack size”.',
     why: 'The ✓ and ✗ show where to look. It’s optional because experienced operators mostly read the name and code.',
+    cost: 'More to read on every row, so the Reason column stays off until you turn it on.',
   },
   {
     title: 'One click for one row, a preview for many',
@@ -514,6 +515,7 @@ const decisions = [
     need: 'A pop-up on every Confirm slows people down, but one wrong row in a batch of twenty is easy to miss.',
     does: 'Confirm on one row works straight away. Confirming several first lists every pairing.',
     why: 'The bigger the possible mistake, the more checking it gets.',
+    cost: 'Confirming many rows takes one extra step.',
   },
   {
     title: 'Every rejection has a reason',
@@ -521,6 +523,7 @@ const decisions = [
     need: 'A plain “no” doesn’t say what went wrong.',
     does: 'Reject asks for a reason from a short list. In bulk, one reason covers every selected row.',
     why: 'The reasons match the Autobot’s checks, so each one says which check failed.',
+    cost: 'Every Reject takes one more click.',
   },
   {
     title: 'No Match rows only offer what helps',
@@ -529,6 +532,7 @@ const decisions = [
     need: 'With no suggestion, there’s nothing to confirm or reject.',
     does: 'Confirm and Reject are greyed out. Link APL is the only action.',
     why: 'The buttons stay in the same place on every row, so nobody has to look for them.',
+    cost: 'The faded buttons still take up room on rows where they can’t be used.',
   },
   {
     title: 'Link APL: search for the right article',
@@ -537,6 +541,7 @@ const decisions = [
     need: 'When the suggestion is wrong or missing, the operator has to find the right article.',
     does: 'A search of all articles, with code and category to tell similar ones apart. More than one can be picked.',
     why: 'One ingredient can be bought in more than one pack size.',
+    cost: 'Searching is slower than accepting a suggestion, so it’s only for when the suggestion is wrong or missing.',
   },
   {
     title: 'Retired items get their own action',
@@ -545,6 +550,7 @@ const decisions = [
     need: 'A retired article was right once. Now it needs a replacement.',
     does: 'Retired rows are blue, and Resolve takes the place of Confirm. They can’t be bulk-selected.',
     why: 'A different job gets a different button, in the same row layout.',
+    cost: 'Retired rows have to be handled one at a time.',
   },
 ] as const
 
@@ -567,12 +573,13 @@ const ICONS: Record<(typeof role)[number]['icon'], string> = {
 }
 
 /** Problem, what I did, why: the same three beats for every decision, as three coloured notes */
-function Beats({ need, does, why, did = 'What I did' }: { need: string; does: string; why: string; did?: string }) {
+function Beats({ need, does, why, cost, did = 'What I did' }: { need: string; does: string; why: string; cost?: string; did?: string }) {
   return (
     <dl className="cp-beats">
       <div className="cp-beat cp-tone--rose"><dt>Problem</dt><dd>{need}</dd></div>
       <div className="cp-beat cp-tone--sky"><dt>{did}</dt><dd>{does}</dd></div>
       <div className="cp-beat cp-tone--sun"><dt>Why</dt><dd>{why}</dd></div>
+      {cost && <div className="cp-beat cp-beat--cost"><dt>Trade-off</dt><dd>{cost}</dd></div>}
     </dl>
   )
 }
@@ -581,7 +588,7 @@ function Beats({ need, does, why, did = 'What I did' }: { need: string; does: st
 const finding = [
   { shot: 'deep-filter', title: 'Filter', body: 'By status, category and date.' },
   { shot: 'deep-export', title: 'Export to Excel', body: 'Everything, the current view, or only the selected rows.' },
-  { shot: 'deep-site', title: 'Site switcher', body: 'Switch between the three kitchen sites.' },
+  { shot: 'deep-site', title: 'Site switcher', body: 'Switch between kitchen sites.' },
   { shot: 'deep-bulkbar', title: 'Select many', body: 'Tick rows to confirm or reject them together.' },
 ] as const
 
@@ -759,12 +766,28 @@ export default function Compass() {
             <mark>The AI suggests, a person decides.</mark> I designed the worklist where kitchen operators check its
             suggestions and confirm, reject or fix them, hundreds at a time.
           </p>
-          <ul className="cp-facts" aria-label="Project facts">
-            <li>Compass Group India</li>
-            <li>5 weeks, then changes after launch</li>
-            <li>Workflow, interface and design system; built with AI</li>
-            <li>In use by the client’s workers</li>
-          </ul>
+          <dl className="dv-top__meta cp-meta">
+            <div>
+              <dt>Client</dt>
+              <dd>Compass Group India</dd>
+            </div>
+            <div>
+              <dt>Time</dt>
+              <dd>5 weeks, then fixes after launch</dd>
+            </div>
+            <div>
+              <dt>My part</dt>
+              <dd>The workflow, the screens and the design system. I also built the interface myself, with AI.</dd>
+            </div>
+            <div>
+              <dt>Not mine</dt>
+              <dd>The AI model, the backend and the data connections</dd>
+            </div>
+            <div>
+              <dt>Status</dt>
+              <dd>Used every day by the client’s team</dd>
+            </div>
+          </dl>
         </div>
       </header>
 
@@ -790,6 +813,24 @@ export default function Compass() {
                   Autobot suggests the link. Operators <mark>confirm it, reject it, or pick a different one</mark>.
                 </p>
               </Head>
+              <dl className="dv-terms" aria-label="Words used on this page">
+                <div>
+                  <dt>MOG</dt>
+                  <dd>An ingredient a recipe needs, like Pizza Sauce RTU.</dd>
+                </div>
+                <div>
+                  <dt>Article</dt>
+                  <dd>The actual product the team buys for it, with a brand, a pack size and a code.</dd>
+                </div>
+                <div>
+                  <dt>Autobot</dt>
+                  <dd>The AI that suggests which article goes with each MOG.</dd>
+                </div>
+                <div>
+                  <dt>APL</dt>
+                  <dd>An article from the master list. Link APL means searching that list and attaching the right one.</dd>
+                </div>
+              </dl>
               <div data-reveal>
                 <MatchIdea />
               </div>
@@ -911,7 +952,7 @@ export default function Compass() {
                   <li key={d.title} className={`cp-decision${'wide' in d ? ' cp-decision--wide' : ''}`} data-reveal>
                     <h3><span className="dv-badge">{String.fromCharCode(65 + i)}</span> {d.title}</h3>
                     <Screen slug={d.shot} open={open} sizes={'wide' in d ? WIDE : '(max-width: 760px) 100vw, 560px'} />
-                    <Beats need={d.need} does={d.does} why={d.why} />
+                    <Beats need={d.need} does={d.does} why={d.why} cost={d.cost} />
                   </li>
                 ))}
               </ol>

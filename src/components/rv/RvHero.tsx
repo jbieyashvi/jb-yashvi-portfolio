@@ -6,17 +6,17 @@ import { setTheme, useTheme } from '../theme'
 
 const MOTION_QUERY = '(prefers-reduced-motion: no-preference)'
 
-/* every answer is copied from words already on the site (About, the hero, How I got here);
+/* answers in my own words, kept to what is on the site (About, the hero, How I got here);
    {braces} mark a name shown as a chip inside the answer */
 const QA: { q: string; a: string; from: [label: string, href: string][] }[] = [
   {
     q: 'Who are you?',
-    a: 'I’m Jb Yashvi, a senior product designer at {Heizen}, designing web and mobile experiences across SaaS, e-commerce, logistics and operations.',
+    a: 'I’m Jb Yashvi. I trained as an architect, and now I design products. I’m creative and observant, I notice the small things, and I care about how people feel. I design to make a real difference for the people who use what I make.',
     from: [['About me', '#about'], ['Résumé', contact.resume]],
   },
   {
     q: 'What do you design?',
-    a: 'I design clear, intuitive web and mobile experiences across SaaS, e-commerce, logistics and operations, using AI-assisted prototyping to bring ideas to life.',
+    a: 'I design web and mobile products that make everyday work clearer and easier, and I use AI-assisted prototyping to bring ideas to life.',
     from: [['Selected work', '#work']],
   },
   {
