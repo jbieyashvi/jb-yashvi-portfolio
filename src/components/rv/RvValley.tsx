@@ -62,7 +62,7 @@ export default function RvValley() {
     const pos = new Map<string, { x: number; y: number; h: number }>()
     shown.forEach((t) => {
       const c = heights.indexOf(Math.min(...heights))
-      const h = Math.round(COL * t.ratio) + 44
+      const h = Math.round((COL - 16) * t.ratio) + 16
       pos.set(t.key, { x: c * (COL + GAP), y: heights[c], h })
       heights[c] += h + GAP
     })
@@ -224,6 +224,7 @@ export default function RvValley() {
                 key={t.key}
                 href={t.to ?? t.img}
                 className="rv-tile"
+                aria-label={`${t.title}, ${t.meta}`}
                 data-kind={t.kind}
                 style={{ '--x': `${at.x}px`, '--y': `${at.y}px`, width: COL } as CSSProperties}
                 onClick={activate(t)}
@@ -233,8 +234,6 @@ export default function RvValley() {
                 <span className="rv-tile__img" style={{ aspectRatio: `1 / ${t.ratio}` }}>
                   <img src={t.img} alt="" loading="lazy" decoding="async" draggable={false} />
                 </span>
-                <span className="rv-tile__title">{t.title}</span>
-                <span className="rv-tile__meta">{t.meta}{t.to && <span aria-hidden="true"> →</span>}</span>
               </a>
             )
           })}

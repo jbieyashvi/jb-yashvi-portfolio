@@ -5,9 +5,9 @@ import { useSyncExternalStore } from 'react'
  * every link and button, and a quiet background of a warm held chord with the odd music-box
  * note on top, always from the same few notes so it stays recognisable.
  *
- * Sound is on unless the visitor turns it off; the choice is remembered on this device. Browsers
- * allow audio only after a tap or key press, so nothing plays until the first one, and the
- * background then fades in. It pauses while the tab is hidden.
+ * Sound is on unless the visitor turns it off; the choice is remembered on this device. The
+ * background starts as the page opens where the browser allows it; most allow audio only after a
+ * tap or key press, so until then the header switch pulses, and the first one fades it in. It pauses while the tab is hidden.
  */
 
 const KEY = 'jb-sound'
@@ -36,10 +36,16 @@ function audio() {
   const AC = window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext
   if (!AC) return null
   ctx = new AC()
+  ctx.addEventListener('statechange', markWait)
   master = ctx.createGain()
   master.gain.value = 0.9
   master.connect(ctx.destination)
   return ctx
+}
+
+/** while sound is on but the browser still holds it back, the header switch pulses to ask for a tap */
+function markWait() {
+  document.documentElement.toggleAttribute('data-sound-wait', on && ctx?.state !== 'running')
 }
 
 /** one short note: a sine with a soft overtone, struck and left to ring out */
@@ -146,6 +152,7 @@ export function setSound(next: boolean) {
     /* private mode: the choice lasts for this page only */
   }
   listeners.forEach((fn) => fn())
+  markWait()
   if (next) {
     startBed()
     tap('button')
@@ -167,6 +174,10 @@ export function wireSound() {
     else void ctx?.resume()
   }
   gestures.forEach((g) => document.addEventListener(g, wake, true))
+  // try straight away too: a browser that trusts this site (one visited and listened to before)
+  // lets the sound start before any tap; otherwise it waits, and the switch pulses
+  if (on) startBed()
+  markWait()
   document.addEventListener(
     'click',
     (e) => {

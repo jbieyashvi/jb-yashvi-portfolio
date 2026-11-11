@@ -555,6 +555,10 @@
   pointer-events: none;
 }
 .rv-scene:hover .rv-orb__tip, .rv-orb:focus-visible .rv-orb__tip { opacity: 1; transform: translate(-50%, 0); }
+/* a touch screen has no hover, so the label stays up to say the valley can be tapped */
+@media (hover: none) {
+  .rv-orb__tip { opacity: 1; transform: translate(-50%, 0); }
+}
 
 /* rings that spread out from the orb when it is pressed */
 .rv-orb__rings { position: absolute; inset: 19%; pointer-events: none; }
@@ -920,9 +924,8 @@
   position: absolute;
   top: 0;
   left: 0;
-  display: grid;
-  gap: 0.15rem;
-  padding: 8px 8px 10px;
+  display: block;
+  padding: 8px;
   border-radius: 16px;
   background: var(--rv-card);
   box-shadow: 0 10px 24px -18px rgb(0 0 0 / 0.55);
@@ -934,11 +937,9 @@
 }
 .rv-tile:hover { box-shadow: 0 18px 34px -18px rgb(0 0 0 / 0.6); }
 .rv-tile:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
-.rv-tile__img { display: block; overflow: hidden; margin-bottom: 0.4rem; border-radius: 10px; background: var(--pale); }
+.rv-tile__img { display: block; overflow: hidden; border-radius: 10px; background: var(--pale); }
 .rv-tile__img img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; pointer-events: none; transition: transform 0.6s var(--ease); }
 .rv-tile:hover .rv-tile__img img { transform: scale(1.05); }
-.rv-tile__title { font-size: 0.85rem; font-weight: 500; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.rv-tile__meta { color: var(--graphite); font-size: 0.75rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 /* ---------- note ---------- */
 
@@ -1059,8 +1060,8 @@
   .rv-panel__text { border-left: 0; border-top: 1px solid var(--rule); }
   .rv-tab { flex-direction: column; align-items: center; gap: 0.2rem; padding: 0.8rem 0.4rem; font-size: 0.85rem; line-height: 1.25; white-space: normal; text-align: center; }
   .rv-tab__n { font-size: 0.72rem; }
-  .rv-hero__badge { top: auto; right: -0.2rem; bottom: -1.7rem; font-size: 0.72rem; }
-  .rv-hero__tag { margin-top: 2.3rem; }
+  /* on a narrow screen the badge drops onto its own line under the name, so it never covers it */
+  .rv-hero__badge { position: relative; top: auto; right: auto; display: flex; width: fit-content; margin: 0.9rem 0 0 0.4rem; font-size: 0.72rem; }
   .rv-letter__cols { grid-template-columns: 1fr; }
 }
 @media (max-width: 680px) {
