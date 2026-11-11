@@ -51,9 +51,9 @@ function Profile() {
 
 /* How I got here, split into three stops; the words are the story's own */
 const STEPS = [
-  { tag: 'Architecture', text: 'I studied architecture, where I learned how people move through spaces', img: '/story/mnit-thesis-460.webp', cap: 'B.Arch · MNIT Jaipur' },
-  { tag: 'Small changes', text: 'and how small design changes shape what they feel.', img: '/about/assembling-a-model-700.webp', cap: 'Assembling a model' },
-  { tag: 'Product design', text: 'Now I bring that to product design: making complex work clear, so it has a real impact.', img: '/about/desk-warm-light.webp', cap: 'My desk' },
+  { tag: 'Architecture', text: 'My journey started with architecture,', img: '/story/mnit-thesis-460.webp', cap: 'B.Arch · MNIT Jaipur' },
+  { tag: 'Little details', text: 'where I learned how little details can change the way people experience a space.', img: '/about/assembling-a-model-700.webp', cap: 'Assembling a model' },
+  { tag: 'Product design', text: 'Now, I bring that same curiosity into product design, turning complex things into simple, thoughtful experiences that make a real difference.', img: '/about/desk-warm-light.webp', cap: 'My desk' },
 ]
 
 /** How I got into design: the whole story at once; a stop on the line lights up its part */
